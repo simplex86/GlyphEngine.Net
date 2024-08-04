@@ -1,37 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SimpleX.CEngine
 {
     /// <summary>
     /// 场景管理器
     /// </summary>
-    public class CSceneManager
+    public static class CSceneManager
     {
-        internal static List<CScene> scenes { get; } = new List<CScene>();
+        private static CSceneManagerImp cSceneManagerImp = null;
 
         /// <summary>
         /// 初始化
         /// </summary>
-        internal static void Start()
+        internal static void SetSceneManagerImp(CSceneManagerImp sceneManagerImp)
         {
-            // 加载默认的启动场景
-            var launchScene = new CLaunchScene();
-            scenes.Add(launchScene);
-        }
-
-        /// <summary>
-        /// 更新
-        /// </summary>
-        internal static void Update()
-        {
-            foreach (var scene in scenes)
-            {
-                scene.PrevRender();
-                scene.Render();
-                scene.PostRender();
-            }
+            cSceneManagerImp = sceneManagerImp;
         }
 
         /// <summary>
@@ -41,16 +25,14 @@ namespace SimpleX.CEngine
         /// <returns></returns>
         public static TScene Load<TScene>() where TScene : CScene
         {
-            foreach (var tscene in scenes)
+            var scene = cSceneManagerImp.Get<TScene>();
+            if (scene == null)
             {
-                if (tscene is TScene)
-                {
-                    return tscene as TScene;
-                }
-            }
+                scene = Activator.CreateInstance<TScene>();
+                cSceneManagerImp.Add(scene);
 
-            var scene = Activator.CreateInstance<TScene>();
-            scenes.Add(scene);
+                scene.Enter();
+            }
 
             return scene;
         }
@@ -59,21 +41,10 @@ namespace SimpleX.CEngine
         /// 卸载场景
         /// </summary>
         /// <typeparam name="TScene"></typeparam>
-        public static void Unload<TScene>()
+        public static void Unload<TScene>() where TScene : CScene
         {
-            if (scenes.Count == 1)
-            {
-                return;
-            }
-
-            foreach (var scene in scenes)
-            {
-                if (scene is TScene)
-                {
-                    scenes.Remove(scene);
-                    break;
-                }
-            }
+            var scene = cSceneManagerImp.Get<TScene>();
+            Unload(scene);
         }
 
         /// <summary>
@@ -82,12 +53,11 @@ namespace SimpleX.CEngine
         /// <param name="scene"></param>
         public static void Unload(CScene scene)
         {
-            if (scenes.Count == 1)
+            if (scene != null)
             {
-                return;
+                scene.Exit();
+                cSceneManagerImp.Remove(scene);
             }
-
-            scenes.Remove(scene);
         }
     }
 }

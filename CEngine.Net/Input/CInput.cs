@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SimpleX.CEngine
 {
@@ -9,15 +8,19 @@ namespace SimpleX.CEngine
     /// </summary>
     public static class CInput
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        internal static void Update()
+        public static Action<int> OnKeyDown;
+        public static Action<int> OnKey;
+        public static Action<int> OnKeyUp;
+
+        private static CInputImp cInputImp = null;
+
+        internal static void SetTimeImp(CInputImp inputImp)
         {
-            if (Console.KeyAvailable)
-            {
-                var key = Console.ReadKey(true).Key;
-            }
+            cInputImp = inputImp;
+
+            cInputImp.OnKeyDown += (key) => OnKeyDown?.Invoke(key);
+            cInputImp.OnKey     += (key) => OnKey?.Invoke(key);
+            cInputImp.OnKeyUp   += (key) => OnKeyUp?.Invoke(key);
         }
     }
 }

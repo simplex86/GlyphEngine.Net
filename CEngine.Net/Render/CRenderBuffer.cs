@@ -15,42 +15,58 @@ namespace SimpleX.CEngine
             pixels = new List<CPixel>(Console.BufferWidth * Console.BufferHeight);
         }
 
-        internal void Render()
-        {
-            if (pixels.Count > 0)
-            {
-                Console.Clear();
-                foreach (var pixel in pixels)
-                {
-                    Console.SetCursorPosition(pixel.X, pixel.Y);
-                    Console.Write(pixel.Value);
-                }
-                pixels.Clear();
-            }
-        }
-
-        internal void SetPixel(int x, int y, string value, ConsoleColor color)
+        /// <summary>
+        /// 写入像素
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        internal void SetPixel(int x, int y)
         {
             if (!GetPixel(x, y, out var pixel))
             {
-                pixel = new CPixel()
-                {
-                    X = x,
-                    Y = y,
-                };
+                pixel = CPixelPool.Instance.Alloc(x, y);
                 pixels.Add(pixel);
             }
 
-            pixel.Value = value;
+            pixel.Symbol = " ";
+            pixel.Color = Console.ForegroundColor;
+        }
+
+        /// <summary>
+        /// 写入像素
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="symbol"></param>
+        /// <param name="color"></param>
+        internal void SetPixel(int x, int y, string symbol, ConsoleColor color)
+        {
+            if (!GetPixel(x, y, out var pixel))
+            {
+                pixel = CPixelPool.Instance.Alloc(x, y);
+                pixels.Add(pixel);
+            }
+
+            pixel.Symbol = symbol;
             pixel.Color = color;
         }
 
+        /// <summary>
+        /// 清空
+        /// </summary>
         internal void Clear()
         {
-            pixels.Clear();
+            CPixelPool.Instance.Release(pixels);
         }
 
-        private bool GetPixel(int x, int y, out CPixel pixel)
+        /// <summary>
+        /// 获取像素
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="pixel"></param>
+        /// <returns></returns>
+        internal bool GetPixel(int x, int y, out CPixel pixel)
         {
             pixel = null;
 

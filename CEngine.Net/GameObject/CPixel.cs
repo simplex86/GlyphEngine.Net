@@ -18,7 +18,7 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        public string Value { get; set; } = " ";
+        public string Symbol { get; set; } = " ";
         /// <summary>
         /// 颜色
         /// </summary>
@@ -27,5 +27,17 @@ namespace SimpleX.CEngine
         /// 背景颜色
         /// </summary>
         public ConsoleColor BackgroundColor { get; set; } = Console.BackgroundColor;
+
+        /// <summary>
+        /// 重置
+        /// </summary>
+        public void Reset()
+        {
+            this.X = 0;
+            this.Y = 0;
+            this.Symbol = string.Empty;
+            this.Color = Console.ForegroundColor;
+            this.BackgroundColor = Console.BackgroundColor;
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SimpleX.CEngine.UI
 {
-    public class CPanel : CObject
+    public class CPanel : CGameObject
     {
     }
 }

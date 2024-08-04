@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SimpleX.CEngine
 {
@@ -9,63 +8,36 @@ namespace SimpleX.CEngine
     /// </summary>
     public static class CCameraManager
     {
-        /// <summary>
-        /// 渲染缓存
-        /// </summary>
-        private static CRenderBuffer buffer = new CRenderBuffer();
-        /// <summary>
-        /// <tag, camera>
-        /// </summary>
-        private static Dictionary<string, CCamera> cameras = new Dictionary<string, CCamera>();
+        private static CSceneManagerImp cSceneManagerImp = null;
 
-        internal static CCamera Create(string tag, int order = 0)
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        internal static void SetSceneManagerImp(CSceneManagerImp sceneManagerImp)
         {
-            if (cameras.TryGetValue(tag, out var _))
-            {
-                return null;
-            }
-
-            var camera = new CCamera(tag, order, buffer);
-            cameras.Add(tag, camera);
-
-            return camera;
+            cSceneManagerImp = sceneManagerImp;
         }
 
         /// <summary>
-        /// 
+        /// 获取指定名字的相机
         /// </summary>
-        /// <param name="tag"></param>
-        internal static void Destroy(string tag)
-        {
-            cameras.Remove(tag);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="camera"></param>
-        internal static void Destroy(CCamera camera)
-        {
-            if (camera != null)
-            {
-                cameras.Remove(camera.Tag);
-            }
-        }
-
-        internal static void Update()
-        {
-            buffer.Render();
-        }
-
-        /// <summary>
-        /// 获取指定tag的相机
-        /// </summary>
-        /// <param name="tag"></param>
+        /// <param name="name"></param>
         /// <param name="camera"></param>
         /// <returns></returns>
-        public static bool Get(string tag, out CCamera camera)
+        public static bool Find(string name, out CCamera camera)
         {
-            return cameras.TryGetValue(tag, out camera);
+            camera = null;
+
+            foreach (var cam in cSceneManagerImp.cameras)
+            {
+                if (cam.Name == name)
+                {
+                    camera = cam;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

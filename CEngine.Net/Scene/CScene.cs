@@ -8,98 +8,68 @@ namespace SimpleX.CEngine
     /// </summary>
     public class CScene
     {
-        private CCamera camera = null;
-        private List<CObject> objects = new List<CObject>();
-        private bool modified = false;
-
-        /// <summary>
-        /// 脏标记
-        /// 为Ture时，表明场景需要渲染
-        /// </summary>
-        internal bool dirty
-        {
-            get
-            {
-                if (camera == null ||
-                    camera.dirty)
-                {
-                    return true;
-                }
-
-                if (modified)
-                {
-                    return true;
-                }
-
-                foreach (var obj in objects)
-                {
-                    if (obj.dirty)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        internal List<CCamera> cameras = new List<CCamera>();
+        internal List<CGameObject> gameObjects = new List<CGameObject>();
 
         public CScene()
         {
             
         }
 
-        /// <summary>
-        /// 创建新对象
-        /// </summary>
-        /// <typeparam name="TObject"></typeparam>
-        /// <returns></returns>
-        public TObject Create<TObject>() where TObject : CObject
+        internal void Enter()
         {
-            return Create<TObject>("CGameObject");
+            OnEnter();
+        }
+
+        protected virtual void OnEnter()
+        {
+
+        }
+
+        internal void Exit()
+        {
+            OnExit();
+        }
+
+        protected virtual void OnExit()
+        {
+
         }
 
         /// <summary>
-        /// 
+        /// 添加对象
         /// </summary>
-        /// <typeparam name="TObject"></typeparam>
+        /// <param name="gameObject"></param>
+        public void Add(CGameObject gameObject)
+        {
+            gameObjects.Add(gameObject);
+        }
+
+        /// <summary>
+        /// 查找对象是否存在
+        /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public TObject Create<TObject>(string name) where TObject : CObject
+        public bool Find(string name)
         {
-            var o = Activator.CreateInstance<TObject>();
-            o.Name = name;
-            
-            objects.Add(o);
-            modified = true;
-
-            return o;
-        }
-
-        /// <summary>
-        /// 销毁对象
-        /// </summary>
-        /// <param name="o"></param>
-        public void Destroy(CObject o)
-        {
-            objects.Remove(o);
-            modified = true;
+            return Find(name, out var _);
         }
 
         /// <summary>
         /// 查找对象
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="cobject"></param>
+        /// <param name="gameObject"></param>
         /// <returns></returns>
-        public bool Find(string name, out CObject cobject)
+        public bool Find(string name, out CGameObject gameObject)
         {
-            cobject = null;
+            gameObject = null;
 
-            foreach (var o in objects)
+            foreach (var o in gameObjects)
             {
                 if (o.Name == name)
                 {
-                    cobject = o;
+                    gameObject = o;
                     return true;
                 }
             }
@@ -112,18 +82,18 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <typeparam name="TObject"></typeparam>
         /// <param name="name"></param>
-        /// <param name="tobject"></param>
+        /// <param name="gameObject"></param>
         /// <returns></returns>
-        public bool Find<TObject>(string name, out TObject tobject) where TObject : CObject
+        public bool Find<TObject>(string name, out TObject gameObject) where TObject : CGameObject
         {
-            tobject = null;
+            gameObject = null;
 
-            foreach (var o in objects)
+            foreach (var o in gameObjects)
             {
                 if (o is TObject &&
                     o.Name == name)
                 {
-                    tobject = o as TObject;
+                    gameObject = o as TObject;
                     return true;
                 }
             }
@@ -132,49 +102,12 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 设置场景主相机
-        /// 注：如果没有显示设置主相机，则使用默认主相机
+        /// 添加相机
         /// </summary>
         /// <param name="camera"></param>
-        public void SetMainCamera(CCamera camera)
+        protected void Add(CCamera camera)
         {
-            this.camera = camera;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        internal void PrevRender()
-        {
-            if (camera == null && 
-                CCameraManager.Get("Main", out var mainCamera))
-            {
-                SetMainCamera(mainCamera);
-            }
-        }
-
-        /// <summary>
-        /// 渲染
-        /// </summary>
-        internal void Render()
-        {
-            if (objects.Count == 0)
-            {
-                return;
-            }
-
-            if (dirty)
-            {
-                camera?.Render(objects);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        internal void PostRender()
-        {
-            modified = false;
+            cameras.Add(camera);
         }
     }
 }

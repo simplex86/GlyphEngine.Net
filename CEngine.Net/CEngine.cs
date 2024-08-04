@@ -1,45 +1,50 @@
 ﻿using System.Text;
-using static System.Formats.Asn1.AsnWriter;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SimpleX.CEngine
 {
     /// <summary>
     /// 基于控制台的简易2D游戏引擎
     /// </summary>
-    public static class CEngine
+    public class CEngine
     {
-        private static IApplication application = null;
-        private static bool running = false;
+        private IApplication application = null;
+
+        private CSceneManagerImp sceneManagerImp = null;
+        private CTimeImp timeImp = null;
+        private CInputImp inputImp = null;
+
+        private bool running = false;
 
         /// <summary>
-        /// 设置分辨率
-        /// 注：引擎启动后设置无效
+        /// 
+        /// </summary>
+        public CEngine()
+        {
+            // 隐藏光标
+            Console.CursorVisible = false;
+            // 设置编码
+            Console.OutputEncoding = Encoding.Unicode;
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public static void SetResolution(int width, int height)
+        public CEngine(int width, int height)
+            : this()
         {
-            if (running) return;
-
-            try
-            {
-                Console.BufferWidth = width;
-                Console.WindowWidth = width;
-                Console.BufferHeight = height;
-                Console.WindowHeight = height;
-            }
-            catch (Exception ex)
-            {
-
-            }
+            Console.BufferWidth = width;
+            Console.WindowWidth = width;
+            Console.BufferHeight = height;
+            Console.WindowHeight = height;
         }
 
         /// <summary>
         /// 获取分辨率
         /// </summary>
         /// <returns></returns>
-        public static (int width, int height) GetResolution()
+        public (int x, int y) GetResolution()
         {
             return (Console.BufferWidth, Console.BufferHeight);
         }
@@ -47,61 +52,65 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 启动
         /// </summary>
-        public static void Start()
+        public void Start()
         {
-            // 隐藏控制台的光标
-            Console.CursorVisible = false;
-            // 
-            Console.OutputEncoding = Encoding.Unicode;
+            running = true;
 
-            CSceneManager.Start();
-            CTime.Start();
+            sceneManagerImp = new CSceneManagerImp();
+            CSceneManager.SetSceneManagerImp(sceneManagerImp);
+            CCameraManager.SetSceneManagerImp(sceneManagerImp);
+
+            timeImp = new CTimeImp();
+            CTime.SetTimeImp(timeImp);
+
+            inputImp = new CInputImp();
+            CInput.SetTimeImp(inputImp);
 
             var type = ReflectionHelper.Find<IApplication, ApplicationEntryAttribute>();
             if (type != null)
             {
                 application = Activator.CreateInstance(type) as IApplication;
-                application.Start();
             }
 
-            running = true;
             Loop();
         }
 
         /// <summary>
         /// 停止
         /// </summary>
-        public static void Stop()
+        public void Stop()
         {
-            application?.Exit();
-            application = null;
-
             running = false;
-            CTime.Stop();
         }
 
         /// <summary>
         /// 主循环
         /// </summary>
-        private static void Loop()
+        private void Loop()
         {
             try
             {
+                timeImp.Start();
+                application?.Start();
+
                 while (running)
                 {
-                    CTime.Update();
-                    CInput.Update();
-
-                    var dt = CTime.deltatime;
-                    application?.Update(dt);
-
-                    CSceneManager.Update();
-                    CCameraManager.Update();
+                    timeImp.Update();
+                    inputImp.Update();
+                    application?.Update(timeImp.deltatime);
+                    sceneManagerImp.Update();
                 }
             }
             catch (Exception ex)
             {
 
+            }
+            finally
+            {
+                application?.Exit();
+                application = null;
+
+                timeImp.Stop();
             }
         }
     }

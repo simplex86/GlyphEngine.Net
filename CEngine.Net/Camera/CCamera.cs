@@ -45,7 +45,7 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        public string Tag { get; }
+        public string Name { get; }
         /// <summary>
         /// 宽度
         /// </summary>
@@ -61,63 +61,60 @@ namespace SimpleX.CEngine
 
         private int x = 0;
         private int y = 0;
+
         /// <summary>
         /// 
         /// </summary>
-        private CRenderBuffer buffer { get; } = null;
+        /// <param name="name"></param>
+        public CCamera(string name)
+            : this(name, 0)
+        {
+
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="order"></param>
-        internal CCamera(string tag, int order, CRenderBuffer buffer)
+        public CCamera(string name, int order)
         {
-            Tag = tag;
+            Name = name;
             Order = order;
 
             this.x = 0;
             this.y = 0;
-            this.buffer = buffer;
         }
 
         /// <summary>
         /// 渲染
         /// </summary>
-        /// <param name="objects"></param>
-        internal void Render(List<CObject> objects)
+        /// <param name="gameObjects"></param>
+        internal void Render(List<CGameObject> gameObjects, CRenderer renderer)
         {
-            foreach (CObject o in objects)
+            foreach (var gameObject in gameObjects)
             {
-                if (o.Enabled)
-                {
-                    RenderObject(o);
-                }
+                Render(gameObject, renderer);
             }
-
-            dirty = false;
         }
 
         /// <summary>
-        /// 
+        /// 渲染
         /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="cobject"></param>
-        private void RenderObject(CObject cobject)
+        /// <param name="gameObjects"></param>
+        internal void Render(CGameObject gameObject, CRenderer renderer)
         {
-            var ox = cobject.X;
-            var oy = cobject.Y;
+            var ox = gameObject.Transform.X;
+            var oy = gameObject.Transform.Y;
 
-            foreach (var pixel in cobject.pixels)
+            foreach (var pixel in gameObject.pixels)
             {
                 if (Cull(pixel))
                 {
                     var x = ox + pixel.X - X;
                     var y = oy + pixel.Y - Y;
-                    buffer.SetPixel(x, y, pixel.Value, pixel.Color);
+                    renderer.SetPixel(x, y, pixel.Symbol, pixel.Color);
                 }
             }
-
-            cobject.dirty = false;
         }
 
         private bool Cull(CPixel pixel)
