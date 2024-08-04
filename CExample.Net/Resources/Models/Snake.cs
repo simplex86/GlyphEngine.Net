@@ -5,7 +5,7 @@ using SimpleX.CEngine;
 
 namespace CExample
 {
-    internal class Snake : CObject
+    internal class Snake : CGameObject
     {
         public Snake()
         {
@@ -13,19 +13,19 @@ namespace CExample
             {
                 X = 0,
                 Y = 0,
-                Value = "□",
+                Symbol = "□",
             });
             AddPixel(new CPixel()
             {
                 X = 1,
                 Y = 0,
-                Value = "▣",
+                Symbol = "▣",
             });
             AddPixel(new CPixel()
             {
                 X = 2,
                 Y = 0,
-                Value = "▣",
+                Symbol = "▣",
             });
         }
     }
