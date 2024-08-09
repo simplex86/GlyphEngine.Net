@@ -51,10 +51,10 @@ namespace SimpleX.CEngine
         /// <param name="y"></param>
         /// <param name="symbol"></param>
         /// <param name="color"></param>
-        public void SetPixel(int x, int y, string symbol, ConsoleColor color)
+        public void SetPixel(int x, int y, string symbol, ConsoleColor color, ConsoleColor backgroundColor)
         {
             dirty = true;
-            current.SetPixel(x, y, symbol, color);
+            current.SetPixel(x, y, symbol, color, backgroundColor);
         }
 
         /// <summary>
@@ -83,11 +83,11 @@ namespace SimpleX.CEngine
             {
                 if (!previous.GetPixel(p.X, p.Y, out var q))
                 {
-                    renderer.SetPixel(p.X, p.Y, p.Symbol, p.Color);
+                    renderer.SetPixel(p.X, p.Y, p.Symbol, p.Color, p.BackgroundColor);
                 }
                 else if (p.Symbol != q.Symbol || p.Color != q.Color)
                 {
-                    renderer.SetPixel(p.X, p.Y, p.Symbol, p.Color);
+                    renderer.SetPixel(p.X, p.Y, p.Symbol, p.Color, p.BackgroundColor);
                 }
             }
             // 

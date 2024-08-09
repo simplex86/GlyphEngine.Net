@@ -93,30 +93,45 @@ namespace SimpleX.CEngine
         {
             foreach (var gameObject in gameObjects)
             {
-                Render(gameObject, renderer);
+                Render(gameObject, 0, 0, renderer);
             }
         }
 
         /// <summary>
-        /// 渲染
+        /// 
         /// </summary>
-        /// <param name="gameObjects"></param>
-        internal void Render(CGameObject gameObject, CRenderer renderer)
-        {
-            var ox = gameObject.Transform.X;
-            var oy = gameObject.Transform.Y;
+        /// <param name="gameObject"></param>
+        /// <param name="px"></param>
+        /// <param name="py"></param>
+        /// <param name="renderer"></param>
 
+        private void Render(CGameObject gameObject, int px, int py, CRenderer renderer)
+        {
+            px += gameObject.Transform.X;
+            py += gameObject.Transform.Y;
+            // 绘制像素
             foreach (var pixel in gameObject.pixels)
             {
                 if (Cull(pixel))
                 {
-                    var x = ox + pixel.X - X;
-                    var y = oy + pixel.Y - Y;
-                    renderer.SetPixel(x, y, pixel.Symbol, pixel.Color);
+                    var x = px + pixel.X - X;
+                    var y = py + pixel.Y - Y;
+                    renderer.SetPixel(x, y, pixel.Symbol, pixel.Color, pixel.BackgroundColor);
                 }
+            }
+            // 绘制子节点
+            for (int i=0; i<gameObject.Count; i++)
+            {
+                var child = gameObject.GetChild(i);
+                Render(child, px, py, renderer);
             }
         }
 
+        /// <summary>
+        /// 剔除
+        /// </summary>
+        /// <param name="pixel"></param>
+        /// <returns></returns>
         private bool Cull(CPixel pixel)
         {
             return true;

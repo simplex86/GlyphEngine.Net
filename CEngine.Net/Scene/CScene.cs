@@ -42,7 +42,22 @@ namespace SimpleX.CEngine
         /// <param name="gameObject"></param>
         public void Add(CGameObject gameObject)
         {
-            gameObjects.Add(gameObject);
+            if (!gameObjects.Contains(gameObject))
+            {
+                gameObjects.Add(gameObject);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameObject"></param>
+        public void Remove(CGameObject gameObject)
+        {
+            if (gameObjects.Contains(gameObject))
+            {
+                gameObjects.Remove(gameObject);
+            }
         }
 
         /// <summary>

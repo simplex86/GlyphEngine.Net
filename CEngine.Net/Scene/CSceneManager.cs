@@ -59,5 +59,14 @@ namespace SimpleX.CEngine
                 cSceneManagerImp.Remove(scene);
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static CScene GetMainScene()
+        {
+            return cSceneManagerImp.GetMainScene();
+        }
     }
 }

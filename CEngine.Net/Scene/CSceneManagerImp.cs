@@ -6,7 +6,7 @@ namespace SimpleX.CEngine
     /// <summary>
     /// 场景管理器
     /// </summary>
-    internal class CSceneManagerImp
+    internal sealed class CSceneManagerImp
     {
         /// <summary>
         /// 场景列表
@@ -64,16 +64,30 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        internal CScene GetMainScene()
+        {
+            return (scenes.Count == 0) ? null : scenes[0];
+        }
+
+        /// <summary>
         /// 刷新
         /// </summary>
         internal void Update()
         {
+            foreach (var scene in scenes)
+            {
+                if (RemoveDestroyedGameObjectsFromScene(scene))
+                {
+                    break;
+                }
+            }
+
             foreach (var camera in cameras)
             {
-                foreach (var scene in scenes)
-                {
-                    camera.Render(scene.gameObjects, renderer);
-                }
+                RenderScenesByCamera(camera);
             }
 
             renderer.Render();
@@ -89,6 +103,40 @@ namespace SimpleX.CEngine
             foreach (var camera in scene.cameras)
             {
                 cameras.Remove(camera);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="gameObject"></param>
+        /// <returns></returns>
+        private bool RemoveDestroyedGameObjectsFromScene(CScene scene)
+        {
+            var gameObjects = scene.gameObjects;
+            for (int i = gameObjects.Count - 1; i >= 0; i--)
+            {
+                var go = gameObjects[i];
+                if (go.destroyed)
+                {
+                    gameObjects.RemoveAt(i);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="camera"></param>
+        private void RenderScenesByCamera(CCamera camera)
+        {
+            foreach (var scene in scenes)
+            {
+                camera.Render(scene.gameObjects, renderer);
             }
         }
     }

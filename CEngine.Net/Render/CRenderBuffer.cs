@@ -39,7 +39,7 @@ namespace SimpleX.CEngine
         /// <param name="y"></param>
         /// <param name="symbol"></param>
         /// <param name="color"></param>
-        internal void SetPixel(int x, int y, string symbol, ConsoleColor color)
+        internal void SetPixel(int x, int y, string symbol, ConsoleColor color, ConsoleColor backgroundColor)
         {
             if (!GetPixel(x, y, out var pixel))
             {
@@ -49,6 +49,7 @@ namespace SimpleX.CEngine
 
             pixel.Symbol = symbol;
             pixel.Color = color;
+            pixel.BackgroundColor = backgroundColor;
         }
 
         /// <summary>

@@ -34,10 +34,10 @@ namespace SimpleX.CEngine
         public CEngine(int width, int height)
             : this()
         {
-            Console.BufferWidth = width;
             Console.WindowWidth = width;
-            Console.BufferHeight = height;
+            Console.BufferWidth = Console.WindowLeft + width;
             Console.WindowHeight = height;
+            Console.BufferHeight = Console.WindowTop + height;
         }
 
         /// <summary>

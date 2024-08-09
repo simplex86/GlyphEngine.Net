@@ -9,6 +9,7 @@ namespace SimpleX.CEngine
         /// X坐标
         /// </summary>
         public int X { get; set; }
+
         /// <summary>
         /// Y坐标
         /// </summary>
@@ -17,6 +18,17 @@ namespace SimpleX.CEngine
         public CTransform()
         {
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void SetXY(int x, int y)
+        {
+            X = x;
+            Y = y;
         }
     }
 }
