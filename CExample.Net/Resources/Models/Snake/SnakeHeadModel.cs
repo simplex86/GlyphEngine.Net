@@ -7,29 +7,75 @@ namespace CExample
     /// </summary>
     internal class SnakeHeadModel : CGameObject
     {
-        public SnakeHeadModel(ConsoleColor color = ConsoleColor.Gray)
+        public SnakeHeadModel()
         {
             AddPixel(new CPixel());
+            LoadSkins();
+        }
+    }
 
-            var x = new CSkin("X");
-            x.Set(0, 0, "◈", color);
-            AddSkin(x);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeHeadModel), true)]
+    internal class SnakeHeadXSkin : CSkin
+    {
+        public SnakeHeadXSkin()
+            : base("X")
+        {
+            Set(0, 0, "◈", ConsoleColor.Gray);
+        }
+    }
 
-            var u = new CSkin("U");
-            u.Set(0, 0, "▲", color);
-            AddSkin(u);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeHeadModel))]
+    internal class SnakeHeadUSkin : CSkin
+    {
+        public SnakeHeadUSkin()
+            : base("U")
+        {
+            Set(0, 0, "▲", ConsoleColor.Gray);
+        }
+    }
 
-            var d = new CSkin("D");
-            d.Set(0, 0, "▼", color);
-            AddSkin(d);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeHeadModel))]
+    internal class SnakeHeadDSkin : CSkin
+    {
+        public SnakeHeadDSkin()
+            : base("D")
+        {
+            Set(0, 0, "▼", ConsoleColor.Gray);
+        }
+    }
 
-            var l = new CSkin("L");
-            l.Set(0, 0, "◀", color);
-            AddSkin(l);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeHeadModel))]
+    internal class SnakeHeadLSkin : CSkin
+    {
+        public SnakeHeadLSkin()
+            : base("L")
+        {
+            Set(0, 0, "◀", ConsoleColor.Gray);
+        }
+    }
 
-            var r = new CSkin("R");
-            r.Set(0, 0, "▶", color);
-            AddSkin(r);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeHeadModel))]
+    internal class SnakeHeadRSkin : CSkin
+    {
+        public SnakeHeadRSkin()
+            : base("R")
+        {
+            Set(0, 0, "▶", ConsoleColor.Gray);
         }
     }
 }

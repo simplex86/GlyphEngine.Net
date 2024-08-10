@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System.Reflection;
 
 namespace SimpleX.CEngine
 {
     /// <summary>
-    /// 
+    /// 游戏对象
     /// </summary>
     public class CGameObject
     {
         /// <summary>
-        /// 
+        /// 名字
         /// </summary>
         public string Name { get; set; } = "GameObject";
 
@@ -20,12 +18,12 @@ namespace SimpleX.CEngine
         public bool Enabled { get; set; } = true;
 
         /// <summary>
-        /// 
+        /// 位置
         /// </summary>
         public CTransform Transform { get; }
 
         /// <summary>
-        /// 
+        /// 位置 - X坐标
         /// </summary>
         public int X
         {
@@ -34,7 +32,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 位置 - Y坐标
         /// </summary>
         public int Y
         {
@@ -43,32 +41,32 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 父节点
         /// </summary>
         public CGameObject Parent { get; private set; }
 
         /// <summary>
-        /// 
+        /// 子节点数量
         /// </summary>
         public int Count => children.Count;
 
         /// <summary>
-        /// 
+        /// 子节点列表
         /// </summary>
         internal List<CGameObject> children { get; } = new List<CGameObject>();
 
         /// <summary>
-        /// 
+        /// 像素列表
         /// </summary>
         internal List<CPixel> pixels { get; } = new List<CPixel>();
 
         /// <summary>
-        /// 
+        /// 是否已被销毁
         /// </summary>
         internal bool destroyed { get; private set; } = false;
 
         /// <summary>
-        /// 
+        /// 皮肤
         /// </summary>
         private Dictionary<string, CSkin> skins = new Dictionary<string, CSkin>();
 
@@ -84,16 +82,6 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name"></param>
-        protected CGameObject(string name)
-            : this(0, 0)
-        {
-            Name = name;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
         protected CGameObject(int x, int y)
@@ -103,18 +91,6 @@ namespace SimpleX.CEngine
                 X = x,
                 Y = y,
             };
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        protected CGameObject(string name, int x, int y)
-            : this(x, y)
-        {
-            Name = name;
         }
 
         /// <summary>
@@ -141,7 +117,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 获取子节点
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
@@ -187,11 +163,37 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 添加像素
+        /// </summary>
+        /// <param name="pixel"></param>
+        protected void AddPixel(CPixel pixel)
+        {
+            pixels.Add(pixel);
+        }
+
+        /// <summary>
+        /// 加载皮肤
+        /// </summary>
+        protected void LoadSkins()
+        {
+            var types = ReflectionHelper.FindAll<CSkin, CSkinOfAttribute>();
+            foreach (var type in types)
+            {
+                var attr = type.GetCustomAttribute<CSkinOfAttribute>();
+                if (attr != null && attr.Is(GetType()))
+                {
+                    var skin = Activator.CreateInstance(type) as CSkin;
+                    AddSkin(skin, attr.applied);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 添加皮肤
         /// </summary>
         /// <param name="key"></param>
         /// <param name="skin"></param>
-        protected void AddSkin(CSkin skin)
+        protected void AddSkin(CSkin skin, bool apply = false)
         {
             if (skins.TryGetValue(skin.Name, out var _))
             {
@@ -201,52 +203,32 @@ namespace SimpleX.CEngine
             {
                 skins.Add(skin.Name, skin);
             }
+
+            if (apply)
+            {
+                skin.Apply(this);
+            }
         }
 
         /// <summary>
-        /// 
+        /// 应用指定名字的皮肤
         /// </summary>
         /// <param name="skinName"></param>
         public void ApplySkin(string skinName)
         {
             if (skins.TryGetValue(skinName, out var skin))
             {
-                ApplySkin(skin);
+                skin.Apply(this);
             }
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="skin"></param>
-        protected void ApplySkin(CSkin skin)
-        {
-            foreach (var pixel in pixels)
-            {
-                if (skin.Get(pixel.X, pixel.Y, out var spixel))
-                {
-                    pixel.Symbol = spixel.Symbol;
-                    pixel.Color = spixel.Color;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
+        /// 移除皮肤
         /// </summary>
         /// <param name="skinName"></param>
         protected void RemoveSkin(string skinName)
         {
             skins.Remove(skinName);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pixel"></param>
-        protected void AddPixel(CPixel pixel)
-        {
-            pixels.Add(pixel);
         }
 
         /// <summary>
@@ -260,7 +242,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 加载对象
         /// </summary>
         /// <typeparam name="TGameObject"></typeparam>
         /// <returns></returns>
@@ -269,6 +251,8 @@ namespace SimpleX.CEngine
             var gameObject = Activator.CreateInstance<TGameObject>();
             if (gameObject != null)
             {
+                gameObject.LoadSkins();
+
                 var scene = CSceneManager.GetMainScene();
                 scene.Add(gameObject);
             }
@@ -277,26 +261,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TGameObject"></typeparam>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static TGameObject Load<TGameObject>(string name) where TGameObject : CGameObject
-        {
-            var gameObject = Activator.CreateInstance<TGameObject>();
-            if (gameObject != null)
-            {
-                gameObject.Name = name;
-
-                var scene = CSceneManager.GetMainScene();
-                scene.Add(gameObject);
-            }
-            return gameObject;
-        }
-
-        /// <summary>
-        /// 
+        /// 加载对象并设定其坐标
         /// </summary>
         /// <typeparam name="TGameObject"></typeparam>
         /// <param name="x"></param>
@@ -307,6 +272,7 @@ namespace SimpleX.CEngine
             var gameObject = Activator.CreateInstance<TGameObject>();
             if (gameObject != null)
             {
+                gameObject.LoadSkins();
                 gameObject.Transform.SetXY(x, y);
 
                 var scene = CSceneManager.GetMainScene();
@@ -317,7 +283,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 销毁对象
         /// </summary>
         /// <param name="gameObject"></param>
         public static void Destroy(CGameObject gameObject)

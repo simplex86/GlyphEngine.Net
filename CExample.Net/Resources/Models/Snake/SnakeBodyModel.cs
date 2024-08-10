@@ -10,31 +10,87 @@ namespace CExample
         public SnakeBodyModel(int x, int y, ConsoleColor color = ConsoleColor.Gray)
         {
             AddPixel(new CPixel());
+            LoadSkins();
+
             Transform.SetXY(x, y);
+        }
+    }
 
-            var v = new CSkin("V");
-            v.Set(0, 0, "│", color);
-            AddSkin(v);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeBodyModel))]
+    internal class SnakeBodyVSkin : CSkin
+    {
+        public SnakeBodyVSkin()
+            : base("V")
+        {
+            Set(0, 0, "│", ConsoleColor.Gray);
+        }
+    }
 
-            var h = new CSkin("H");
-            h.Set(0, 0, "─", color);
-            AddSkin(h);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeBodyModel))]
+    internal class SnakeBodyHSkin : CSkin
+    {
+        public SnakeBodyHSkin()
+            : base("H")
+        {
+            Set(0, 0, "─", ConsoleColor.Gray);
+        }
+    }
 
-            var lt = new CSkin("LT");
-            lt.Set(0, 0, "┌", color);
-            AddSkin(lt);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeBodyModel))]
+    internal class SnakeBodyLTSkin : CSkin
+    {
+        public SnakeBodyLTSkin()
+            : base("LT")
+        {
+            Set(0, 0, "┌", ConsoleColor.Gray);
+        }
+    }
 
-            var rt = new CSkin("RT");
-            rt.Set(0, 0, "┐", color);
-            AddSkin(rt);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeBodyModel))]
+    internal class SnakeBodyRTSkin : CSkin
+    {
+        public SnakeBodyRTSkin()
+            : base("RT")
+        {
+            Set(0, 0, "┐", ConsoleColor.Gray);
+        }
+    }
 
-            var lb = new CSkin("LB");
-            lb.Set(0, 0, "└", color);
-            AddSkin(lb);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeBodyModel))]
+    internal class SnakeBodyLBSkin : CSkin
+    {
+        public SnakeBodyLBSkin()
+            : base("LB")
+        {
+            Set(0, 0, "└", ConsoleColor.Gray);
+        }
+    }
 
-            var rb = new CSkin("RB");
-            rb.Set(0, 0, "┘", color);
-            AddSkin(rb);
+    /// <summary>
+    /// 
+    /// </summary>
+    [CSkinOf(typeof(SnakeBodyModel))]
+    internal class SnakeBodyRBSkin : CSkin
+    {
+        public SnakeBodyRBSkin()
+            : base("RB")
+        {
+            Set(0, 0, "┘", ConsoleColor.Gray);
         }
     }
 }

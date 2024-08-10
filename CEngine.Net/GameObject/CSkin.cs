@@ -6,7 +6,7 @@ namespace SimpleX.CEngine
     /// <summary>
     /// 皮肤
     /// </summary>
-    public sealed class CSkin
+    public class CSkin
     {
         /// <summary>
         /// 
@@ -77,6 +77,56 @@ namespace SimpleX.CEngine
             }
             
             return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameObject"></param>
+        public void Apply(CGameObject gameObject)
+        {
+            foreach (var pixel in gameObject.pixels)
+            {
+                if (Get(pixel.X, pixel.Y, out var p))
+                {
+                    pixel.Symbol = p.Symbol;
+                    pixel.Color  = p.Color;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CSkinOfAttribute : Attribute
+    {
+        private Type type = null;
+
+        /// <summary>
+        /// 加载后生效
+        /// </summary>
+        internal bool applied { get; } = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="applied"></param>
+        public CSkinOfAttribute(Type type, bool applied = false)
+        {
+            this.type = type;
+            this.applied = applied;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public bool Is(Type type)
+        {
+            return this.type == type;
         }
     }
 }
