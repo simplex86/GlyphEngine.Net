@@ -10,45 +10,45 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 名字
         /// </summary>
-        public string Name { get; set; } = "GameObject";
+        public string name { get; set; } = "GameObject";
 
         /// <summary>
         /// 可见性
         /// </summary>
-        public bool Enabled { get; set; } = true;
+        public bool enabled { get; set; } = true;
 
         /// <summary>
         /// 位置
         /// </summary>
-        public CTransform Transform { get; }
+        public CTransform transform { get; }
 
         /// <summary>
         /// 位置 - X坐标
         /// </summary>
-        public int X
+        public int x
         {
-            get { return Transform.X; }
-            set { Transform.X = value; }
+            get { return transform.x; }
+            set { transform.x = value; }
         }
 
         /// <summary>
         /// 位置 - Y坐标
         /// </summary>
-        public int Y
+        public int y
         {
-            get { return Transform.Y; }
-            set { Transform.Y = value; }
+            get { return transform.y; }
+            set { transform.y = value; }
         }
 
         /// <summary>
         /// 父节点
         /// </summary>
-        public CGameObject Parent { get; private set; }
+        public CGameObject parent { get; private set; }
 
         /// <summary>
         /// 子节点数量
         /// </summary>
-        public int Count => children.Count;
+        public int count => children.Count;
 
         /// <summary>
         /// 子节点列表
@@ -86,10 +86,10 @@ namespace SimpleX.CEngine
         /// <param name="y"></param>
         protected CGameObject(int x, int y)
         {
-            Transform = new CTransform()
+            transform = new CTransform()
             {
-                X = x,
-                Y = y,
+                x = x,
+                y = y,
             };
         }
 
@@ -144,13 +144,13 @@ namespace SimpleX.CEngine
         {
             if (this.destroyed) return;
             if (parent.destroyed) return;
-            if (Parent == parent) return;
+            if (this.parent == parent) return;
 
-            Parent?.RemoveChild(this);
-            Parent = parent;
-            Parent?.children.Add(this);
+            this.parent?.RemoveChild(this);
+            this.parent = parent;
+            this.parent?.children.Add(this);
 
-            if (Parent == null)
+            if (this.parent == null)
             {
                 var scene = CSceneManager.GetMainScene();
                 scene.Add(this);
@@ -273,7 +273,7 @@ namespace SimpleX.CEngine
             if (gameObject != null)
             {
                 gameObject.LoadSkins();
-                gameObject.Transform.SetXY(x, y);
+                gameObject.transform.SetXY(x, y);
 
                 var scene = CSceneManager.GetMainScene();
                 scene.Add(gameObject);
@@ -296,7 +296,7 @@ namespace SimpleX.CEngine
 
             gameObject.destroyed = true;
 
-            var parent = gameObject.Parent;
+            var parent = gameObject.parent;
             if (parent != null)
             {
                 parent.RemoveChild(gameObject);

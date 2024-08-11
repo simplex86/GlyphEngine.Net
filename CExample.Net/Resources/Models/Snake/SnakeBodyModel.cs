@@ -12,7 +12,7 @@ namespace CExample
             AddPixel(new CPixel());
             LoadSkins();
 
-            Transform.SetXY(x, y);
+            transform.SetXY(x, y);
         }
     }
 

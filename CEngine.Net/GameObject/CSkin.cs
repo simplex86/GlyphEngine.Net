@@ -34,17 +34,17 @@ namespace SimpleX.CEngine
         {
             if (Get(x, y, out var pixel))
             {
-                pixel.Symbol = symbol;
-                pixel.Color = color;
+                pixel.symbol = symbol;
+                pixel.color = color;
             }
             else
             {
                 pixels.Add(new CPixel()
                 {
-                    X = x,
-                    Y = y,
-                    Symbol = symbol,
-                    Color = color
+                    x = x,
+                    y = y,
+                    symbol = symbol,
+                    color = color
                 });
             }
         }
@@ -62,14 +62,14 @@ namespace SimpleX.CEngine
 
             foreach (CPixel p in pixels)
             {
-                if (p.X == x && p.Y == y)
+                if (p.x == x && p.y == y)
                 {
                     pixel = new CPixel()
                     {
-                        X = p.X,
-                        Y = p.Y,
-                        Symbol = p.Symbol,
-                        Color = p.Color
+                        x = p.x,
+                        y = p.y,
+                        symbol = p.symbol,
+                        color = p.color
                     };
 
                     return true;
@@ -87,10 +87,10 @@ namespace SimpleX.CEngine
         {
             foreach (var pixel in gameObject.pixels)
             {
-                if (Get(pixel.X, pixel.Y, out var p))
+                if (Get(pixel.x, pixel.y, out var p))
                 {
-                    pixel.Symbol = p.Symbol;
-                    pixel.Color  = p.Color;
+                    pixel.symbol = p.symbol;
+                    pixel.color  = p.color;
                 }
             }
         }

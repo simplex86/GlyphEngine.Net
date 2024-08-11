@@ -31,8 +31,8 @@ namespace CExample
             //var head = GetChild(0);
             //var neck = GetChild(1);
 
-            //var dx = neck.X - head.X;
-            //var dy = neck.Y - head.Y;
+            //var dx = neck.x - head.x;
+            //var dy = neck.y - head.y;
 
             //if (dx == 1)
             //{
@@ -57,16 +57,16 @@ namespace CExample
 
         private void UpdateBodySkin()
         {
-            for (int i = 1; i < Count - 1; i++)
+            for (int i = 1; i < count - 1; i++)
             {
                 var prev = GetChild(i - 1);
                 var self = GetChild(i);
                 var next = GetChild(i + 1);
 
-                var px = self.X - prev.X;
-                var py = self.Y - prev.Y;
-                var nx = next.X - self.X;
-                var ny = next.Y - self.Y;
+                var px = self.x - prev.x;
+                var py = self.y - prev.y;
+                var nx = next.x - self.x;
+                var ny = next.y - self.y;
 
                 if (px != 0 && nx != 0)
                 {
@@ -104,8 +104,8 @@ namespace CExample
             var tail = GetChild(-1);
             var arse = GetChild(-2);
 
-            var dx = tail.X - arse.X;
-            var dy = tail.Y - arse.Y;
+            var dx = tail.x - arse.x;
+            var dy = tail.y - arse.y;
 
             if (dx != 0)
             {

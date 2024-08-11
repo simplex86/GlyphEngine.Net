@@ -16,21 +16,33 @@ namespace SimpleX.CEngine
             
         }
 
+        /// <summary>
+        /// 进入场景
+        /// </summary>
         internal void Enter()
         {
             OnEnter();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected virtual void OnEnter()
         {
 
         }
 
+        /// <summary>
+        /// 退出场景
+        /// </summary>
         internal void Exit()
         {
             OnExit();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected virtual void OnExit()
         {
 
@@ -82,7 +94,7 @@ namespace SimpleX.CEngine
 
             foreach (var o in gameObjects)
             {
-                if (o.Name == name)
+                if (o.name == name)
                 {
                     gameObject = o;
                     return true;
@@ -106,7 +118,7 @@ namespace SimpleX.CEngine
             foreach (var o in gameObjects)
             {
                 if (o is TObject &&
-                    o.Name == name)
+                    o.name == name)
                 {
                     gameObject = o as TObject;
                     return true;

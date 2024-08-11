@@ -58,8 +58,8 @@ namespace CExample
         /// </summary>
         private void RandomFoodXY()
         {
-            var x = Random.Shared.Next(1, CScreen.Width - 1);
-            var y = Random.Shared.Next(1, CScreen.Height - 1);
+            var x = Random.Shared.Next(1, CScreen.width - 1);
+            var y = Random.Shared.Next(1, CScreen.height - 1);
             food.SetXY(x, y);
         }
 

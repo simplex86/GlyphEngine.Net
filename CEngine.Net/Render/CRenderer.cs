@@ -81,21 +81,21 @@ namespace SimpleX.CEngine
             //
             foreach (var p in current.pixels)
             {
-                if (!previous.GetPixel(p.X, p.Y, out var q))
+                if (!previous.GetPixel(p.x, p.y, out var q))
                 {
-                    renderer.SetPixel(p.X, p.Y, p.Symbol, p.Color, p.BackgroundColor);
+                    renderer.SetPixel(p.x, p.y, p.symbol, p.color, p.backgroundColor);
                 }
-                else if (p.Symbol != q.Symbol || p.Color != q.Color)
+                else if (p.symbol != q.symbol || p.color != q.color)
                 {
-                    renderer.SetPixel(p.X, p.Y, p.Symbol, p.Color, p.BackgroundColor);
+                    renderer.SetPixel(p.x, p.y, p.symbol, p.color, p.backgroundColor);
                 }
             }
             // 
             foreach (var p in previous.pixels)
             {
-                if (!current.GetPixel(p.X, p.Y, out var q))
+                if (!current.GetPixel(p.x, p.y, out var q))
                 {
-                    erasurer.SetPixel(p.X, p.Y);
+                    erasurer.SetPixel(p.x, p.y);
                 }
             }
         }
@@ -143,8 +143,8 @@ namespace SimpleX.CEngine
         {
             var tuple = SetConsoleColor(pixel);
             {
-                Console.SetCursorPosition(pixel.X, pixel.Y);
-                Console.Write(pixel.Symbol);
+                Console.SetCursorPosition(pixel.x, pixel.y);
+                Console.Write(pixel.symbol);
             }
             ResetConsoleColor(tuple);
         }
@@ -159,8 +159,8 @@ namespace SimpleX.CEngine
             var foregroundColor = Console.ForegroundColor;
             var backgroundColor = Console.BackgroundColor;
 
-            Console.ForegroundColor = pixel.Color;
-            Console.BackgroundColor = pixel.BackgroundColor;
+            Console.ForegroundColor = pixel.color;
+            Console.BackgroundColor = pixel.backgroundColor;
 
             return (foregroundColor, backgroundColor);
         }

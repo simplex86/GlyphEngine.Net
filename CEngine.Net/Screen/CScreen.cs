@@ -2,7 +2,7 @@
 {
     public static class CScreen
     {
-        public static int Width { get; private set; } = Console.BufferWidth;
-        public static int Height { get; private set; } = Console.BufferHeight;
+        public static int width { get; private set; } = Console.BufferWidth;
+        public static int height { get; private set; } = Console.BufferHeight;
     }
 }

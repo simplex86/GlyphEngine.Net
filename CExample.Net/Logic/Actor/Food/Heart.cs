@@ -6,8 +6,8 @@ namespace CExample
     {
         private CGameObject gameObject = null;
 
-        public int X => gameObject.X;
-        public int Y => gameObject.Y;
+        public int x => gameObject.x;
+        public int y => gameObject.y;
 
         public Heart() : this(0, 0)
         {
@@ -21,7 +21,7 @@ namespace CExample
 
         public void SetXY(int x, int y)
         {
-            gameObject.Transform.SetXY(x, y);
+            gameObject.transform.SetXY(x, y);
         }
     }
 }

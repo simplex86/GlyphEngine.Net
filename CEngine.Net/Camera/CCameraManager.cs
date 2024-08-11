@@ -30,7 +30,7 @@ namespace SimpleX.CEngine
 
             foreach (var cam in cSceneManagerImp.cameras)
             {
-                if (cam.Name == name)
+                if (cam.name == name)
                 {
                     camera = cam;
                     return true;

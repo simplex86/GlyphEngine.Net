@@ -35,14 +35,14 @@ namespace SimpleX.CEngine
             {
                 return new CPixel()
                 {
-                    X = x,
-                    Y = y,
+                    x = x,
+                    y = y,
                 };
             }
 
             var pixel = queue.Dequeue();
-            pixel.X = x;
-            pixel.Y = y;
+            pixel.x = x;
+            pixel.y = y;
 
             return pixel;
         }

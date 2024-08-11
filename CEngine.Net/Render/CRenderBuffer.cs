@@ -28,8 +28,8 @@ namespace SimpleX.CEngine
                 pixels.Add(pixel);
             }
 
-            pixel.Symbol = " ";
-            pixel.Color = Console.ForegroundColor;
+            pixel.symbol = " ";
+            pixel.color = Console.ForegroundColor;
         }
 
         /// <summary>
@@ -47,9 +47,9 @@ namespace SimpleX.CEngine
                 pixels.Add(pixel);
             }
 
-            pixel.Symbol = symbol;
-            pixel.Color = color;
-            pixel.BackgroundColor = backgroundColor;
+            pixel.symbol = symbol;
+            pixel.color = color;
+            pixel.backgroundColor = backgroundColor;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace SimpleX.CEngine
 
             foreach (var v in pixels)
             {
-                if (v.X == x && v.Y == y)
+                if (v.x == x && v.y == y)
                 {
                     pixel = v;
                     return true;

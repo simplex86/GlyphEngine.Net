@@ -11,41 +11,20 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 渲染顺序，值越小越先被渲染
         /// </summary>
-        public int Order { get; }
+        public int order { get; }
         /// <summary>
         /// X坐标
         /// </summary>
-        public int X
-        {
-            set
-            {
-                if (x != value)
-                {
-                    x = value;
-                    dirty = true;
-                }
-            }
-            get { return x; }
-        }
+        public int x { get; set; }
         /// <summary>
         /// Y坐标
         /// </summary>
-        public int Y
-        {
-            set
-            {
-                if (y != value)
-                {
-                    y = value;
-                    dirty = true;
-                }
-            }
-            get { return y; }
-        }
+        public int y { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string Name { get; }
+        public string name { get; }
+
         /// <summary>
         /// 宽度
         /// </summary>
@@ -54,13 +33,6 @@ namespace SimpleX.CEngine
         /// 高度
         /// </summary>
         internal int height { get; } = Console.BufferHeight;
-        /// <summary>
-        /// 
-        /// </summary>
-        internal bool dirty { get; private set; } = true;
-
-        private int x = 0;
-        private int y = 0;
 
         /// <summary>
         /// 
@@ -78,8 +50,8 @@ namespace SimpleX.CEngine
         /// <param name="order"></param>
         public CCamera(string name, int order)
         {
-            Name = name;
-            Order = order;
+            this.name = name;
+            this.order = order;
 
             this.x = 0;
             this.y = 0;
@@ -107,20 +79,20 @@ namespace SimpleX.CEngine
 
         private void Render(CGameObject gameObject, int px, int py, CRenderer renderer)
         {
-            px += gameObject.Transform.X;
-            py += gameObject.Transform.Y;
+            px += gameObject.transform.x;
+            py += gameObject.transform.y;
             // 绘制像素
             foreach (var pixel in gameObject.pixels)
             {
                 if (Cull(pixel))
                 {
-                    var x = px + pixel.X - X;
-                    var y = py + pixel.Y - Y;
-                    renderer.SetPixel(x, y, pixel.Symbol, pixel.Color, pixel.BackgroundColor);
+                    var sx = px + pixel.x - x;
+                    var sy = py + pixel.y - y;
+                    renderer.SetPixel(sx, sy, pixel.symbol, pixel.color, pixel.backgroundColor);
                 }
             }
             // 绘制子节点
-            for (int i=0; i<gameObject.Count; i++)
+            for (int i=0; i<gameObject.count; i++)
             {
                 var child = gameObject.GetChild(i);
                 Render(child, px, py, renderer);

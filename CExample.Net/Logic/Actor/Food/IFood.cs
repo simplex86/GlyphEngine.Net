@@ -2,8 +2,8 @@
 {
     public interface IFood
     {
-        int X { get; }
-        int Y { get; }
+        int x { get; }
+        int y { get; }
 
         void SetXY(int x, int y);
     }

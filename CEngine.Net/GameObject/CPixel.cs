@@ -10,34 +10,34 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        public int X { get; set; }
+        public int x { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public int Y { get; set; }
+        public int y { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string Symbol { get; set; } = " ";
+        public string symbol { get; set; } = " ";
         /// <summary>
         /// 颜色
         /// </summary>
-        public ConsoleColor Color { get; set; } = Console.ForegroundColor;
+        public ConsoleColor color { get; set; } = Console.ForegroundColor;
         /// <summary>
         /// 背景颜色
         /// </summary>
-        public ConsoleColor BackgroundColor { get; set; } = Console.BackgroundColor;
+        public ConsoleColor backgroundColor { get; set; } = Console.BackgroundColor;
 
         /// <summary>
         /// 重置
         /// </summary>
         public void Reset()
         {
-            this.X = 0;
-            this.Y = 0;
-            this.Symbol = string.Empty;
-            this.Color = Console.ForegroundColor;
-            this.BackgroundColor = Console.BackgroundColor;
+            this.x = 0;
+            this.y = 0;
+            this.symbol = string.Empty;
+            this.color = Console.ForegroundColor;
+            this.backgroundColor = Console.BackgroundColor;
         }
     }
 }

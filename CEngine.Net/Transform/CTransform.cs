@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SimpleX.CEngine
+﻿namespace SimpleX.CEngine
 {
     public class CTransform
     {
         /// <summary>
         /// X坐标
         /// </summary>
-        public int X { get; set; }
+        public int x { get; set; }
 
         /// <summary>
         /// Y坐标
         /// </summary>
-        public int Y { get; set; }
+        public int y { get; set; }
 
         public CTransform()
         {
-
+            SetXY(0, 0);
         }
 
         /// <summary>
@@ -27,8 +24,8 @@ namespace SimpleX.CEngine
         /// <param name="y"></param>
         public void SetXY(int x, int y)
         {
-            X = x;
-            Y = y;
+            this.x = x;
+            this.y = y;
         }
     }
 }
