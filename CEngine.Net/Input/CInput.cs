@@ -6,27 +6,61 @@
     public static class CInput
     {
         /// <summary>
-        /// 键盘按下
+        /// 有效的键值
         /// </summary>
-        public static Action<int> OnKeyDown;
-        /// <summary>
-        /// 键盘按下后保持
-        /// </summary>
-        public static Action<int> OnKey;
-        /// <summary>
-        /// 键盘抬起
-        /// </summary>
-        public static Action<int> OnKeyUp;
+        private static int key { get; set; } = INVALID_KEY;
 
-        private static CInputImp cInputImp = null;
+        /// <summary>
+        /// 任意键被按下
+        /// </summary>
+        public static event Action<int> OnKeyDown;
+        /// <summary>
+        /// 任意键保持按下状态
+        /// </summary>
+        public static event Action<int> OnKey;
+        /// <summary>
+        /// 任意键被弹起
+        /// </summary>
+        public static event Action<int> OnKeyUp;
 
-        internal static void SetTimeImp(CInputImp inputImp)
+        /// <summary>
+        /// 无效按键
+        /// </summary>
+        private const int INVALID_KEY = -1;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal static void Update()
         {
-            cInputImp = inputImp;
+            if (Console.KeyAvailable)
+            {
+                var curkey = Console.ReadKey(true).Key;
 
-            cInputImp.OnKeyDown += (key) => OnKeyDown?.Invoke(key);
-            cInputImp.OnKey     += (key) => OnKey?.Invoke(key);
-            cInputImp.OnKeyUp   += (key) => OnKeyUp?.Invoke(key);
+                if (key != INVALID_KEY)
+                {
+                    if (key == (int)curkey)
+                    {
+                        OnKey?.Invoke(key);
+                    }
+                    else
+                    {
+                        OnKeyUp?.Invoke(key);
+                        key = (int)curkey;
+                        OnKeyDown?.Invoke(key);
+                    }
+                }
+                else
+                {
+                    key = (int)curkey;
+                    OnKeyDown?.Invoke(key);
+                }
+            }
+            else if (key != INVALID_KEY)
+            {
+                OnKeyUp?.Invoke(key);
+                key = INVALID_KEY;
+            }
         }
     }
 }

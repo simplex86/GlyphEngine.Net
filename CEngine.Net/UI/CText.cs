@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SimpleX.CEngine.UI
 {
@@ -12,16 +11,44 @@ namespace SimpleX.CEngine.UI
         /// <summary>
         /// 
         /// </summary>
-        public string Text { get; set; }
-
-        public CText()
+        public string text
         {
-
+            set
+            {
+                if (_text != value)
+                {
+                    _text = value;
+                    // 重置像素列表
+                    pixels.Clear();
+                    for (int i = 0; i < _text.Length; i++)
+                    {
+                        AddPixel(new CPixel()
+                        {
+                            symbol = _text[i].ToString(),
+                        });
+                    }
+                }
+            }
+            get { return _text; }
         }
 
+        private string _text = string.Empty;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public CText()
+        {
+            this.text = "Text";
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="text"></param>
         public CText(string text)
         {
-            Text = text;
+            this.text = text;
         }
     }
 }

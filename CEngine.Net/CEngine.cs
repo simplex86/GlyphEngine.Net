@@ -9,9 +9,9 @@ namespace SimpleX.CEngine
     {
         private IApplication application = null;
 
-        private CSceneManagerImp sceneManagerImp = null;
-        private CTimeImp timeImp = null;
-        private CInputImp inputImp = null;
+        //private CSceneManagerImp sceneManagerImp = null;
+        //private CTimeImp timeImp = null;
+        //private CInputImp inputImp = null;
 
         private bool running = false;
 
@@ -34,10 +34,10 @@ namespace SimpleX.CEngine
         public CEngine(int width, int height)
             : this()
         {
-            Console.WindowWidth = width;
-            Console.BufferWidth = Console.WindowLeft + width;
-            Console.WindowHeight = height;
-            Console.BufferHeight = Console.WindowTop + height;
+            //Console.WindowWidth = width;
+            //Console.BufferWidth = Console.WindowLeft + width;
+            //Console.WindowHeight = height;
+            //Console.BufferHeight = Console.WindowTop + height;
         }
 
         /// <summary>
@@ -55,16 +55,6 @@ namespace SimpleX.CEngine
         public void Start()
         {
             running = true;
-
-            sceneManagerImp = new CSceneManagerImp();
-            CSceneManager.SetSceneManagerImp(sceneManagerImp);
-            CCameraManager.SetSceneManagerImp(sceneManagerImp);
-
-            timeImp = new CTimeImp();
-            CTime.SetTimeImp(timeImp);
-
-            inputImp = new CInputImp();
-            CInput.SetTimeImp(inputImp);
 
             var type = ReflectionHelper.Find<IApplication, ApplicationEntryAttribute>();
             if (type != null)
@@ -90,15 +80,16 @@ namespace SimpleX.CEngine
         {
             try
             {
-                timeImp.Start();
+                CTime.Start();
                 application?.Start();
 
                 while (running)
                 {
-                    timeImp.Update();
-                    inputImp.Update();
-                    application?.Update(timeImp.deltatime);
-                    sceneManagerImp.Update();
+                    CTime.Update();
+                    var deltatime = CTime.deltatime;
+                    CInput.Update();
+                    application?.Update(deltatime);
+                    CSceneManager.Update();
                 }
             }
             catch (Exception ex)
@@ -110,7 +101,7 @@ namespace SimpleX.CEngine
                 application?.Exit();
                 application = null;
 
-                timeImp.Stop();
+                CTime.Stop();
             }
         }
     }

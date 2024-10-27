@@ -23,24 +23,6 @@ namespace SimpleX.CEngine
         public CTransform transform { get; }
 
         /// <summary>
-        /// 位置 - X坐标
-        /// </summary>
-        public int x
-        {
-            get { return transform.x; }
-            set { transform.x = value; }
-        }
-
-        /// <summary>
-        /// 位置 - Y坐标
-        /// </summary>
-        public int y
-        {
-            get { return transform.y; }
-            set { transform.y = value; }
-        }
-
-        /// <summary>
         /// 父节点
         /// </summary>
         public CGameObject parent { get; private set; }
@@ -86,11 +68,8 @@ namespace SimpleX.CEngine
         /// <param name="y"></param>
         protected CGameObject(int x, int y)
         {
-            transform = new CTransform()
-            {
-                x = x,
-                y = y,
-            };
+            transform = new CTransform();
+            transform.SetXY(x, y);
         }
 
         /// <summary>
@@ -142,9 +121,9 @@ namespace SimpleX.CEngine
         /// <param name="parent"></param>
         public void SetParent(CGameObject parent)
         {
-            if (this.destroyed) return;
-            if (parent.destroyed) return;
             if (this.parent == parent) return;
+            if (destroyed) return;
+            if (parent != null && parent.destroyed) return;
 
             this.parent?.RemoveChild(this);
             this.parent = parent;
@@ -294,14 +273,13 @@ namespace SimpleX.CEngine
                 return;
             }
 
-            gameObject.destroyed = true;
-
             var parent = gameObject.parent;
             if (parent != null)
             {
                 parent.RemoveChild(gameObject);
-                gameObject.SetParent(null);
             }
+
+            gameObject.destroyed = true;
         }
     }
 }

@@ -3,15 +3,13 @@
     public class CTransform
     {
         /// <summary>
-        /// X坐标
+        /// 位置
         /// </summary>
-        public int x { get; set; }
+        public Vector2 position { get; set; }
 
         /// <summary>
-        /// Y坐标
+        /// 
         /// </summary>
-        public int y { get; set; }
-
         public CTransform()
         {
             SetXY(0, 0);
@@ -24,8 +22,27 @@
         /// <param name="y"></param>
         public void SetXY(int x, int y)
         {
-            this.x = x;
-            this.y = y;
+            position = new Vector2(x, y);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dx"></param>
+        /// <param name="dy"></param>
+        public void Move(int dx, int dy)
+        {
+            position += new Vector2(dx, dy);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void MoveTo(int x, int y)
+        {
+            SetXY(x, y);
         }
     }
 }

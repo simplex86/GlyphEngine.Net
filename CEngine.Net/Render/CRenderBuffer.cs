@@ -12,7 +12,7 @@ namespace SimpleX.CEngine
 
         internal CRenderBuffer()
         {
-            pixels = new List<CPixel>(Console.BufferWidth * Console.BufferHeight);
+            pixels = new List<CPixel>(CWorld.width * CWorld.height);
         }
 
         /// <summary>

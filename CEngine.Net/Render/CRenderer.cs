@@ -65,7 +65,7 @@ namespace SimpleX.CEngine
             if (dirty)
             {
                 Diff();
-                Erasure();
+                Erase();
                 Draw();
                 Swap();
 
@@ -103,7 +103,7 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 擦除
         /// </summary>
-        private void Erasure()
+        private void Erase()
         {
             foreach (var pixel in erasurer.pixels)
             {

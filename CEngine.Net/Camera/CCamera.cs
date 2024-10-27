@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SimpleX.CEngine
+﻿namespace SimpleX.CEngine
 {
     /// <summary>
     /// 相机
@@ -13,13 +10,9 @@ namespace SimpleX.CEngine
         /// </summary>
         public int order { get; }
         /// <summary>
-        /// X坐标
+        /// 
         /// </summary>
-        public int x { get; set; }
-        /// <summary>
-        /// Y坐标
-        /// </summary>
-        public int y { get; set; }
+        public Vector2 position { get; set; } = Vector2.zero;
         /// <summary>
         /// 
         /// </summary>
@@ -52,9 +45,6 @@ namespace SimpleX.CEngine
         {
             this.name = name;
             this.order = order;
-
-            this.x = 0;
-            this.y = 0;
         }
 
         /// <summary>
@@ -65,7 +55,7 @@ namespace SimpleX.CEngine
         {
             foreach (var gameObject in gameObjects)
             {
-                Render(gameObject, 0, 0, renderer);
+                Render(gameObject, Vector2.zero, renderer);
             }
         }
 
@@ -76,27 +66,52 @@ namespace SimpleX.CEngine
         /// <param name="px"></param>
         /// <param name="py"></param>
         /// <param name="renderer"></param>
-
-        private void Render(CGameObject gameObject, int px, int py, CRenderer renderer)
+        private void Render(CGameObject gameObject, Vector2 offset, CRenderer renderer)
         {
-            px += gameObject.transform.x;
-            py += gameObject.transform.y;
-            // 绘制像素
-            foreach (var pixel in gameObject.pixels)
+            if (gameObject.enabled)
             {
-                if (Cull(pixel))
+                var wpos = M2W(gameObject, offset);
+                var vpos = W2V(wpos);
+
+                // 绘制像素
+                foreach (var pixel in gameObject.pixels)
                 {
-                    var sx = px + pixel.x - x;
-                    var sy = py + pixel.y - y;
-                    renderer.SetPixel(sx, sy, pixel.symbol, pixel.color, pixel.backgroundColor);
+                    var x = vpos.x + pixel.x;
+                    var y = vpos.y + pixel.y;
+
+                    if (Cull(x, y))
+                    {
+                        renderer.SetPixel(x, y, pixel.symbol, pixel.color, pixel.backgroundColor);
+                    }
+                }
+
+                // 绘制子节点
+                foreach (var child in gameObject.children)
+                {
+                    Render(child, wpos, renderer);
                 }
             }
-            // 绘制子节点
-            for (int i=0; i<gameObject.count; i++)
-            {
-                var child = gameObject.GetChild(i);
-                Render(child, px, py, renderer);
-            }
+        }
+
+        /// <summary>
+        /// 模型坐标转世界坐标
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="mpos"></param>
+        /// <returns></returns>
+        private Vector2 M2W(CGameObject gameObject, Vector2 mpos)
+        {
+            return mpos + gameObject.transform.position;
+        }
+
+        /// <summary>
+        /// 世界坐标转相机坐标
+        /// </summary>
+        /// <param name="wpos"></param>
+        /// <returns></returns>
+        private Vector2 W2V(Vector2 wpos)
+        {
+            return wpos - position + CWorld.center;
         }
 
         /// <summary>
@@ -104,8 +119,14 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="pixel"></param>
         /// <returns></returns>
-        private bool Cull(CPixel pixel)
+        private bool Cull(int x, int y)
         {
+            if (x < 0 || x >= width ||
+                y < 0 || y >= height)
+            {
+                return false;
+            }
+            
             return true;
         }
     }

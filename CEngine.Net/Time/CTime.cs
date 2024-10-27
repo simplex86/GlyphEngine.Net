@@ -8,16 +8,38 @@ namespace SimpleX.CEngine
     /// </summary>
     public static class CTime
     {
-        private static CTimeImp cTimeImp = null;
-
-        internal static void SetTimeImp(CTimeImp timeImp)
-        {
-            cTimeImp = timeImp;
-        }
+        private static Stopwatch watcher = new Stopwatch();
+        private static long timestamp = 0;
 
         /// <summary>
         /// 单位：秒
         /// </summary>
-        public static float deltatime => cTimeImp.deltatime;
+        public static float deltatime { get; private set; } = 0f;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal static void Start()
+        {
+            watcher.Start();
+            timestamp = watcher.ElapsedMilliseconds;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal static void Update()
+        {
+            deltatime = (watcher.ElapsedMilliseconds - timestamp) / 1000f;
+            timestamp = watcher.ElapsedMilliseconds;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal static void Stop()
+        {
+            watcher.Stop();
+        }
     }
 }
