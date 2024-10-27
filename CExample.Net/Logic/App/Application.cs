@@ -20,7 +20,7 @@ namespace CExample
         {
             var scene = CSceneManager.Load<SnakeScene>();
 
-            snake = new Snake(20, 25);
+            snake = new Snake(5, 5);
             food = new Star();
             RandomFoodXY();
 
@@ -58,9 +58,12 @@ namespace CExample
         /// </summary>
         private void RandomFoodXY()
         {
-            var x = Random.Shared.Next(1, CScreen.width - 1);
-            var y = Random.Shared.Next(1, CScreen.height - 1);
-            food.SetXY(x, y);
+            var w = CWorld.width / 4;
+            var h = CWorld.height / 4;
+
+            var x = Random.Shared.Next(-w, w);
+            var y = Random.Shared.Next(-h, h);
+            food.transform.SetXY(x, y);
         }
 
         /// <summary>

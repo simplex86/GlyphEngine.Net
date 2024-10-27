@@ -63,36 +63,34 @@ namespace CExample
                 var self = GetChild(i);
                 var next = GetChild(i + 1);
 
-                var px = self.x - prev.x;
-                var py = self.y - prev.y;
-                var nx = next.x - self.x;
-                var ny = next.y - self.y;
+                var p = self.transform.position - prev.transform.position;
+                var n = next.transform.position - self.transform.position;
 
-                if (px != 0 && nx != 0)
+                if (p.x != 0 && n.x != 0)
                 {
                     self.ApplySkin("H");
                 }
-                else if (py != 0 && ny != 0)
+                else if (p.y != 0 && n.y != 0)
                 {
                     self.ApplySkin("V");
                 }
-                else if ((px ==  1 && ny ==  1) ||
-                         (py == -1 && nx == -1))
+                else if ((p.x ==  1 && n.y ==  1) ||
+                         (p.y == -1 && n.x == -1))
                 {
                     self.ApplySkin("RT");
                 }
-                else if ((px == 1 && ny == -1) ||
-                         (py == 1 && nx == -1))
+                else if ((p.x == 1 && n.y == -1) ||
+                         (p.y == 1 && n.x == -1))
                 {
                     self.ApplySkin("RB");
                 }
-                else if ((px == -1 && ny == 1) ||
-                         (py == -1 && nx == 1))
+                else if ((p.x == -1 && n.y == 1) ||
+                         (p.y == -1 && n.x == 1))
                 {
                     self.ApplySkin("LT");
                 }
-                else if ((px == -1 && ny == -1) ||
-                         (py ==  1 && nx ==  1))
+                else if ((p.x == -1 && n.y == -1) ||
+                         (p.y ==  1 && n.x ==  1))
                 {
                     self.ApplySkin("LB");
                 }
@@ -104,14 +102,13 @@ namespace CExample
             var tail = GetChild(-1);
             var arse = GetChild(-2);
 
-            var dx = tail.x - arse.x;
-            var dy = tail.y - arse.y;
+            var dv = tail.transform.position - arse.transform.position;
 
-            if (dx != 0)
+            if (dv.x != 0)
             {
                 tail.ApplySkin("H");
             }
-            else // if (dy != 0)
+            else // if (dv.y != 0)
             {
                 tail.ApplySkin("V");
             }
