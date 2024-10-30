@@ -38,19 +38,9 @@ namespace SimpleX.CEngine
         internal List<CGameObject> children { get; } = new List<CGameObject>();
 
         /// <summary>
-        /// 像素列表
-        /// </summary>
-        internal List<CPixel> pixels { get; } = new List<CPixel>();
-
-        /// <summary>
         /// 是否已被销毁
         /// </summary>
         internal bool destroyed { get; private set; } = false;
-
-        /// <summary>
-        /// 皮肤
-        /// </summary>
-        private Dictionary<string, CSkin> skins = new Dictionary<string, CSkin>();
 
         /// <summary>
         /// 
@@ -142,75 +132,6 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 添加像素
-        /// </summary>
-        /// <param name="pixel"></param>
-        protected void AddPixel(CPixel pixel)
-        {
-            pixels.Add(pixel);
-        }
-
-        /// <summary>
-        /// 加载皮肤
-        /// </summary>
-        protected void LoadSkins()
-        {
-            var types = ReflectionHelper.FindAll<CSkin, CSkinOfAttribute>();
-            foreach (var type in types)
-            {
-                var attr = type.GetCustomAttribute<CSkinOfAttribute>();
-                if (attr != null && attr.Is(GetType()))
-                {
-                    var skin = Activator.CreateInstance(type) as CSkin;
-                    AddSkin(skin, attr.applied);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 添加皮肤
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="skin"></param>
-        protected void AddSkin(CSkin skin, bool apply = false)
-        {
-            if (skins.TryGetValue(skin.Name, out var _))
-            {
-                skins[skin.Name] = skin;
-            }
-            else
-            {
-                skins.Add(skin.Name, skin);
-            }
-
-            if (apply)
-            {
-                skin.Apply(this);
-            }
-        }
-
-        /// <summary>
-        /// 应用指定名字的皮肤
-        /// </summary>
-        /// <param name="skinName"></param>
-        public void ApplySkin(string skinName)
-        {
-            if (skins.TryGetValue(skinName, out var skin))
-            {
-                skin.Apply(this);
-            }
-        }
-
-        /// <summary>
-        /// 移除皮肤
-        /// </summary>
-        /// <param name="skinName"></param>
-        protected void RemoveSkin(string skinName)
-        {
-            skins.Remove(skinName);
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -230,7 +151,10 @@ namespace SimpleX.CEngine
             var gameObject = Activator.CreateInstance<TGameObject>();
             if (gameObject != null)
             {
-                gameObject.LoadSkins();
+                if (gameObject is ISkinable skinable)
+                {
+                    skinable.LoadSkins();
+                }
 
                 var scene = CSceneManager.GetMainScene();
                 scene.Add(gameObject);
@@ -251,7 +175,10 @@ namespace SimpleX.CEngine
             var gameObject = Activator.CreateInstance<TGameObject>();
             if (gameObject != null)
             {
-                gameObject.LoadSkins();
+                if (gameObject is ISkinable skinable)
+                {
+                    skinable.LoadSkins();
+                }
                 gameObject.transform.SetXY(x, y);
 
                 var scene = CSceneManager.GetMainScene();

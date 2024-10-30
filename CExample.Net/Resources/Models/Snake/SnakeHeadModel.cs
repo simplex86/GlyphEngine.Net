@@ -5,7 +5,7 @@ namespace CExample
     /// <summary>
     /// 
     /// </summary>
-    internal class SnakeHeadModel : CGameObject
+    internal class SnakeHeadModel : CRenderableObject
     {
         public SnakeHeadModel()
         {

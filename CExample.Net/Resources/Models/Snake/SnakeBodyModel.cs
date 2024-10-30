@@ -5,7 +5,7 @@ namespace CExample
     /// <summary>
     /// 
     /// </summary>
-    internal class SnakeBodyModel : CGameObject
+    internal class SnakeBodyModel : CRenderableObject
     {
         public SnakeBodyModel(int x, int y, ConsoleColor color = ConsoleColor.Gray)
         {

@@ -5,7 +5,7 @@ namespace CExample
     /// <summary>
     /// 
     /// </summary>
-    internal class StarModel : CGameObject
+    internal class StarModel : CRenderableObject
     {
         public StarModel()
         {

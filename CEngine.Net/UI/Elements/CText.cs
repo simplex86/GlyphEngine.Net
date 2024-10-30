@@ -19,7 +19,7 @@ namespace SimpleX.CEngine.UI
                 {
                     _text = value;
                     // 重置像素列表
-                    pixels.Clear();
+                    ClearPixels();
                     for (int i = 0; i < _text.Length; i++)
                     {
                         AddPixel(new CPixel()

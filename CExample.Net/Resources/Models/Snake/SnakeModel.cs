@@ -5,7 +5,7 @@ namespace CExample
     /// <summary>
     /// 
     /// </summary>
-    internal class SnakeModel : CGameObject
+    internal class SnakeModel : CRenderableObject
     {
         public SnakeModel()
         {
@@ -19,6 +19,9 @@ namespace CExample
             UpdateSkin();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void UpdateSkin()
         {
             UpdateHeadSkin();
@@ -26,10 +29,13 @@ namespace CExample
             UpdateTailSkin();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void UpdateHeadSkin()
         {
-            //var head = GetChild(0);
-            //var neck = GetChild(1);
+            //var head = GetChild(0) as CRenderableObject;
+            //var neck = GetChild(1) as CRenderableObject;
 
             //var dx = neck.x - head.x;
             //var dy = neck.y - head.y;
@@ -51,17 +57,20 @@ namespace CExample
             //    head.ApplySkin("D");
             //}
 
-            var head = GetChild(0);
+            var head = GetChild(0) as CRenderableObject;
             head.ApplySkin("X");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void UpdateBodySkin()
         {
             for (int i = 1; i < count - 1; i++)
             {
-                var prev = GetChild(i - 1);
-                var self = GetChild(i);
-                var next = GetChild(i + 1);
+                var prev = GetChild(i - 1) as CRenderableObject;
+                var self = GetChild(i) as CRenderableObject;
+                var next = GetChild(i + 1) as CRenderableObject;
 
                 var p = self.transform.position - prev.transform.position;
                 var n = next.transform.position - self.transform.position;
@@ -97,10 +106,13 @@ namespace CExample
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void UpdateTailSkin()
         {
-            var tail = GetChild(-1);
-            var arse = GetChild(-2);
+            var tail = GetChild(-1) as CRenderableObject;
+            var arse = GetChild(-2) as CRenderableObject;
 
             var dv = tail.transform.position - arse.transform.position;
 

@@ -55,7 +55,10 @@
         {
             foreach (var gameObject in gameObjects)
             {
-                Render(gameObject, Vector2.zero, renderer);
+                if (gameObject is IRenderable renderable)
+                {
+                    Render(renderable, Vector2.zero, renderer);
+                }
             }
         }
 
@@ -66,15 +69,17 @@
         /// <param name="px"></param>
         /// <param name="py"></param>
         /// <param name="renderer"></param>
-        private void Render(CGameObject gameObject, Vector2 offset, CRenderer renderer)
+        private void Render(IRenderable renderable, Vector2 offset, CRenderer renderer)
         {
-            if (gameObject.enabled)
+            if (renderable.enabled)
             {
+                var gameObject = renderable as CGameObject;
+
                 var wpos = M2W(gameObject, offset);
                 var vpos = W2V(wpos);
 
                 // 绘制像素
-                foreach (var pixel in gameObject.pixels)
+                renderable.Foreach(pixel =>
                 {
                     var x = vpos.x + pixel.x;
                     var y = vpos.y + pixel.y;
@@ -83,12 +88,15 @@
                     {
                         renderer.SetPixel(x, y, pixel.symbol, pixel.color, pixel.backgroundColor);
                     }
-                }
+                });
 
                 // 绘制子节点
                 foreach (var child in gameObject.children)
                 {
-                    Render(child, wpos, renderer);
+                    if (child is IRenderable renderableChild)
+                    {
+                        Render(renderableChild, wpos, renderer);
+                    }
                 }
             }
         }

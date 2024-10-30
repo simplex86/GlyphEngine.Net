@@ -6,7 +6,7 @@ namespace SimpleX.CEngine.UI
     /// <summary>
     /// 
     /// </summary>
-    public class CUIElement : CGameObject
+    public class CUIElement : CRenderableObject
     {
         /// <summary>
         /// 是否可聚焦
@@ -18,13 +18,11 @@ namespace SimpleX.CEngine.UI
         internal bool focused { get; set; } = false;
 
         /// <summary>
-        /// 位置
+        /// 
         /// </summary>
-        public Vector2 position { get; set; } = Vector2.zero;
-
-        internal CUIElement()
+        protected CUIElement()
         {
-
+            
         }
     }
 }

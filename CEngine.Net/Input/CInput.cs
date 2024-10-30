@@ -6,11 +6,6 @@
     public static class CInput
     {
         /// <summary>
-        /// 有效的键值
-        /// </summary>
-        private static int key { get; set; } = INVALID_KEY;
-
-        /// <summary>
         /// 任意键被按下
         /// </summary>
         public static event Action<int> OnKeyDown;
@@ -23,6 +18,10 @@
         /// </summary>
         public static event Action<int> OnKeyUp;
 
+        /// <summary>
+        /// 有效的键值
+        /// </summary>
+        private static int key { get; set; } = INVALID_KEY;
         /// <summary>
         /// 无效按键
         /// </summary>

@@ -8,8 +8,6 @@ namespace SimpleX.CEngine
     /// </summary>
     public static class CSceneManager
     {
-        //private static CSceneManagerImp cSceneManagerImp = null;
-
         /// <summary>
         /// 场景列表
         /// </summary>
@@ -22,14 +20,6 @@ namespace SimpleX.CEngine
         /// 渲染器
         /// </summary>
         private static CRenderer renderer { get; } = new CRenderer();
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        //internal static void SetSceneManagerImp(CSceneManagerImp sceneManagerImp)
-        //{
-        //    cSceneManagerImp = sceneManagerImp;
-        //}
 
         /// <summary>
         /// 加载场景
@@ -74,7 +64,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 获取主场景
         /// </summary>
         /// <returns></returns>
         public static CScene GetMainScene()
@@ -83,7 +73,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 查找指定的相机
         /// </summary>
         /// <param name="name"></param>
         /// <param name="camera"></param>
@@ -151,7 +141,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 更新场景
         /// </summary>
         internal static void Update()
         {
@@ -172,7 +162,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 移除场景中已销毁的对象
         /// </summary>
         /// <param name="scene"></param>
         /// <param name="gameObject"></param>
@@ -194,7 +184,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 渲染场景
         /// </summary>
         /// <param name="camera"></param>
         private static void RenderScenesByCamera(CCamera camera)

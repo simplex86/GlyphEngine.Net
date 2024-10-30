@@ -83,16 +83,16 @@ namespace SimpleX.CEngine
         /// 
         /// </summary>
         /// <param name="gameObject"></param>
-        public void Apply(CGameObject gameObject)
+        internal void Apply(IRenderable renderable)
         {
-            foreach (var pixel in gameObject.pixels)
+            renderable.Foreach(pixel =>
             {
                 if (Get(pixel.x, pixel.y, out var p))
                 {
                     pixel.symbol = p.symbol;
-                    pixel.color  = p.color;
+                    pixel.color = p.color;
                 }
-            }
+            });
         }
     }
 
