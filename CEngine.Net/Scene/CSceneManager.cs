@@ -22,19 +22,25 @@ namespace SimpleX.CEngine
         private static CRenderer renderer { get; } = new CRenderer();
 
         /// <summary>
+        /// 
+        /// </summary>
+        public static void Init()
+        {
+            Load<CPermanentScene>();
+        }
+
+        /// <summary>
         /// 加载场景
         /// </summary>
         /// <typeparam name="TScene"></typeparam>
         /// <returns></returns>
-        public static TScene Load<TScene>() where TScene : CScene
+        public static TScene Load<TScene>() where TScene : CScene, new()
         {
             var scene = Get<TScene>();
             if (scene == null)
             {
-                scene = Activator.CreateInstance<TScene>();
+                scene = new TScene();
                 Add(scene);
-
-                scene.Enter();
             }
 
             return scene;
@@ -58,7 +64,6 @@ namespace SimpleX.CEngine
         {
             if (scene != null)
             {
-                scene.Exit();
                 Remove(scene);
             }
         }
@@ -147,10 +152,7 @@ namespace SimpleX.CEngine
         {
             foreach (var scene in scenes)
             {
-                if (RemoveDestroyedGameObjectsFromScene(scene))
-                {
-                    break;
-                }
+                scene.RemoveDestroyedGameObjects();
             }
 
             foreach (var camera in cameras)
@@ -159,28 +161,6 @@ namespace SimpleX.CEngine
             }
 
             renderer.Render();
-        }
-
-        /// <summary>
-        /// 移除场景中已销毁的对象
-        /// </summary>
-        /// <param name="scene"></param>
-        /// <param name="gameObject"></param>
-        /// <returns></returns>
-        private static bool RemoveDestroyedGameObjectsFromScene(CScene scene)
-        {
-            var removed = false;
-            for (int i = scene.gameObjects.Count - 1; i >= 0; i--)
-            {
-                var go = scene.gameObjects[i];
-                if (go.destroyed)
-                {
-                    scene.gameObjects.RemoveAt(i);
-                    removed = true;
-                }
-            }
-
-            return removed;
         }
 
         /// <summary>

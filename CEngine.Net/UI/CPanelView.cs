@@ -17,6 +17,7 @@
         /// <param name="w"></param>
         /// <param name="h"></param>
         protected CPanelView(int w, int h)
+            : base(ERenderLayer.UI)
         {
             width = w;
             height = h;
@@ -35,6 +36,12 @@
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="r"></param>
+        /// <returns></returns>
         private string GetPixel(int c, int r)
         {
             if (r == 0)
@@ -47,15 +54,16 @@
             {
                 if (c == 0) return "╚";
                 if (c == width - 1) return "╝";
+                return "═";
+            }
+
+            if (c == 0 ||
+                c == width - 1)
+            {
                 return "║";
             }
 
             return " ";
         }
-    }
-
-    public class CPanelViewEntryAttribute : Attribute
-    {
-
     }
 }

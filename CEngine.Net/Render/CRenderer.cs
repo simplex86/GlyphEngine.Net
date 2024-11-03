@@ -40,11 +40,6 @@ namespace SimpleX.CEngine
         private CRenderBuffer previous => buffers[preIndex];
 
         /// <summary>
-        /// 脏标记：是否需要重新渲染当前帧
-        /// </summary>
-        private bool dirty = false;
-
-        /// <summary>
         /// 往当前帧渲染缓存写入像素数据
         /// </summary>
         /// <param name="x"></param>
@@ -53,7 +48,6 @@ namespace SimpleX.CEngine
         /// <param name="color"></param>
         public void SetPixel(int x, int y, string symbol, ConsoleColor color, ConsoleColor backgroundColor)
         {
-            dirty = true;
             current.SetPixel(x, y, symbol, color, backgroundColor);
         }
 
@@ -62,32 +56,33 @@ namespace SimpleX.CEngine
         /// </summary>
         public void Render()
         {
-            if (dirty)
+            var dirty = Diff();
+            if (dirty) // 有变化时重绘
             {
-                Diff();
                 Erase();
                 Draw();
-                Swap();
-
-                dirty = false;
             }
+            Swap();
         }
 
         /// <summary>
         /// 对比：找到当前帧真正需要被渲染的像素和需要被擦除的像素
         /// </summary>
-        private void Diff()
+        private bool Diff()
         {
+            var dirty = false;
             //
             foreach (var p in current.pixels)
             {
                 if (!previous.GetPixel(p.x, p.y, out var q))
                 {
                     renderer.SetPixel(p.x, p.y, p.symbol, p.color, p.backgroundColor);
+                    dirty = true;
                 }
                 else if (p.symbol != q.symbol || p.color != q.color)
                 {
                     renderer.SetPixel(p.x, p.y, p.symbol, p.color, p.backgroundColor);
+                    dirty = true;
                 }
             }
             // 
@@ -96,8 +91,11 @@ namespace SimpleX.CEngine
                 if (!current.GetPixel(p.x, p.y, out var q))
                 {
                     erasurer.SetPixel(p.x, p.y);
+                    dirty = true;
                 }
             }
+
+            return dirty;
         }
 
         /// <summary>

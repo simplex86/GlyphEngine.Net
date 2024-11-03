@@ -6,7 +6,11 @@
     internal interface IRenderable
     {
         /// <summary>
-        /// 是否可渲染
+        /// 渲染层
+        /// </summary>
+        ulong layer { get; }
+        /// <summary>
+        /// 可见性
         /// </summary>
         bool enabled { get; }
 

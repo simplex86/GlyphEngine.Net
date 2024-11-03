@@ -8,14 +8,46 @@ namespace SimpleX.CEngine
     public class CRenderableObject : CGameObject, IRenderable, ISkinable
     {
         /// <summary>
+        /// 渲染层级
+        /// </summary>
+        public ulong layer { get; }
+
+        /// <summary>
         /// 像素列表
         /// </summary>
-        private List<CPixel> pixels { get; } = new List<CPixel>();
-
+        private List<CPixel> pixels = new List<CPixel>();
         /// <summary>
         /// 皮肤
         /// </summary>
         private Dictionary<string, CSkin> skins = new Dictionary<string, CSkin>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected CRenderableObject()
+            : this((ulong)ERenderLayer.Default)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="layer"></param>
+        protected CRenderableObject(ERenderLayer layer)
+            : this((ulong)layer)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="layer"></param>
+        protected CRenderableObject(ulong layer)
+        {
+            this.layer = layer;
+        }
 
         /// <summary>
         /// 遍历像素

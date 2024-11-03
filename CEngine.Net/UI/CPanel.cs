@@ -1,30 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SimpleX.CEngine.UI
+﻿namespace SimpleX.CEngine.UI
 {
-    public class CPanel<T> where T : CPanelView
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IPanel
     {
         /// <summary>
         /// 
         /// </summary>
-        public T view { get; }
-
-        protected CPanel()
-        {
-            view = Activator.CreateInstance<T>();
-        }
+        CGameObject gameObject { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="child"></param>
-        protected void AddElement(CUIElement child)
+        /// <param name="dt"></param>
+        void Update(float dt);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class CPanel<TView> : IPanel where TView : CPanelView, new()
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public CGameObject gameObject => view;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal protected TView view { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected CPanel()
         {
-            view?.AddChild(child);
+            view = new TView();
         }
 
-        private void Init()
+        public virtual void Update(float dt)
         {
 
         }

@@ -11,48 +11,16 @@ namespace SimpleX.CEngine
         internal List<CCamera> cameras = new List<CCamera>();
         internal List<CGameObject> gameObjects = new List<CGameObject>();
 
-        public CScene()
+        protected CScene()
         {
             
-        }
-
-        /// <summary>
-        /// 进入场景
-        /// </summary>
-        internal void Enter()
-        {
-            OnEnter();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected virtual void OnEnter()
-        {
-
-        }
-
-        /// <summary>
-        /// 退出场景
-        /// </summary>
-        internal void Exit()
-        {
-            OnExit();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected virtual void OnExit()
-        {
-
         }
 
         /// <summary>
         /// 添加对象
         /// </summary>
         /// <param name="gameObject"></param>
-        public void Add(CGameObject gameObject)
+        internal void Add(CGameObject gameObject)
         {
             if (!gameObjects.Contains(gameObject))
             {
@@ -64,7 +32,7 @@ namespace SimpleX.CEngine
         /// 
         /// </summary>
         /// <param name="gameObject"></param>
-        public void Remove(CGameObject gameObject)
+        internal void Remove(CGameObject gameObject)
         {
             if (gameObjects.Contains(gameObject))
             {
@@ -77,7 +45,7 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool Find(string name)
+        internal bool Find(string name)
         {
             return Find(name, out var _);
         }
@@ -88,7 +56,7 @@ namespace SimpleX.CEngine
         /// <param name="name"></param>
         /// <param name="gameObject"></param>
         /// <returns></returns>
-        public bool Find(string name, out CGameObject gameObject)
+        internal bool Find(string name, out CGameObject gameObject)
         {
             gameObject = null;
 
@@ -111,7 +79,7 @@ namespace SimpleX.CEngine
         /// <param name="name"></param>
         /// <param name="gameObject"></param>
         /// <returns></returns>
-        public bool Find<TObject>(string name, out TObject gameObject) where TObject : CGameObject
+        internal bool Find<TObject>(string name, out TObject gameObject) where TObject : CGameObject
         {
             gameObject = null;
 
@@ -135,6 +103,24 @@ namespace SimpleX.CEngine
         protected void Add(CCamera camera)
         {
             cameras.Add(camera);
+        }
+
+        /// <summary>
+        /// 移除场景中已销毁的对象
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="gameObject"></param>
+        /// <returns></returns>
+        internal void RemoveDestroyedGameObjects()
+        {
+            for (int i = gameObjects.Count - 1; i >= 0; i--)
+            {
+                var go = gameObjects[i];
+                if (go.destroyed)
+                {
+                    gameObjects.RemoveAt(i);
+                }
+            }
         }
     }
 }

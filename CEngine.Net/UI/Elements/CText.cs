@@ -24,6 +24,7 @@ namespace SimpleX.CEngine.UI
                     {
                         AddPixel(new CPixel()
                         {
+                            x = i - _text.Length / 2,
                             symbol = _text[i].ToString(),
                         });
                     }
@@ -37,7 +38,8 @@ namespace SimpleX.CEngine.UI
         /// <summary>
         /// 
         /// </summary>
-        public CText()
+        public CText() 
+            : base()
         {
             this.text = "Text";
         }
@@ -47,6 +49,7 @@ namespace SimpleX.CEngine.UI
         /// </summary>
         /// <param name="text"></param>
         public CText(string text)
+             : base()
         {
             this.text = text;
         }

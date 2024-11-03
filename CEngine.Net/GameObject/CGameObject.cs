@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace SimpleX.CEngine
+﻿namespace SimpleX.CEngine
 {
     /// <summary>
     /// 游戏对象
@@ -20,12 +18,12 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 位置
         /// </summary>
-        public CTransform transform { get; }
+        public CTransform transform { get; } = null;
 
         /// <summary>
         /// 父节点
         /// </summary>
-        public CGameObject parent { get; private set; }
+        public CGameObject parent { get; private set; } = null;
 
         /// <summary>
         /// 子节点数量
@@ -45,7 +43,7 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        protected CGameObject()
+        internal protected CGameObject()
             : this(0, 0)
         {
 
@@ -56,7 +54,7 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        protected CGameObject(int x, int y)
+        internal protected CGameObject(int x, int y)
         {
             transform = new CTransform();
             transform.SetXY(x, y);
@@ -69,6 +67,16 @@ namespace SimpleX.CEngine
         public void AddChild(CGameObject child)
         {
             child.SetParent(this);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="child"></param>
+        /// <returns></returns>
+        public bool HasChild(CGameObject child)
+        {
+            return children.Contains(child);
         }
 
         /// <summary>
@@ -115,7 +123,12 @@ namespace SimpleX.CEngine
             if (destroyed) return;
             if (parent != null && parent.destroyed) return;
 
-            this.parent?.RemoveChild(this);
+            if (this.parent != null &&
+                this.parent.HasChild(this))
+            {
+                this.parent.RemoveChild(this);
+            }
+
             this.parent = parent;
             this.parent?.children.Add(this);
 
@@ -146,19 +159,16 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <typeparam name="TGameObject"></typeparam>
         /// <returns></returns>
-        public static TGameObject Load<TGameObject>() where TGameObject : CGameObject
+        public static TGameObject Load<TGameObject>() where TGameObject : CGameObject, new()
         {
-            var gameObject = Activator.CreateInstance<TGameObject>();
-            if (gameObject != null)
+            var gameObject = new TGameObject();
+            if (gameObject is ISkinable skinable)
             {
-                if (gameObject is ISkinable skinable)
-                {
-                    skinable.LoadSkins();
-                }
-
-                var scene = CSceneManager.GetMainScene();
-                scene.Add(gameObject);
+                skinable.LoadSkins();
             }
+
+            var scene = CSceneManager.GetMainScene();
+            scene.Add(gameObject);
 
             return gameObject;
         }
@@ -170,20 +180,17 @@ namespace SimpleX.CEngine
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public static TGameObject Load<TGameObject>(int x, int y) where TGameObject : CGameObject
+        public static TGameObject Load<TGameObject>(int x, int y) where TGameObject : CGameObject, new()
         {
-            var gameObject = Activator.CreateInstance<TGameObject>();
-            if (gameObject != null)
+            var gameObject = new TGameObject();
+            if (gameObject is ISkinable skinable)
             {
-                if (gameObject is ISkinable skinable)
-                {
-                    skinable.LoadSkins();
-                }
-                gameObject.transform.SetXY(x, y);
-
-                var scene = CSceneManager.GetMainScene();
-                scene.Add(gameObject);
+                skinable.LoadSkins();
             }
+            gameObject.transform.SetXY(x, y);
+
+            var scene = CSceneManager.GetMainScene();
+            scene.Add(gameObject);
 
             return gameObject;
         }

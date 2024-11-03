@@ -21,6 +21,7 @@ namespace SimpleX.CEngine.UI
         /// 
         /// </summary>
         protected CUIElement()
+            : base(ERenderLayer.UI)
         {
             
         }
