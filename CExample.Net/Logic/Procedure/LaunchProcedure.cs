@@ -1,17 +1,18 @@
-﻿using SimpleX.CEngine;
+﻿using SimpleX.CEngine.UI;
 
 namespace CExample
 {
-    [ApplicationEntry]
-    internal class Application : IApplication
+    /// <summary>
+    /// 
+    /// </summary>
+    internal class LaunchProcedure : IProcedure
     {
         /// <summary>
         /// 
         /// </summary>
-        public void Start()
+        public void Enter()
         {
-            ProcedureManager.ChangeTo<LaunchProcedure>();
-            //ProcedureManager.ChangeTo<SnakeProcedure>();
+            CUIManager.Open<LaunchUI>();
         }
 
         /// <summary>
@@ -20,7 +21,7 @@ namespace CExample
         /// <param name="dt"></param>
         public void Update(float dt)
         {
-            ProcedureManager.Update(dt);
+
         }
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace CExample
         /// </summary>
         public void Exit()
         {
-
+            CUIManager.Close<LaunchUI>();
         }
     }
 }

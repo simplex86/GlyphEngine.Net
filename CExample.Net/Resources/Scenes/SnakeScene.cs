@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using SimpleX.CEngine;
+﻿using SimpleX.CEngine;
 
 namespace CExample
 {
@@ -8,7 +6,8 @@ namespace CExample
     {
         public SnakeScene()
         {
-            var camera = new CCamera("Snake Camera");
+            var camera = new CCamera("SnakeCamera");
+            camera.mask = (ulong)ERenderMask.Default;
             Add(camera);
         }
     }

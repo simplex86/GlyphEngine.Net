@@ -7,6 +7,9 @@ namespace CExample
     /// </summary>
     internal class SnakeModel : CRenderableObject
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public SnakeModel()
         {
             AddChild(new SnakeHeadModel());
