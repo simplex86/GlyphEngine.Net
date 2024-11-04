@@ -207,13 +207,20 @@
                 return;
             }
 
-            var parent = gameObject.parent;
-            if (parent != null)
-            {
-                parent.RemoveChild(gameObject);
-            }
+            // 从父结点移除
+            gameObject.parent?.RemoveChild(gameObject);
+            // TODO: 如何处理子节点，还在思考中
 
+            gameObject.OnDestroy();
             gameObject.destroyed = true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal protected virtual void OnDestroy()
+        {
+            
         }
     }
 }

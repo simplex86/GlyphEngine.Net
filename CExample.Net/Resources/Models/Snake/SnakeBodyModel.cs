@@ -9,7 +9,7 @@ namespace CExample
     {
         public SnakeBodyModel(int x, int y, ConsoleColor color = ConsoleColor.Gray)
         {
-            AddPixel(new CPixel());
+            AddPixel(0, 0);
             LoadSkins();
 
             transform.SetXY(x, y);

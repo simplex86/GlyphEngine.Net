@@ -9,7 +9,7 @@ namespace CExample
     {
         public HeartModel()
         {
-            AddPixel(new CPixel());
+            AddPixel(0, 0);
         }
     }
 

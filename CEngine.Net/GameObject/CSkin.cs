@@ -32,21 +32,14 @@ namespace SimpleX.CEngine
         /// <param name="color"></param>
         public void Set(int x, int y, string symbol, ConsoleColor color)
         {
-            if (Get(x, y, out var pixel))
+            if (!Get(x, y, out var pixel))
             {
-                pixel.symbol = symbol;
-                pixel.color = color;
+                pixel = CPixelPool.Instance.Alloc(x, y);
+                pixels.Add(pixel);
             }
-            else
-            {
-                pixels.Add(new CPixel()
-                {
-                    x = x,
-                    y = y,
-                    symbol = symbol,
-                    color = color
-                });
-            }
+
+            pixel.symbol = symbol;
+            pixel.color = color;
         }
 
         /// <summary>

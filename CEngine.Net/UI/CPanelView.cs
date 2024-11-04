@@ -27,12 +27,9 @@
                 int c = n % w;
                 int r = n / w;
 
-                AddPixel(new CPixel()
-                {
-                    x = c - w / 2,
-                    y = r - h / 2,
-                    symbol = GetPixel(c, r),
-                });
+                var pixel = CPixelPool.Instance.Alloc(c - w / 2, r - h / 2);
+                pixel.symbol = GetPixel(c, r);
+                AddPixel(pixel);
             }
         }
 

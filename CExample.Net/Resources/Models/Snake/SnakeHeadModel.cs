@@ -9,7 +9,7 @@ namespace CExample
     {
         public SnakeHeadModel()
         {
-            AddPixel(new CPixel());
+            AddPixel(0, 0);
             LoadSkins();
         }
     }

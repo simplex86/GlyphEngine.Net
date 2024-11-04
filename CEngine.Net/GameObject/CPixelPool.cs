@@ -13,6 +13,9 @@ namespace SimpleX.CEngine
         /// </summary>
         public static CPixelPool Instance { get; } = new CPixelPool();
 
+        /// <summary>
+        /// 
+        /// </summary>
         private Queue<CPixel> queue = new Queue<CPixel>(1000);
 
         /// <summary>

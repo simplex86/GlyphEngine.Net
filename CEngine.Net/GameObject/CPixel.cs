@@ -29,6 +29,14 @@ namespace SimpleX.CEngine
         public ConsoleColor backgroundColor { get; set; } = Console.BackgroundColor;
 
         /// <summary>
+        /// 
+        /// </summary>
+        internal CPixel()
+        {
+
+        }
+
+        /// <summary>
         /// 重置
         /// </summary>
         public void Reset()

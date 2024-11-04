@@ -9,7 +9,7 @@ namespace CExample
     {
         public StarModel()
         {
-            AddPixel(new CPixel());
+            AddPixel(0, 0);
         }
     }
 

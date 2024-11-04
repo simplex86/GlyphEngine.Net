@@ -22,11 +22,9 @@ namespace SimpleX.CEngine.UI
                     ClearPixels();
                     for (int i = 0; i < _text.Length; i++)
                     {
-                        AddPixel(new CPixel()
-                        {
-                            x = i - _text.Length / 2,
-                            symbol = _text[i].ToString(),
-                        });
+                        var pixel = CPixelPool.Instance.Alloc(i - _text.Length / 2, 0);
+                        pixel.symbol = _text[i].ToString();
+                        AddPixel(pixel);
                     }
                 }
             }
