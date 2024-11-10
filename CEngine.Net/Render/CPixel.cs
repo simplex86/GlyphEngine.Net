@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SimpleX.CEngine
+﻿namespace SimpleX.CEngine
 {
     /// <summary>
     /// 像素
