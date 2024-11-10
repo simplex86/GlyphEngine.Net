@@ -22,7 +22,7 @@ namespace CExample
         public HeartSkin()
             : base("HEART")
         {
-            Set(0, 0, "♥", ConsoleColor.Red);
+            Set(0, 0, '♥', ConsoleColor.Red);
         }
     }
 }

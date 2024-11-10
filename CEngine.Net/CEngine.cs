@@ -37,10 +37,7 @@ namespace SimpleX.CEngine
         public CEngine(int width, int height)
             : this()
         {
-            //Console.WindowWidth = width;
-            //Console.BufferWidth = Console.WindowLeft + width;
-            //Console.WindowHeight = height;
-            //Console.BufferHeight = Console.WindowTop + height;
+            // TODO: 暂时不知道怎么设置窗口大小
         }
 
         /// <summary>

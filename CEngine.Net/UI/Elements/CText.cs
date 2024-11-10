@@ -6,7 +6,7 @@ namespace SimpleX.CEngine.UI
     /// <summary>
     /// 
     /// </summary>
-    public class CText : CUIElement
+    public class CText : CUIComponent
     {
         /// <summary>
         /// 
@@ -23,7 +23,7 @@ namespace SimpleX.CEngine.UI
                     for (int i = 0; i < _text.Length; i++)
                     {
                         var pixel = CPixelPool.Instance.Alloc(i - _text.Length / 2, 0);
-                        pixel.symbol = _text[i].ToString();
+                        pixel.c = _text[i];
                         AddPixel(pixel);
                     }
                 }

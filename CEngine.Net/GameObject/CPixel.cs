@@ -18,7 +18,7 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        public string symbol { get; set; } = " ";
+        public char c { get; set; } = ' ';
         /// <summary>
         /// 颜色
         /// </summary>
@@ -43,7 +43,7 @@ namespace SimpleX.CEngine
         {
             this.x = 0;
             this.y = 0;
-            this.symbol = string.Empty;
+            this.c = ' ';
             this.color = Console.ForegroundColor;
             this.backgroundColor = Console.BackgroundColor;
         }

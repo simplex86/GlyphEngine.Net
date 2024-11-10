@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SimpleX.CEngine.UI
+﻿namespace SimpleX.CEngine.UI
 {
     /// <summary>
-    /// 
+    /// UI管理器
     /// </summary>
     public static class CUIManager
     {
         /// <summary>
-        /// 
+        /// 根节点
         /// </summary>
         private static CGameObject root = null;
 
@@ -38,6 +35,10 @@ namespace SimpleX.CEngine.UI
             return panel;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt"></param>
         internal static void Update(float dt)
         {
             if (list.Count > 0)

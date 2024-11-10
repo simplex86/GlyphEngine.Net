@@ -22,7 +22,7 @@ namespace CExample
         public StarSkin()
             : base("STAR")
         {
-            Set(0, 0, "✦", ConsoleColor.DarkYellow);
+            Set(0, 0, '✦', ConsoleColor.DarkYellow);
         }
     }
 }

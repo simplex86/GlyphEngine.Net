@@ -41,9 +41,13 @@
             view = new TView();
         }
 
-        public virtual void Update(float dt)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt"></param>
+        public void Update(float dt)
         {
-
+            view?.Update(dt);
         }
     }
 }

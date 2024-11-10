@@ -30,7 +30,7 @@ namespace SimpleX.CEngine
         /// <param name="y"></param>
         /// <param name="symbol"></param>
         /// <param name="color"></param>
-        public void Set(int x, int y, string symbol, ConsoleColor color)
+        public void Set(int x, int y, char c, ConsoleColor color)
         {
             if (!Get(x, y, out var pixel))
             {
@@ -38,7 +38,7 @@ namespace SimpleX.CEngine
                 pixels.Add(pixel);
             }
 
-            pixel.symbol = symbol;
+            pixel.c = c;
             pixel.color = color;
         }
 
@@ -61,7 +61,7 @@ namespace SimpleX.CEngine
                     {
                         x = p.x,
                         y = p.y,
-                        symbol = p.symbol,
+                        c = p.c,
                         color = p.color
                     };
 
@@ -82,7 +82,7 @@ namespace SimpleX.CEngine
             {
                 if (Get(pixel.x, pixel.y, out var p))
                 {
-                    pixel.symbol = p.symbol;
+                    pixel.c = p.c;
                     pixel.color = p.color;
                 }
             });

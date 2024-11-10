@@ -11,12 +11,21 @@ namespace CExample
         /// <summary>
         /// 
         /// </summary>
+        public CButton startButton { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public LaunchUIView()
-            : base(60, 20)
+            : base()
         {
-            var text = new CText("press space key to start");
-            text.transform.position = new Vector2(0, 7);
-            AddChild(text);
+            startButton = new CButton("press space key to start",
+                                      new Vector2(0, 12),
+                                      ConsoleKey.Spacebar,
+                                      ConsoleColor.White,
+                                      ConsoleColor.White,
+                                      CButton.Style.Borderless);
+            AddFocusChild(startButton);
         }
     }
 }

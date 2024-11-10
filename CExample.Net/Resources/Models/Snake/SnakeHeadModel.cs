@@ -23,7 +23,7 @@ namespace CExample
         public SnakeHeadXSkin()
             : base("X")
         {
-            Set(0, 0, "◈", ConsoleColor.Gray);
+            Set(0, 0, '◈', ConsoleColor.Gray);
         }
     }
 
@@ -36,7 +36,7 @@ namespace CExample
         public SnakeHeadUSkin()
             : base("U")
         {
-            Set(0, 0, "▲", ConsoleColor.Gray);
+            Set(0, 0, '▲', ConsoleColor.Gray);
         }
     }
 
@@ -49,7 +49,7 @@ namespace CExample
         public SnakeHeadDSkin()
             : base("D")
         {
-            Set(0, 0, "▼", ConsoleColor.Gray);
+            Set(0, 0, '▼', ConsoleColor.Gray);
         }
     }
 
@@ -62,7 +62,7 @@ namespace CExample
         public SnakeHeadLSkin()
             : base("L")
         {
-            Set(0, 0, "◀", ConsoleColor.Gray);
+            Set(0, 0, '◀', ConsoleColor.Gray);
         }
     }
 
@@ -75,7 +75,7 @@ namespace CExample
         public SnakeHeadRSkin()
             : base("R")
         {
-            Set(0, 0, "▶", ConsoleColor.Gray);
+            Set(0, 0, '▶', ConsoleColor.Gray);
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿using System;
+namespace SimpleX.CEngine.UI
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CUIComponent : CRenderableObject, IView
+    {
+        /// <summary>
+        /// 宽度
+        /// </summary>
+        public int width { get; protected set; }
+        /// <summary>
+        /// 高度
+        /// </summary>
+        public int height { get; protected set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ConsoleColor color { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected CUIComponent()
+            : base(ERenderLayer.UI)
+        {
+            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="decorator"></param>
+        /// <param name="color"></param>
+        protected void Apply(IDecorator decorator)
+        {
+            foreach (var pixel in decorator.pixels)
+            {
+                pixel.color = color;
+                AddPixel(pixel);
+            }
+        }
+    }
+}

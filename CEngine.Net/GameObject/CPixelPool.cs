@@ -50,6 +50,14 @@ namespace SimpleX.CEngine
             return pixel;
         }
 
+        public CPixel Alloc(int x, int y, char c)
+        {
+            var pixel = Alloc(x, y);
+            pixel.c = c;
+
+            return pixel;
+        }
+
         /// <summary>
         /// 
         /// </summary>

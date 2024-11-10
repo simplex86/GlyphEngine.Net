@@ -46,9 +46,9 @@ namespace SimpleX.CEngine
         /// <param name="y"></param>
         /// <param name="symbol"></param>
         /// <param name="color"></param>
-        public void SetPixel(int x, int y, string symbol, ConsoleColor color, ConsoleColor backgroundColor)
+        public void SetPixel(int x, int y, char c, ConsoleColor color, ConsoleColor backgroundColor)
         {
-            current.SetPixel(x, y, symbol, color, backgroundColor);
+            current.SetPixel(x, y, c, color, backgroundColor);
         }
 
         /// <summary>
@@ -76,12 +76,12 @@ namespace SimpleX.CEngine
             {
                 if (!previous.GetPixel(p.x, p.y, out var q))
                 {
-                    renderer.SetPixel(p.x, p.y, p.symbol, p.color, p.backgroundColor);
+                    renderer.SetPixel(p.x, p.y, p.c, p.color, p.backgroundColor);
                     dirty = true;
                 }
-                else if (p.symbol != q.symbol || p.color != q.color)
+                else if (p.c != q.c || p.color != q.color)
                 {
-                    renderer.SetPixel(p.x, p.y, p.symbol, p.color, p.backgroundColor);
+                    renderer.SetPixel(p.x, p.y, p.c, p.color, p.backgroundColor);
                     dirty = true;
                 }
             }
@@ -139,12 +139,12 @@ namespace SimpleX.CEngine
         /// <param name="pixel"></param>
         private void DrawPixel(CPixel pixel)
         {
-            var tuple = SetConsoleColor(pixel);
+            var context = SetConsoleColor(pixel);
             {
                 Console.SetCursorPosition(pixel.x, pixel.y);
-                Console.Write(pixel.symbol);
+                Console.Write(pixel.c);
             }
-            ResetConsoleColor(tuple);
+            ResetConsoleColor(context);
         }
 
         /// <summary>

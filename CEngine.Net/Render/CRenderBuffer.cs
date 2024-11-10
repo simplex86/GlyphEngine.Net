@@ -28,7 +28,7 @@ namespace SimpleX.CEngine
                 pixels.Add(pixel);
             }
 
-            pixel.symbol = " ";
+            pixel.c = ' ';
             pixel.color = Console.ForegroundColor;
         }
 
@@ -39,7 +39,7 @@ namespace SimpleX.CEngine
         /// <param name="y"></param>
         /// <param name="symbol"></param>
         /// <param name="color"></param>
-        internal void SetPixel(int x, int y, string symbol, ConsoleColor color, ConsoleColor backgroundColor)
+        internal void SetPixel(int x, int y, char c, ConsoleColor color, ConsoleColor backgroundColor)
         {
             if (!GetPixel(x, y, out var pixel))
             {
@@ -47,7 +47,7 @@ namespace SimpleX.CEngine
                 pixels.Add(pixel);
             }
 
-            pixel.symbol = symbol;
+            pixel.c = c;
             pixel.color = color;
             pixel.backgroundColor = backgroundColor;
         }

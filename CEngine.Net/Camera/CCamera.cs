@@ -99,7 +99,7 @@
 
                     if (Cull(x, y))
                     {
-                        renderer.SetPixel(x, y, pixel.symbol, pixel.color, pixel.backgroundColor);
+                        renderer.SetPixel(x, y, pixel.c, pixel.color, pixel.backgroundColor);
                     }
                 });
             }
