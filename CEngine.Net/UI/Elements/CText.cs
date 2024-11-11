@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SimpleX.CEngine.UI
+﻿namespace SimpleX.CEngine.UI
 {
     /// <summary>
     /// 
@@ -20,10 +17,12 @@ namespace SimpleX.CEngine.UI
                     _text = value;
                     // 重置像素列表
                     ClearPixels();
+                    // 
                     for (int i = 0; i < _text.Length; i++)
                     {
-                        var pixel = CPixelPool.Instance.Alloc(i - _text.Length / 2, 0);
-                        pixel.c = _text[i];
+                        var pixel = CPixelPool.Instance.Alloc(i - _text.Length / 2, 
+                                                              0,
+                                                              _text[i]);
                         AddPixel(pixel);
                     }
                 }

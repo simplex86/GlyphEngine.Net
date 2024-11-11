@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        internal void SetPixel(int x, int y)
+        internal void SetPixel(int x, int y, char c)
         {
             if (!GetPixel(x, y, out var pixel))
             {
@@ -25,7 +25,7 @@
                 pixels.Add(pixel);
             }
 
-            pixel.c = ' ';
+            pixel.c = c;
             pixel.color = Console.ForegroundColor;
         }
 

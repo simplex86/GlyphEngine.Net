@@ -87,7 +87,7 @@
             {
                 if (!current.GetPixel(p.x, p.y, out var q))
                 {
-                    erasurer.SetPixel(p.x, p.y);
+                    erasurer.SetPixel(p.x, p.y, CChar.Space);
                     dirty = true;
                 }
             }

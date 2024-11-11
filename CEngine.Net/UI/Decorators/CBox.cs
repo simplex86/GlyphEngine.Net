@@ -14,7 +14,7 @@
             {
                 for (int x = 0; x < view.width; x++)
                 {
-                    pixels.Add(CPixelPool.Instance.Alloc(x - view.width / 2, y - view.height / 2, ' '));
+                    pixels.Add(CPixelPool.Instance.Alloc(x - view.width / 2, y - view.height / 2, CChar.Space));
                 }
             }
         }

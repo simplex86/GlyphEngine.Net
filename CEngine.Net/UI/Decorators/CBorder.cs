@@ -22,7 +22,7 @@
                 for (int x = 0; x < view.width; x++)
                 {
                     var c = GetChar(view.width, view.height, x, y);
-                    if (c != '\0')
+                    if (c != CChar.Empty)
                     {
                         pixels.Add(CPixelPool.Instance.Alloc(x - view.width / 2, y - view.height / 2, c));
                     }
@@ -58,7 +58,7 @@
                 return '┃';
             }
 
-            return '\0';
+            return CChar.Empty;
         }
     }
 }

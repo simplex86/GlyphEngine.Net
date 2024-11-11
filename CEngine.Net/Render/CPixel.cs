@@ -16,7 +16,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public char c { get; set; } = ' ';
+        public char c { get; set; } = CChar.Empty;
         /// <summary>
         /// 颜色
         /// </summary>
@@ -41,7 +41,7 @@
         {
             this.x = 0;
             this.y = 0;
-            this.c = ' ';
+            this.c = CChar.Empty;
             this.color = Console.ForegroundColor;
             this.backgroundColor = Console.BackgroundColor;
         }
