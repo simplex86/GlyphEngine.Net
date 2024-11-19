@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using LitJson;
+using System.IO;
 
 namespace SimpleX.CEngine
 {
@@ -28,6 +29,47 @@ namespace SimpleX.CEngine
         public static string LoadText(string filepath)
         {
             return File.ReadAllText($"{CPath.resourcesPath}/{filepath}");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        public static JsonData LoadJson(string filepath)
+        {
+            try
+            {
+                var json = LoadText(filepath);
+                return JsonMapper.ToObject(json);
+            }
+            catch (Exception ex)
+            {
+                CDebug.Error(ex.ToString());
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        public static T LoadJson<T>(string filepath)
+        {
+            try
+            {
+                var json = LoadText(filepath);
+                return JsonMapper.ToObject<T>(json);
+            }
+            catch (Exception ex)
+            {
+                CDebug.Error(ex.ToString());
+            }
+
+            return default(T);
         }
 
         /// <summary>

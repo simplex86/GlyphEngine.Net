@@ -41,8 +41,7 @@
             if (attrs.Length > 0)
             {
                 var attr = attrs[0] as CUIPanelAttribute;
-                var json = ResourceManager.LoadText(attr.design);
-                view = CUIParser.Parse(json);
+                view = CUIPanelViewDeserializer.Parse(attr.design);
             }
         }
 
