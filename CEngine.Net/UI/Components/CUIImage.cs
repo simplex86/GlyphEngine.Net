@@ -25,7 +25,8 @@
                             var i = h * _texture.width + w;
                             var pixel = CPixelPool.Instance.Alloc(w - _texture.width  / 2, 
                                                                   h - _texture.height / 2,
-                                                                  _texture.chars[i]);
+                                                                  _texture.chars[i],
+                                                                  color);
                             AddPixel(pixel);
                         }
                     }
@@ -42,10 +43,11 @@
         /// <summary>
         /// 
         /// </summary>
-        public CUIImage(CTexture tex, Vector2 position)
+        public CUIImage(CTexture tex, Vector2 position, ConsoleColor color)
         {
-            texture = tex;
-            transform.position = position;
+            this.color = color;
+            this.texture = tex;
+            this.transform.position = position;
         }
     }
 }

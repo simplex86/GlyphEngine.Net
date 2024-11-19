@@ -114,13 +114,8 @@
         /// </summary>
         public void OnFocus()
         {
-            if (style == Style.Border)
-            {
-                this.color = focusColor;
-                Apply(border);
-
-                text.color = color;
-            }
+            color = focusColor;
+            text.color = color;
         }
 
         /// <summary>
@@ -128,26 +123,20 @@
         /// </summary>
         public void LoseFocus()
         {
-            if (style == Style.Border)
-            {
-                this.color = unfocusColor;
-                Apply(border);
-
-                text.color = color;
-            }
+            color = unfocusColor;
+            text.color = color;
         }
 
         /// <summary>
-        /// 
+        /// 响应点击
         /// </summary>
         public void OnEnter()
         {
-            if (interactable)
+            if (!interactable) return;
+
+            foreach (var action in onClicked)
             {
-                foreach (var action in onClicked)
-                {
-                    action.Invoke();
-                }
+                action.Invoke();
             }
         }
     }

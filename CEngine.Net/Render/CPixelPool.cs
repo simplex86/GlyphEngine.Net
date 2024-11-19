@@ -65,6 +65,23 @@
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="c"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public CPixel Alloc(int x, int y, char c, ConsoleColor color)
+        {
+            var pixel = Alloc(x, y);
+            pixel.c = c;
+            pixel.color = color;
+
+            return pixel;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="pixel"></param>
         public void Release(CPixel pixel)
         {

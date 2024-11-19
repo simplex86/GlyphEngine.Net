@@ -136,12 +136,13 @@ namespace SimpleX.CEngine.UI
             var x = (int)data["x"];
             var y = (int)data["y"];
             var name = (string)data["name"];
+            var color = (ConsoleColor)(int)data["color"];
             var file = (string)data["texture"];
 
             var texture = new CTexture();
             texture.Load(file);
 
-            var image = new CUIImage(texture, new Vector2(x, y));
+            var image = new CUIImage(texture, new Vector2(x, y), color);
             view.AddComponent(image, name);
         }
     }

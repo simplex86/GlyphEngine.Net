@@ -1,5 +1,4 @@
 ﻿using SimpleX.CEngine;
-using SimpleX.CEngine.UI;
 
 namespace CExample
 {

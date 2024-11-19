@@ -89,9 +89,8 @@ namespace SimpleX.CEngine.UI
         private void Focus(IInteractable interaction)
         {
             focus?.LoseFocus();
-
             focus = interaction;
-            focus.OnFocus();
+            focus?.OnFocus();
         }
 
         /// <summary>

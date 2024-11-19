@@ -17,7 +17,23 @@
         /// <summary>
         /// 
         /// </summary>
-        public ConsoleColor color { get; set; }
+        public ConsoleColor color
+        {
+            set
+            {
+                if (_color != value)
+                {
+                    _color = value;
+                    Foreach(p => p.color = _color);
+                }
+            }
+            get { return _color; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private ConsoleColor _color = ConsoleColor.White;
 
         /// <summary>
         /// 
@@ -37,7 +53,7 @@
         {
             foreach (var pixel in decorator.pixels)
             {
-                pixel.color = color;
+                pixel.color = _color;
                 AddPixel(pixel);
             }
         }

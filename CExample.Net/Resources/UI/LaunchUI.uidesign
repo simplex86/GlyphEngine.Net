@@ -10,7 +10,8 @@
 			"name": "logo",
 			"texture" : "Textures/snake_12x12.tex",
 			"x": 0,
-			"y": -5
+			"y": -5,
+			"color": 14
 		},
 		{
 			"type": "button",
@@ -20,7 +21,7 @@
 			"keycode": 32,
 			"text": "Press Space Key To Start",
 			"unfocusColor": 15,
-			"focusColor": 14,
+			"focusColor": 12,
 			"border": 2,
 			"interactable": true,
 			"focus": true
