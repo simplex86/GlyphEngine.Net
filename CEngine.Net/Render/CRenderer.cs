@@ -68,6 +68,7 @@
         private bool Diff()
         {
             var dirty = false;
+            renderer.Clear();
             //
             foreach (var p in current.pixels)
             {

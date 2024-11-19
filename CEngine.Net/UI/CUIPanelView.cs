@@ -2,7 +2,10 @@
 
 namespace SimpleX.CEngine.UI
 {
-    public class CPanelView : CRenderableObject, IView
+    /// <summary>
+    /// 
+    /// </summary>
+    internal sealed class CUIPanelView : CRenderableObject, IView
     {
         /// <summary>
         /// 宽度
@@ -16,12 +19,17 @@ namespace SimpleX.CEngine.UI
         /// <summary>
         /// 当前获得焦点的组件
         /// </summary>
-        protected IInteractable focus { get; set; }
+        private IInteractable focus { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        protected CPanelView()
+        private Dictionary<string, CUIComponent> components = new Dictionary<string, CUIComponent>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal CUIPanelView()
             : this(CWorld.width, CWorld.height)
         {
 
@@ -32,7 +40,7 @@ namespace SimpleX.CEngine.UI
         /// </summary>
         /// <param name="w"></param>
         /// <param name="h"></param>
-        protected CPanelView(int w, int h)
+        internal CUIPanelView(int w, int h)
             : base(ERenderLayer.UI)
         {
             width = w;
@@ -42,20 +50,36 @@ namespace SimpleX.CEngine.UI
             Apply(new CBorder(this));
         }
 
-        
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="component"></param>
-        protected void AddFocusChild(CUIComponent component)
+        internal void AddComponent(CUIComponent component, string name, bool focused = false)
         {
             AddChild(component);
-            if (component is IInteractable interaction &&
+            components.TryAdd(name, component);
+
+            if (focused &&
+                component is IInteractable interaction &&
                 interaction.interactable)
             {
                 Focus(interaction);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        internal T GetComponent<T>(string name) where T : CUIComponent
+        {
+            if (components.TryGetValue(name, out var component))
+            {
+                return component as T;
+            }
+            return null;
         }
 
         /// <summary>

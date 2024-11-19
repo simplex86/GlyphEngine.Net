@@ -2,11 +2,13 @@
 
 namespace CExample
 {
-    internal class LaunchUI : CPanel<LaunchUIView>
+    [CUIPanel("UI/LaunchUI.uidesign")]
+    internal class LaunchUI : CUIPanel
     {
         public LaunchUI()
         {
-            view.startButton.AddClick(OnStartButtonClickedHandler);
+            var startButton = GetComponent<CUIButton>("start");
+            startButton.AddClick(OnStartButtonClickedHandler);
         }
 
         private void OnStartButtonClickedHandler()

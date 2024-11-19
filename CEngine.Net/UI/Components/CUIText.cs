@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class CText : CUIComponent
+    public class CUIText : CUIComponent
     {
         /// <summary>
         /// 
@@ -35,19 +35,20 @@
         /// <summary>
         /// 
         /// </summary>
-        public CText() 
-            : base()
+        public CUIText(Vector2 position) 
+            : this("Text", position)
         {
-            this.text = "Text";
+
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="text"></param>
-        public CText(string text)
+        public CUIText(string text, Vector2 position)
              : base()
         {
+            transform.position = position;
             this.text = text;
         }
     }

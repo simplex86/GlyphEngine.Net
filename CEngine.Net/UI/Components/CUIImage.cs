@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class CImage : CUIComponent
+    public class CUIImage : CUIComponent
     {
         /// <summary>
         /// 
@@ -42,7 +42,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public CImage(CTexture tex, Vector2 position)
+        public CUIImage(CTexture tex, Vector2 position)
         {
             texture = tex;
             transform.position = position;

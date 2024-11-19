@@ -26,7 +26,7 @@ namespace SimpleX.CEngine
         /// </summary>
         public static void Init()
         {
-            Load<CPermanentScene>();
+            Load<CDontDestroyScene>();
         }
 
         /// <summary>

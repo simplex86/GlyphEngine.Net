@@ -1,5 +1,4 @@
-﻿using System;
-namespace SimpleX.CEngine.UI
+﻿namespace SimpleX.CEngine.UI
 {
     /// <summary>
     /// 

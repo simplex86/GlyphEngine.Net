@@ -3,11 +3,22 @@
 namespace SimpleX.CEngine
 {
     /// <summary>
-    /// 永存的场景，引擎启动后该场景就会被自动加载
+    /// 不会被销毁的场景，引擎启动后被自动加载
     /// </summary>
-    internal class CPermanentScene : CScene
+    internal class CDontDestroyScene : CScene
     {
-        public CPermanentScene()
+        /// <summary>
+        /// 
+        /// </summary>
+        public CDontDestroyScene()
+        {
+            InitUI();
+        }
+
+        /// <summary>
+        /// 初始化UI相关的资源
+        /// </summary>
+        private void InitUI()
         {
             // 添加UI相机
             var camera = new CCamera("UICamera");
