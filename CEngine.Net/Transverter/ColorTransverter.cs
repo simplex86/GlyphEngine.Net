@@ -53,9 +53,8 @@ namespace SimpleX.CEngine
         /// <returns></returns>
         public static ConsoleColor Get(JsonData data, string key)
         {
-            if (data.ContainsKey(key))
+            if (data.AsString(key, out var name))
             {
-                var name = (string)data[key];
                 return Get(name);
             }
 

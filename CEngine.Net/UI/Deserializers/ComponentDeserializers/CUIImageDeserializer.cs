@@ -6,9 +6,9 @@ namespace SimpleX.CEngine.UI
     {
         public void Deserialize(JsonData data, CUIPanelView view)
         {
-            var x = (int)data["x"];
-            var y = (int)data["y"];
-            var name = (string)data["name"];
+            var x = data.As("x", 0);
+            var y = data.As("y", 0);
+            var name = data.As("name", string.Empty);
             var color = ColorTransverter.Get(data, "color");
             var texture = LoadTexture(data);
 
@@ -23,10 +23,9 @@ namespace SimpleX.CEngine.UI
         /// <returns></returns>
         private CTexture LoadTexture(JsonData data)
         {
-            if (data.ContainsKey("texture"))
+            if (data.AsString("texture", out var filepath))
             {
-                var texture = new CTexture((string)data["texture"]);
-                return texture;
+                return new CTexture(filepath);
             }
 
             return null;

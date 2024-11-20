@@ -1,19 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SimpleX.CEngine
+﻿namespace SimpleX.CEngine
 {
     /// <summary>
     /// 场景
     /// </summary>
     public class CScene
     {
-        internal List<CCamera> cameras = new List<CCamera>();
-        internal List<CGameObject> gameObjects = new List<CGameObject>();
+        /// <summary>
+        /// 
+        /// </summary>
+        internal List<CCamera> cameras { get; } = new List<CCamera>();
+        /// <summary>
+        /// 
+        /// </summary>
+        internal List<CGameObject> gameObjects { get; } = new List<CGameObject>();
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected CScene()
         {
-            
+            var attrs = GetType().GetCustomAttributes(true);
+            foreach (var v in attrs)
+            {
+                if (v is CSceneAttribute attr)
+                {
+                    CSceneDeserializer.Deserialize(attr.design, this);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 进入场景
+        /// </summary>
+        internal protected virtual void Enter()
+        {
+
+        }
+
+        /// <summary>
+        /// 刷新场景
+        /// </summary>
+        /// <param name="dt"></param>
+        internal protected virtual void Update(float dt)
+        {
+
+        }
+
+        /// <summary>
+        /// 离开场景
+        /// </summary>
+        internal protected virtual void Exit()
+        {
+
         }
 
         /// <summary>
@@ -29,7 +68,7 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 
+        /// 移除对象
         /// </summary>
         /// <param name="gameObject"></param>
         internal void Remove(CGameObject gameObject)
@@ -100,7 +139,7 @@ namespace SimpleX.CEngine
         /// 添加相机
         /// </summary>
         /// <param name="camera"></param>
-        protected void Add(CCamera camera)
+        internal void Add(CCamera camera)
         {
             cameras.Add(camera);
         }
@@ -115,12 +154,31 @@ namespace SimpleX.CEngine
         {
             for (int i = gameObjects.Count - 1; i >= 0; i--)
             {
-                var go = gameObjects[i];
-                if (go.destroyed)
+                if (gameObjects[i].destroyed)
                 {
                     gameObjects.RemoveAt(i);
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CSceneAttribute : Attribute
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string design { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="design"></param>
+        public CSceneAttribute(string design)
+        {
+            this.design = design;
         }
     }
 }

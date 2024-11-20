@@ -1,5 +1,4 @@
-﻿using SimpleX.CEngine.Input;
-using SimpleX.CEngine.UI;
+﻿using SimpleX.CEngine.UI;
 using System.Text;
 
 namespace SimpleX.CEngine
@@ -89,13 +88,13 @@ namespace SimpleX.CEngine
                     CTime.Update();
                     var dt = CTime.deltatime;
                     application?.Update(dt);
-                    CSceneManager.Update();
+                    CSceneManager.Update(dt);
                     CUIManager.Update(dt);
                 }
             }
             catch (Exception ex)
             {
-
+                CDebug.Error(ex.ToString());
             }
             finally
             {

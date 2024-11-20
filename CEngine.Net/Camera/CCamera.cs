@@ -26,11 +26,11 @@
         /// <summary>
         /// 宽度
         /// </summary>
-        internal int width { get; } = Console.BufferWidth;
+        public int width { get; internal set; } = Console.BufferWidth;
         /// <summary>
         /// 高度
         /// </summary>
-        internal int height { get; } = Console.BufferHeight;
+        public int height { get; internal set; } = Console.BufferHeight;
 
         /// <summary>
         /// 

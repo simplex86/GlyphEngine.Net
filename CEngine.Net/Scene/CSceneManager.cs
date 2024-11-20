@@ -41,19 +41,11 @@ namespace SimpleX.CEngine
             {
                 scene = new TScene();
                 Add(scene);
+
+                scene.Enter();
             }
 
             return scene;
-        }
-
-        /// <summary>
-        /// 卸载场景
-        /// </summary>
-        /// <typeparam name="TScene"></typeparam>
-        public static void Unload<TScene>() where TScene : CScene
-        {
-            var scene = Get<TScene>();
-            Unload(scene);
         }
 
         /// <summary>
@@ -64,6 +56,7 @@ namespace SimpleX.CEngine
         {
             if (scene != null)
             {
+                scene.Exit();
                 Remove(scene);
             }
         }
@@ -148,11 +141,12 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 更新场景
         /// </summary>
-        internal static void Update()
+        internal static void Update(float dt)
         {
             foreach (var scene in scenes)
             {
                 scene.RemoveDestroyedGameObjects();
+                scene.Update(dt);
             }
 
             foreach (var camera in cameras)

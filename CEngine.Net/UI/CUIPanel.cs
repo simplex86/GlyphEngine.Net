@@ -38,10 +38,13 @@
         protected CUIPanel()
         {
             var attrs = GetType().GetCustomAttributes(true);
-            if (attrs.Length > 0)
+            foreach (var v in attrs) 
             {
-                var attr = attrs[0] as CUIPanelAttribute;
-                view = CUIPanelViewDeserializer.Parse(attr.design);
+                if (v is CUIPanelAttribute attr)
+                {
+                    view = CUIPanelDeserializer.Deserialize(attr.design);
+                    break;
+                }
             }
         }
 

@@ -6,21 +6,6 @@
     public class CUIButton : CUIComponent, IInteractable
     {
         /// <summary>
-        /// 样式
-        /// </summary>
-        public enum Style
-        {
-            /// <summary>
-            /// 有边框
-            /// </summary>
-            Border = 1,
-            /// <summary>
-            /// 无边框
-            /// </summary>
-            Borderless = 2,
-        }
-
-        /// <summary>
         /// 是否可交互
         /// </summary>
         public bool interactable { get; set; } = true;
@@ -40,7 +25,7 @@
         /// <summary>
         /// 样式
         /// </summary>
-        private Style style = Style.Border;
+        private EBorderStyle style = EBorderStyle.Border;
         /// <summary>
         /// 点击事件列表
         /// </summary>
@@ -66,7 +51,7 @@
         /// <param name="unfocusColor"></param>
         /// <param name="focusColor"></param>
         /// <param name="style"></param>
-        public CUIButton(string text, Vector2 position, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, Style style = Style.Border)
+        public CUIButton(string text, Vector2 position, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.Border)
         {
             this.interactable = true;
             this.transform.position = position;
@@ -84,7 +69,7 @@
             box = new CBox(this);
             Apply(box);
 
-            if (style == Style.Border)
+            if (style == EBorderStyle.Border)
             {
                 border = new CThinBorder(this);
                 Apply(border);

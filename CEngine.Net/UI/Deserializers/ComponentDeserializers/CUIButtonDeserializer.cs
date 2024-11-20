@@ -6,16 +6,16 @@ namespace SimpleX.CEngine.UI
     {
         public void Deserialize(JsonData data, CUIPanelView view)
         {
-            var x = (int)data["x"];
-            var y = (int)data["y"];
-            var name = (string)data["name"];
-            var text = (string)data["text"];
+            var x = data.As("x", 0);
+            var y = data.As("y", 0);
+            var name = data.As("name", string.Empty);
+            var text = data.As("text", string.Empty);
             var keycode = KeycodeTransverter.Get(data, "keycode");
             var unfocusColor = ColorTransverter.Get(data, "unfocusColor");
             var focusColor = ColorTransverter.Get(data, "focusColor");
-            var border = (CUIButton.Style)(int)data["border"];
-            var interactable = (bool)data["interactable"];
-            var focus = (bool)data["focus"];
+            var border = data.AsBorderStyle("border", EBorderStyle.Border);
+            var interactable = data.As("interactable", false);
+            var focus = data.As("focus", false);
 
             if (!interactable)
             {

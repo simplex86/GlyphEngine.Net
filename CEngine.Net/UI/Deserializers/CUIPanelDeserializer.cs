@@ -5,7 +5,7 @@ namespace SimpleX.CEngine.UI
     /// <summary>
     /// 
     /// </summary>
-    internal static class CUIPanelViewDeserializer
+    internal static class CUIPanelDeserializer
     {
         /// <summary>
         /// 
@@ -22,10 +22,10 @@ namespace SimpleX.CEngine.UI
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public static CUIPanelView Parse(string file)
+        public static CUIPanelView Deserialize(string file)
         {
             var data = ResourceManager.LoadJson(file);
-            return Parse(data);
+            return Deserialize(data);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace SimpleX.CEngine.UI
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private static CUIPanelView Parse(JsonData data)
+        private static CUIPanelView Deserialize(JsonData data)
         {
             var x = data.ContainsKey("x") ? (int)data["x"] : 0;
             var y = data.ContainsKey("y") ? (int)data["y"] : 0;
@@ -46,7 +46,7 @@ namespace SimpleX.CEngine.UI
             var view = new CUIPanelView(width, height);
             view.transform.position = new Vector2(x, y);
 
-            ParseComponents(data["components"], view);
+            DeserializeComponents(data["components"], view);
 
             return view;
         }
@@ -56,7 +56,7 @@ namespace SimpleX.CEngine.UI
         /// </summary>
         /// <param name="data"></param>
         /// <param name="view"></param>
-        private static void ParseComponents(JsonData data, CUIPanelView view)
+        private static void DeserializeComponents(JsonData data, CUIPanelView view)
         {
             for (int i = 0; i < data.Count; i++)
             {
