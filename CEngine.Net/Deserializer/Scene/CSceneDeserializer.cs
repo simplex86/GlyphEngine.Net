@@ -1,6 +1,4 @@
 ﻿using LitJson;
-using SimpleX.CEngine.UI;
-using System.ComponentModel.DataAnnotations;
 
 namespace SimpleX.CEngine
 {
@@ -15,6 +13,7 @@ namespace SimpleX.CEngine
         private static Dictionary<string, ISceneComponentDeserializer> deserializers = new()
         {
             { "camera", new CCameraDeserializer() },
+            { "gameobject", new CSubObjectDeserializer() },
         };
 
         /// <summary>

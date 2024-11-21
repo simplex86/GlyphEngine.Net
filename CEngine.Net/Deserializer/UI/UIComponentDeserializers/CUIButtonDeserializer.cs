@@ -13,7 +13,7 @@ namespace SimpleX.CEngine.UI
             var keycode = KeycodeTransverter.Get(data, "keycode");
             var unfocusColor = ColorTransverter.Get(data, "unfocusColor");
             var focusColor = ColorTransverter.Get(data, "focusColor");
-            var border = data.AsBorderStyle("border", EBorderStyle.Border);
+            var border = data.As("border", EBorderStyle.ThinBorder);
             var interactable = data.As("interactable", false);
             var focus = data.As("focus", false);
 

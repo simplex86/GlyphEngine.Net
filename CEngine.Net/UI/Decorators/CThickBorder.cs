@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    internal class CBorder : IDecorator
+    internal class CThickBorder : IDecorator
     {
         /// <summary>
         /// 
@@ -14,7 +14,7 @@
         /// 
         /// </summary>
         /// <param name="view"></param>
-        public CBorder(IView view)
+        public CThickBorder(IView view)
         {
             pixels = new List<CPixel>(view.width * view.height);
             for (int y = 0; y < view.height; y++)

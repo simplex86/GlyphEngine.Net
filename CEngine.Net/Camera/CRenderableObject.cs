@@ -24,8 +24,8 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        protected CRenderableObject()
-            : this((ulong)ERenderLayer.Default)
+        internal protected CRenderableObject()
+            : this(ERenderLayer.Default)
         {
 
         }
@@ -34,19 +34,22 @@ namespace SimpleX.CEngine
         /// 
         /// </summary>
         /// <param name="layer"></param>
-        protected CRenderableObject(ERenderLayer layer)
-            : this((ulong)layer)
+        internal protected CRenderableObject(ERenderLayer layer)
+            : this(0, 0, layer)
         {
-
+            
         }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         /// <param name="layer"></param>
-        protected CRenderableObject(ulong layer)
+        internal protected CRenderableObject(int x, int y, ERenderLayer layer)
+            : base(x, y)
         {
-            this.layer = layer;
+            this.layer = (ulong)layer;
         }
 
         /// <summary>
@@ -78,7 +81,7 @@ namespace SimpleX.CEngine
         /// 添加像素
         /// </summary>
         /// <param name="pixel"></param>
-        protected void AddPixel(CPixel pixel)
+        internal void AddPixel(CPixel pixel)
         {
             pixels.Add(pixel);
         }

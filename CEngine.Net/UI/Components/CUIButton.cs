@@ -25,7 +25,7 @@
         /// <summary>
         /// 样式
         /// </summary>
-        private EBorderStyle style = EBorderStyle.Border;
+        //private EBorderStyle style = EBorderStyle.ThinBorder;
         /// <summary>
         /// 点击事件列表
         /// </summary>
@@ -51,29 +51,22 @@
         /// <param name="unfocusColor"></param>
         /// <param name="focusColor"></param>
         /// <param name="style"></param>
-        public CUIButton(string text, Vector2 position, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.Border)
+        public CUIButton(string text, Vector2 position, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
         {
             this.interactable = true;
             this.transform.position = position;
             this.keycode = keycode;
             this.unfocusColor = unfocusColor;
             this.focusColor = focusColor;
-            this.style = style;
+            //this.style = style;
 
             this.text = new CUIText(text, Vector2.zero);
             AddChild(this.text);
 
-            this.width  = this.text.width  + 2;
+            this.width  = this.text.width  + 4;
             this.height = this.text.height + 2;
 
-            box = new CBox(this);
-            Apply(box);
-
-            if (style == EBorderStyle.Border)
-            {
-                border = new CThinBorder(this);
-                Apply(border);
-            }
+            BuildBorder(style);
         }
 
         /// <summary>
@@ -122,6 +115,33 @@
             foreach (var action in onClicked)
             {
                 action.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="style"></param>
+        private void BuildBorder(EBorderStyle style)
+        {
+            box = new CBox(this);
+            Apply(box);
+
+            switch (style)
+            {
+                case EBorderStyle.ThinBorder:
+                    border = new CThinBorder(this);
+                    break;
+                case EBorderStyle.ThickBorder:
+                    border = new CThickBorder(this);
+                    break;
+                default:
+                    break;
+            }
+
+            if (border != null)
+            {
+                Apply(border);
             }
         }
     }

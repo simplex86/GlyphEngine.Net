@@ -15,16 +15,10 @@
                 if (_text != value)
                 {
                     _text = value;
-                    // 重置像素列表
-                    ClearPixels();
-                    // 
-                    for (int i = 0; i < _text.Length; i++)
-                    {
-                        var pixel = CPixelPool.Instance.Alloc(i - _text.Length / 2, 
-                                                              0,
-                                                              _text[i]);
-                        AddPixel(pixel);
-                    }
+                    ResetPixels();
+
+                    width = _text.Length;
+                    height = 1;
                 }
             }
             get { return _text; }
@@ -50,6 +44,20 @@
         {
             transform.position = position;
             this.text = text;
+        }
+
+        private void ResetPixels()
+        {
+            // 重置像素列表
+            ClearPixels();
+            // 
+            for (int i = 0; i < _text.Length; i++)
+            {
+                var pixel = CPixelPool.Instance.Alloc(i - _text.Length / 2,
+                                                      0,
+                                                      _text[i]);
+                AddPixel(pixel);
+            }
         }
     }
 }

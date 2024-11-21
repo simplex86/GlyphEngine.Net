@@ -47,7 +47,7 @@ namespace SimpleX.CEngine.UI
             height = h;
 
             Apply(new CBox(this));
-            Apply(new CBorder(this));
+            Apply(new CThickBorder(this));
         }
 
         /// <summary>

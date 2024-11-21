@@ -1,4 +1,5 @@
 ﻿using LitJson;
+using System;
 
 namespace SimpleX.CEngine
 {
@@ -37,6 +38,38 @@ namespace SimpleX.CEngine
         public static bool As(this JsonData self, string key, bool defaultValue)
         {
             return self.AsBool(key, out var value) ? value : defaultValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool AsChar(this JsonData self, string key, out char value)
+        {
+            value = CChar.Empty;
+
+            if (self.ContainsKey(key))
+            {
+                value = (char)(int)self[key];
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static char As(this JsonData self, string key, char defaultValue)
+        {
+            return self.AsChar(key, out var value) ? value : defaultValue;
         }
 
         /// <summary>
@@ -202,12 +235,80 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
         /// <param name="self"></param>
         /// <param name="key"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public static EBorderStyle AsBorderStyle(this JsonData self, string key, EBorderStyle defaultValue)
+        public static bool AsEnum<TEnum>(this JsonData self, string key, out TEnum value) where TEnum : Enum
         {
-            return self.AsInt(key, out var value) ? (EBorderStyle)value: defaultValue;
+            // 获取枚举的基础类型
+            var underlyingType = Enum.GetUnderlyingType(typeof(TEnum));
+
+            if (underlyingType == typeof(int))
+            {
+                if (self.AsInt(key, out var val)) return ToEnum(val, out value);
+            }
+            else if (underlyingType == typeof(uint))
+            {
+                if (self.AsUInt(key, out var val)) return ToEnum(val, out value);
+            }
+            else if (underlyingType == typeof(long))
+            {
+                if (self.AsLong(key, out var val)) return ToEnum(val, out value);
+            }
+            else if (underlyingType == typeof(ulong))
+            {
+                if (self.AsULong(key, out var val)) return ToEnum(val, out value);
+            }
+
+            // 将枚举定义的第一个值作为默认值
+            value = Enum.GetValues(typeof(TEnum))
+                        .Cast<TEnum>()
+                        .First();
+
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static TEnum As<TEnum>(this JsonData self, string key, TEnum defaultValue) where TEnum : Enum
+        {
+            return self.AsEnum<TEnum>(key, out var value) ? value : defaultValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <typeparam name="TInput"></typeparam>
+        /// <param name="input"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
+        private static bool ToEnum<TEnum, TInput>(TInput input, out TEnum output)
+        {
+            // 检查值是否在枚举范围内
+            if (Enum.IsDefined(typeof(TEnum), input))
+            {
+                output = (TEnum)Enum.ToObject(typeof(TEnum), input);
+                return true;
+            }
+
+            // 输出错误信息
+            CDebug.Error($"{input} is not valid for {typeof(TEnum).Name}");
+
+            // 将枚举定义的第一个值作为默认值
+            output = Enum.GetValues(typeof(TEnum))
+                         .Cast<TEnum>()
+                         .First();
+
+            return false;
         }
     }
 }
