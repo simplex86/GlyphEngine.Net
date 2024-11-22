@@ -21,12 +21,16 @@ namespace SimpleX.CEngine
         private void InitUI()
         {
             // 添加UI相机
-            var camera = new CCamera("UICamera");
-            camera.mask = (ulong)ERenderMask.UI;
+            var camera = new CCamera("UICamera", uint.MaxValue)
+            {
+                mask = (ulong)ERenderMask.UI,
+            };
             Add(camera);
             // 添加UI根节点
-            var uiroot = new CGameObject();
-            uiroot.name = "UIRoot";
+            var uiroot = new CGameObject()
+            {
+                name = "UIRoot",
+            };
             Add(uiroot);
 
             // 设置UI根节点

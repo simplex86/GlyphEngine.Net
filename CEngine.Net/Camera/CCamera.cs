@@ -46,12 +46,12 @@
         /// <summary>
         /// 渲染
         /// </summary>
-        /// <param name="gameObjects"></param>
-        internal void Render(List<CGameObject> gameObjects, CRenderer renderer)
+        /// <param name="gameobjects"></param>
+        internal void Render(List<CGameObject> gameobjects, CRenderer renderer)
         {
-            foreach (var gameObject in gameObjects)
+            foreach (var gameobject in gameobjects)
             {
-                Render(gameObject, Vector2.zero, renderer);
+                Render(gameobject, Vector2.zero, renderer);
             }
         }
 
@@ -68,18 +68,18 @@
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="gameObject"></param>
+        /// <param name="gameobject"></param>
         /// <param name="px"></param>
         /// <param name="py"></param>
         /// <param name="renderer"></param>
-        private void Render(CGameObject gameObject, Vector2 offset, CRenderer renderer)
+        private void Render(CGameObject gameobject, Vector2 offset, CRenderer renderer)
         {
-            if (!gameObject.enabled) return;
+            if (!gameobject.enabled) return;
 
-            var wpos = M2W(gameObject, offset);
+            var wpos = M2W(gameobject, offset);
             var vpos = W2V(wpos);
 
-            if (gameObject is IRenderable renderable &&
+            if (gameobject is IRenderable renderable &&
                 CheckLayer(renderable))
             {
                 // 绘制像素
@@ -96,7 +96,7 @@
             }
 
             // 绘制子节点
-            foreach (var child in gameObject.children)
+            foreach (var child in gameobject.children)
             {
                 Render(child, wpos, renderer);
             }
@@ -105,12 +105,12 @@
         /// <summary>
         /// 模型坐标转世界坐标
         /// </summary>
-        /// <param name="gameObject"></param>
+        /// <param name="gameobject"></param>
         /// <param name="mpos"></param>
         /// <returns></returns>
-        private Vector2 M2W(CGameObject gameObject, Vector2 mpos)
+        private Vector2 M2W(CGameObject gameobject, Vector2 mpos)
         {
-            return mpos + gameObject.transform.position;
+            return mpos + gameobject.transform.position;
         }
 
         /// <summary>

@@ -21,19 +21,19 @@
         /// <summary>
         /// 
         /// </summary>
-        private static List<CScene> addScenes = new List<CScene>();
+        private static List<CScene> newscenes = new List<CScene>();
         /// <summary>
         /// 
         /// </summary>
-        private static List<CCamera> addCameras = new List<CCamera>();
+        private static List<CCamera> newcameras = new List<CCamera>();
         /// <summary>
         /// 
         /// </summary>
-        private static List<CScene> removeScenes = new List<CScene>();
+        private static List<CScene> remscenes = new List<CScene>();
         /// <summary>
         /// 
         /// </summary>
-        private static List<CCamera> removeCameras = new List<CCamera>();
+        private static List<CCamera> remcameras = new List<CCamera>();
 
         /// <summary>
         /// 
@@ -103,7 +103,7 @@
         /// <typeparam name="TScene"></typeparam>
         /// <param name="immediately"></param>
         /// <returns></returns>
-        public static TScene Load<TScene>(bool immediately) where TScene : CScene, new()
+        private static TScene Load<TScene>(bool immediately) where TScene : CScene, new()
         {
             var scene = Get<TScene>();
             if (scene == null)
@@ -130,13 +130,14 @@
                 {
                     cameras.Add(camera);
                 }
+                SortCameras();
             }
             else
             {
-                addScenes.Add(scene);
+                newscenes.Add(scene);
                 foreach (var camera in scene.cameras)
                 {
-                    addCameras.Add(camera);
+                    newcameras.Add(camera);
                 }
             }
         }
@@ -164,11 +165,31 @@
         /// <param name="scene"></param>
         private static void Remove(CScene scene)
         {
-            removeScenes.Add(scene);
+            remscenes.Add(scene);
             foreach (var camera in scene.cameras)
             {
-                removeCameras.Add(camera);
+                remcameras.Add(camera);
             }
+        }
+
+        /// <summary>
+        /// 更新场景预处理
+        /// </summary>
+        private static void PrevUpdate(float dt)
+        {
+            foreach (var scene in newscenes)
+            {
+                scenes.Add(scene);
+            }
+            newscenes.Clear();
+
+            foreach (var camera in newcameras)
+            {
+                cameras.Add(camera);
+            }
+            newcameras.Clear();
+
+            SortCameras();
         }
 
         /// <summary>
@@ -176,36 +197,38 @@
         /// </summary>
         internal static void Update(float dt)
         {
-            foreach (var scene in addScenes)
+            PrevUpdate(dt);
             {
-                scenes.Add(scene);
+                foreach (var scene in scenes)
+                {
+                    scene.RemoveDestroyedGameObjects();
+                    scene.Update(dt);
+                }
+                foreach (var camera in cameras)
+                {
+                    RenderScenesByCamera(camera);
+                }
+                renderer.Render();
             }
-            foreach (var camera in addCameras)
-            {
-                cameras.Add(camera);
-            }
+            PostUpdate(dt);
+        }
 
-            foreach (var scene in scenes)
-            {
-                scene.RemoveDestroyedGameObjects();
-                scene.Update(dt);
-            }
-
-            foreach (var scene in removeScenes)
+        /// <summary>
+        /// 更新场景后处理
+        /// </summary>
+        private static void PostUpdate(float dt)
+        {
+            foreach (var scene in remscenes)
             {
                 scenes.Remove(scene);
             }
-            foreach (var camera in removeCameras)
+            remscenes.Clear();
+
+            foreach (var camera in remcameras)
             {
                 cameras.Remove(camera);
             }
-
-            foreach (var camera in cameras)
-            {
-                RenderScenesByCamera(camera);
-            }
-
-            renderer.Render();
+            remcameras.Clear();
         }
 
         /// <summary>
@@ -218,6 +241,18 @@
             {
                 camera.Render(scene.gameObjects, renderer);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void SortCameras()
+        {
+            cameras.Sort((a, b) =>
+            {
+                if (a.order < b.order) return -1;
+                return 1;
+            });
         }
     }
 }
