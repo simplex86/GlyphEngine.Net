@@ -8,22 +8,39 @@
         /// <summary>
         /// 场景列表
         /// </summary>
-        private static List<CScene> scenes { get; } = new List<CScene>();
+        private static List<CScene> scenes = new List<CScene>();
         /// <summary>
         /// 相机列表
         /// </summary>
-        private static List<CCamera> cameras { get; } = new List<CCamera>();
+        private static List<CCamera> cameras = new List<CCamera>();
         /// <summary>
         /// 渲染器
         /// </summary>
-        private static CRenderer renderer { get; } = new CRenderer();
+        private static CRenderer renderer = new CRenderer();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static List<CScene> addScenes = new List<CScene>();
+        /// <summary>
+        /// 
+        /// </summary>
+        private static List<CCamera> addCameras = new List<CCamera>();
+        /// <summary>
+        /// 
+        /// </summary>
+        private static List<CScene> removeScenes = new List<CScene>();
+        /// <summary>
+        /// 
+        /// </summary>
+        private static List<CCamera> removeCameras = new List<CCamera>();
 
         /// <summary>
         /// 
         /// </summary>
         public static void Init()
         {
-            Load<CDontDestroyScene>();
+            Load<CDontDestroyScene>(true);
         }
 
         /// <summary>
@@ -33,16 +50,7 @@
         /// <returns></returns>
         public static TScene Load<TScene>() where TScene : CScene, new()
         {
-            var scene = Get<TScene>();
-            if (scene == null)
-            {
-                scene = new TScene();
-                Add(scene);
-
-                scene.Enter();
-            }
-
-            return scene;
+            return Load<TScene>(false);
         }
 
         /// <summary>
@@ -90,15 +98,46 @@
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TScene"></typeparam>
+        /// <param name="immediately"></param>
+        /// <returns></returns>
+        public static TScene Load<TScene>(bool immediately) where TScene : CScene, new()
+        {
+            var scene = Get<TScene>();
+            if (scene == null)
+            {
+                scene = new TScene();
+                Add(scene, immediately);
+
+                scene.Enter();
+            }
+
+            return scene;
+        }
+
+        /// <summary>
         /// 添加场景
         /// </summary>
         /// <param name="scene"></param>
-        private static void Add(CScene scene)
+        private static void Add(CScene scene, bool immediately = false)
         {
-            scenes.Add(scene);
-            foreach (var camera in scene.cameras)
+            if (immediately)
             {
-                cameras.Add(camera);
+                scenes.Add(scene);
+                foreach (var camera in scene.cameras)
+                {
+                    cameras.Add(camera);
+                }
+            }
+            else
+            {
+                addScenes.Add(scene);
+                foreach (var camera in scene.cameras)
+                {
+                    addCameras.Add(camera);
+                }
             }
         }
 
@@ -125,13 +164,10 @@
         /// <param name="scene"></param>
         private static void Remove(CScene scene)
         {
-            if (scenes.Count > 1)
+            removeScenes.Add(scene);
+            foreach (var camera in scene.cameras)
             {
-                scenes.Remove(scene);
-                foreach (var camera in scene.cameras)
-                {
-                    cameras.Remove(camera);
-                }
+                removeCameras.Add(camera);
             }
         }
 
@@ -140,10 +176,28 @@
         /// </summary>
         internal static void Update(float dt)
         {
+            foreach (var scene in addScenes)
+            {
+                scenes.Add(scene);
+            }
+            foreach (var camera in addCameras)
+            {
+                cameras.Add(camera);
+            }
+
             foreach (var scene in scenes)
             {
                 scene.RemoveDestroyedGameObjects();
                 scene.Update(dt);
+            }
+
+            foreach (var scene in removeScenes)
+            {
+                scenes.Remove(scene);
+            }
+            foreach (var camera in removeCameras)
+            {
+                cameras.Remove(camera);
             }
 
             foreach (var camera in cameras)
