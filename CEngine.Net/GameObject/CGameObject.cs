@@ -3,7 +3,7 @@
     /// <summary>
     /// 游戏对象
     /// </summary>
-    public class CGameObject
+    public class CGameObject : IContainer
     {
         /// <summary>
         /// 名字
@@ -64,7 +64,7 @@
         /// 添加子节点
         /// </summary>
         /// <param name="child"></param>
-        public void AddChild(CGameObject child)
+        public void Add(CGameObject child)
         {
             child.SetParent(this);
         }
@@ -74,7 +74,7 @@
         /// </summary>
         /// <param name="child"></param>
         /// <returns></returns>
-        public bool HasChild(CGameObject child)
+        public bool Has(CGameObject child)
         {
             return children.Contains(child);
         }
@@ -84,7 +84,7 @@
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public CGameObject GetChild(int index)
+        public CGameObject Get(int index)
         {
             if (index < 0)
             {
@@ -100,14 +100,14 @@
         /// <returns></returns>
         public CGameObject this[int index]
         {
-            get { return GetChild(index); }
+            get { return Get(index); }
         }
 
         /// <summary>
         /// 删除子节点
         /// </summary>
         /// <param name="child"></param>
-        public void RemoveChild(CGameObject child)
+        public void Remove(CGameObject child)
         {
             children.Remove(child);
             child.SetParent(null);
@@ -124,9 +124,9 @@
             if (parent != null && parent.destroyed) return;
 
             if (this.parent != null &&
-                this.parent.HasChild(this))
+                this.parent.Has(this))
             {
-                this.parent.RemoveChild(this);
+                this.parent.Remove(this);
             }
 
             this.parent = parent;
@@ -208,7 +208,7 @@
             }
 
             // 从父结点移除
-            gameObject.parent?.RemoveChild(gameObject);
+            gameObject.parent?.Remove(gameObject);
             // TODO: 如何处理子节点，还在思考中
 
             gameObject.OnDestroy();

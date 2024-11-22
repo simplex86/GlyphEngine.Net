@@ -5,16 +5,16 @@ namespace SimpleX.CEngine
     /// <summary>
     /// 
     /// </summary>
-    internal class CGameObjectDeserializer
+    internal class CGameObjectDeserializer : IDeserializer
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="data"></param>
         /// <param name="scene"></param>
-        public CGameObject Deserialize(JsonData data)
+        public void Deserialize(JsonData data, IContainer container)
         {
-            return CGameObjectDeserializer.Deserialize(data);
+            DeserializeObject(data, container);
         }
 
         /// <summary>
@@ -22,7 +22,12 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="data"></param>
         /// <param name="parent"></param>
-        public static CGameObject Deserialize(JsonData data, CGameObject parent = null)
+        public static CGameObject Deserialize(JsonData data)
+        {
+            return DeserializeObject(data, null);
+        }
+
+        private static CGameObject DeserializeObject(JsonData data, IContainer container)
         {
             CGameObject gameobject = null;
 
@@ -47,13 +52,12 @@ namespace SimpleX.CEngine
                     name = data.As("name", "gameobject"),
                 };
             }
-
-            if (parent != null)
-            {
-                parent.AddChild(gameobject);
-            }
-
             DeserializeChildren(data, gameobject);
+
+            if (container != null)
+            {
+                container.Add(gameobject);
+            }
 
             return gameobject;
         }
@@ -86,7 +90,7 @@ namespace SimpleX.CEngine
                 for (int i = 0; i < children.Count; i++)
                 {
                     var child = children[i];
-                    Deserialize(child, gameobject);
+                    DeserializeObject(child, gameobject);
                 }
             }
         }

@@ -2,9 +2,9 @@
 
 namespace SimpleX.CEngine.UI
 {
-    internal class CUIButtonDeserializer : IUIComponentDeserializer
+    internal class CUIButtonDeserializer : IDeserializer
     {
-        public void Deserialize(JsonData data, CUIPanelView view)
+        public void Deserialize(JsonData data, IContainer contaner)
         {
             var x = data.As("x", 0);
             var y = data.As("y", 0);
@@ -27,6 +27,7 @@ namespace SimpleX.CEngine.UI
             var button = new CUIButton(text, new Vector2(x, y), keycode, unfocusColor, focusColor, border);
             button.interactable = interactable;
 
+            var view = contaner as CUIPanelView;
             view.AddComponent(button, name, focus);
         }
     }

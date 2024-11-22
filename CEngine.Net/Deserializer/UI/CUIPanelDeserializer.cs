@@ -10,7 +10,7 @@ namespace SimpleX.CEngine.UI
         /// <summary>
         /// 
         /// </summary>
-        private static Dictionary<string, IUIComponentDeserializer> deserializers = new()
+        private static Dictionary<string, IDeserializer> deserializers = new()
         {
             { "text", new CUITextDeserializer() },
             { "button", new CUIButtonDeserializer() },

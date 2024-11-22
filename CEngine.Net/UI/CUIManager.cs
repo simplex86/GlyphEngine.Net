@@ -30,7 +30,7 @@
             list.Add(panel);
             dict.Add(typeof(TPanel), panel);
             // 添加到根节点
-            root.AddChild(panel.gameObject);
+            root.Add(panel.gameObject);
 
             return panel;
         }

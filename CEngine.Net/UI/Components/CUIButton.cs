@@ -61,7 +61,7 @@
             //this.style = style;
 
             this.text = new CUIText(text, Vector2.zero);
-            AddChild(this.text);
+            Add(this.text);
 
             this.width  = this.text.width  + 4;
             this.height = this.text.height + 2;

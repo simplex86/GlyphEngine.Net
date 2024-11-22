@@ -10,10 +10,10 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        private static Dictionary<string, ISceneComponentDeserializer> deserializers = new()
+        private static Dictionary<string, IDeserializer> deserializers = new()
         {
             { "camera", new CCameraDeserializer() },
-            { "gameobject", new CSubObjectDeserializer() },
+            { "gameobject", new CGameObjectDeserializer() },
         };
 
         /// <summary>

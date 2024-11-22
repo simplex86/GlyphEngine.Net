@@ -2,9 +2,17 @@
 
 namespace SimpleX.CEngine.UI
 {
-    internal class CUIImageDeserializer : IUIComponentDeserializer
+    /// <summary>
+    /// 
+    /// </summary>
+    internal class CUIImageDeserializer : IDeserializer
     {
-        public void Deserialize(JsonData data, CUIPanelView view)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="container"></param>
+        public void Deserialize(JsonData data, IContainer container)
         {
             var x = data.As("x", 0);
             var y = data.As("y", 0);
@@ -13,6 +21,8 @@ namespace SimpleX.CEngine.UI
             var texture = LoadTexture(data);
 
             var image = new CUIImage(texture, new Vector2(x, y), color);
+
+            var view = container as CUIPanelView;
             view.AddComponent(image, name);
         }
 

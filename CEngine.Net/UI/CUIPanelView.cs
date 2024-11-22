@@ -56,7 +56,7 @@ namespace SimpleX.CEngine.UI
         /// <param name="component"></param>
         internal void AddComponent(CUIComponent component, string name, bool focused = false)
         {
-            AddChild(component);
+            Add(component);
             components.TryAdd(name, component);
 
             if (focused &&

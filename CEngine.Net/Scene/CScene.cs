@@ -3,7 +3,7 @@
     /// <summary>
     /// 场景
     /// </summary>
-    public class CScene
+    public class CScene : IContainer
     {
         /// <summary>
         /// 
@@ -59,11 +59,21 @@
         /// 添加对象
         /// </summary>
         /// <param name="gameObject"></param>
-        internal void Add(CGameObject gameObject)
+        public void Add(CGameObject gameObject)
         {
-            if (!gameObjects.Contains(gameObject))
+            if (gameObject is CCamera camera)
             {
-                gameObjects.Add(gameObject);
+                if (!cameras.Contains(camera))
+                {
+                    cameras.Add(camera);
+                }
+            }
+            else
+            {
+                if (!gameObjects.Contains(gameObject))
+                {
+                    gameObjects.Add(gameObject);
+                }
             }
         }
 
@@ -71,22 +81,22 @@
         /// 移除对象
         /// </summary>
         /// <param name="gameObject"></param>
-        internal void Remove(CGameObject gameObject)
+        public void Remove(CGameObject gameObject)
         {
-            if (gameObjects.Contains(gameObject))
+            if (gameObject is CCamera camera)
             {
-                gameObjects.Remove(gameObject);
+                if (cameras.Contains(camera))
+                {
+                    cameras.Remove(camera);
+                }
             }
-        }
-
-        /// <summary>
-        /// 查找对象是否存在
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        internal bool Find(string name)
-        {
-            return Find(name, out var _);
+            else
+            {
+                if (gameObjects.Contains(gameObject))
+                {
+                    gameObjects.Remove(gameObject);
+                }
+            }
         }
 
         /// <summary>
@@ -133,15 +143,6 @@
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// 添加相机
-        /// </summary>
-        /// <param name="camera"></param>
-        internal void Add(CCamera camera)
-        {
-            cameras.Add(camera);
         }
 
         /// <summary>
