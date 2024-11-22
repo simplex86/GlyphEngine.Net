@@ -10,10 +10,12 @@
         /// </summary>
         void LoadSkins();
 
+        void LoadSkin(string filepath);
+
         /// <summary>
         /// 应用指定名字的皮肤
         /// </summary>
-        /// <param name="skinName"></param>
-        void ApplySkin(string skinName);
+        /// <param name="skinname"></param>
+        void ApplySkin(string skinname);
     }
 }

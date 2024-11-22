@@ -7,6 +7,12 @@ namespace SimpleX.CEngine
     /// </summary>
     internal class CGameObjectDeserializer : IDeserializer
     {
+        private static Dictionary<string, IDeserializer> deserializers = new()
+        {
+            { "child", new CGameObjectDeserializer() },
+            { "pixel", new CPixelDeserializer() },
+        };
+
         /// <summary>
         /// 
         /// </summary>
@@ -20,16 +26,23 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="parent"></param>
-        public static CGameObject Deserialize(JsonData data)
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        public static CGameObject Deserialize(string filepath)
         {
+            var data = ResourceManager.LoadJson(filepath);
             return DeserializeObject(data, null);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="container"></param>
+        /// <returns></returns>
         private static CGameObject DeserializeObject(JsonData data, IContainer container)
         {
-            CGameObject gameobject = null;
+            CGameObject gameobject;
 
             var x = data.As("x", 0);
             var y = data.As("y", 0);
@@ -44,6 +57,7 @@ namespace SimpleX.CEngine
                 };
 
                 DeserializePixels(data, gameobject as CRenderableObject);
+                DeserializeSkins(data, gameobject as CRenderableObject);
             }
             else
             {
@@ -62,35 +76,58 @@ namespace SimpleX.CEngine
             return gameobject;
         }
 
-        private static void DeserializePixels(JsonData data, CRenderableObject gameObject)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="renderable"></param>
+        private static void DeserializePixels(JsonData data, CRenderableObject renderable)
         {
             if (data.ContainsKey("pixels"))
             {
+                var deserializer = deserializers["pixel"];
+
                 var pixels = data["pixels"];
                 for (int i = 0; i<pixels.Count; i++) 
                 {
-                    var p = pixels[i];
-
-                    var x = p.As("x", 0);
-                    var y = p.As("y", 0);
-                    var c = p.As("c", CChar.Empty);
-                    var color = ColorTransverter.Get(p, "color");
-
-                    var pixel = CPixelPool.Instance.Alloc(x, y, c, color);
-                    gameObject.AddPixel(pixel);
+                    deserializer.Deserialize(pixels[i], renderable);
                 }
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="gameobject"></param>
         private static void DeserializeChildren(JsonData data, CGameObject gameobject)
         {
             if (data.ContainsKey("children"))
             {
+                var deserializer = deserializers["child"];
+
                 var children = data["children"];
                 for (int i = 0; i < children.Count; i++)
                 {
-                    var child = children[i];
-                    DeserializeObject(child, gameobject);
+                    deserializer.Deserialize(children[i], gameobject);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="renderable"></param>
+        private static void DeserializeSkins(JsonData data, CRenderableObject renderable)
+        {
+            if (data.ContainsKey("skins"))
+            {
+                var skins = data["skins"];
+                for (int i = 0; i < skins.Count; i++)
+                {
+                    var path = (string)skins[i];
+                    CSkinDeserializer.Deserialize(path, renderable);
                 }
             }
         }

@@ -1,4 +1,6 @@
-﻿namespace SimpleX.CEngine
+﻿using Microsoft.VisualBasic.FileIO;
+
+namespace SimpleX.CEngine
 {
     /// <summary>
     /// 游戏对象
@@ -147,52 +149,49 @@
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="filepath"></param>
         /// <returns></returns>
-        public static CGameObject CreatePrimitive()
+        public static CGameObject Load(string filepath)
         {
-            // TODO
-            return null;
+            return Load(filepath, 0, 0);
         }
 
         /// <summary>
-        /// 加载对象
+        /// 
         /// </summary>
-        /// <typeparam name="TGameObject"></typeparam>
-        /// <returns></returns>
-        public static TGameObject Load<TGameObject>() where TGameObject : CGameObject, new()
-        {
-            var gameObject = new TGameObject();
-            if (gameObject is ISkinable skinable)
-            {
-                skinable.LoadSkins();
-            }
-
-            var scene = CSceneManager.GetMainScene();
-            scene.Add(gameObject);
-
-            return gameObject;
-        }
-
-        /// <summary>
-        /// 加载对象并设定其坐标
-        /// </summary>
-        /// <typeparam name="TGameObject"></typeparam>
+        /// <param name="filepath"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public static TGameObject Load<TGameObject>(int x, int y) where TGameObject : CGameObject, new()
+        public static CGameObject Load(string filepath, int x, int y)
         {
-            var gameObject = new TGameObject();
-            if (gameObject is ISkinable skinable)
+            return Load(filepath, x, y, null);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public static CGameObject Load(string filepath, int x, int y, CGameObject parent)
+        {
+            var gameobject = CGameObjectDeserializer.Deserialize(filepath);
+            gameobject.transform.position = new Vector2(x, y);
+
+            if (parent == null)
             {
-                skinable.LoadSkins();
+                var scene = CSceneManager.GetMainScene();
+                scene.Add(gameobject);
             }
-            gameObject.transform.SetXY(x, y);
+            else
+            {
+                parent.Add(gameobject);
+            }
 
-            var scene = CSceneManager.GetMainScene();
-            scene.Add(gameObject);
-
-            return gameObject;
+            return gameobject;
         }
 
         /// <summary>

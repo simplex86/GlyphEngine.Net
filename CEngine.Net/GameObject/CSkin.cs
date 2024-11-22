@@ -8,7 +8,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public string Name { get; private set; }
+        public string name { get; private set; }
 
         /// <summary>
         /// 
@@ -17,7 +17,7 @@
 
         public CSkin(string name)
         {
-            Name = name;
+            this.name = name;
         }
 
         /// <summary>

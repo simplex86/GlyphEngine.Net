@@ -111,20 +111,25 @@ namespace SimpleX.CEngine
             }
         }
 
+        public void LoadSkin(string filepath)
+        {
+            CSkinDeserializer.Deserialize(filepath, this);
+        }
+
         /// <summary>
         /// 添加皮肤
         /// </summary>
         /// <param name="key"></param>
         /// <param name="skin"></param>
-        protected void AddSkin(CSkin skin, bool apply = false)
+        internal void AddSkin(CSkin skin, bool apply = false)
         {
-            if (skins.TryGetValue(skin.Name, out var _))
+            if (skins.TryGetValue(skin.name, out var _))
             {
-                skins[skin.Name] = skin;
+                skins[skin.name] = skin;
             }
             else
             {
-                skins.Add(skin.Name, skin);
+                skins.Add(skin.name, skin);
             }
 
             if (apply)
@@ -136,10 +141,10 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 应用指定名字的皮肤
         /// </summary>
-        /// <param name="skinName"></param>
-        public void ApplySkin(string skinName)
+        /// <param name="skinname"></param>
+        public void ApplySkin(string skinname)
         {
-            if (skins.TryGetValue(skinName, out var skin))
+            if (skins.TryGetValue(skinname, out var skin))
             {
                 skin.Apply(this);
             }
@@ -148,10 +153,10 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 移除皮肤
         /// </summary>
-        /// <param name="skinName"></param>
-        protected void RemoveSkin(string skinName)
+        /// <param name="skinname"></param>
+        protected void RemoveSkin(string skinname)
         {
-            skins.Remove(skinName);
+            skins.Remove(skinname);
         }
 
         /// <summary>
