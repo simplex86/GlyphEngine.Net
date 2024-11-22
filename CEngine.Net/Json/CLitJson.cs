@@ -53,7 +53,20 @@ namespace SimpleX.CEngine
 
             if (self.ContainsKey(key))
             {
-                value = (char)(int)self[key];
+                var node = self[key];
+                if (node.IsInt)
+                {
+                    value = (char)(int)node;
+                }
+                else if (node.IsString)
+                {
+                    var str = (string)node;
+                    value = (str.Length > 0) ? str[0] : CChar.Empty;
+                }
+                else
+                {
+                    value = CChar.Empty;
+                }
                 return true;
             }
 
