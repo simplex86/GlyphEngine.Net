@@ -25,15 +25,7 @@
         /// <summary>
         /// 
         /// </summary>
-        private static List<CCamera> newcameras = new List<CCamera>();
-        /// <summary>
-        /// 
-        /// </summary>
         private static List<CScene> remscenes = new List<CScene>();
-        /// <summary>
-        /// 
-        /// </summary>
-        private static List<CCamera> remcameras = new List<CCamera>();
 
         /// <summary>
         /// 
@@ -72,7 +64,12 @@
         /// <returns></returns>
         public static CScene GetMainScene()
         {
-            return (scenes.Count == 0) ? null : scenes[0];
+            if (newscenes.Count > 0) return newscenes[^1];
+
+            if (scenes.Count == 0) return null;
+            if (scenes.Count == 1) return scenes[0];
+
+            return scenes[^1];
         }
 
         /// <summary>
@@ -135,10 +132,6 @@
             else
             {
                 newscenes.Add(scene);
-                foreach (var camera in scene.cameras)
-                {
-                    newcameras.Add(camera);
-                }
             }
         }
 
@@ -165,11 +158,11 @@
         /// <param name="scene"></param>
         private static void Remove(CScene scene)
         {
-            remscenes.Add(scene);
             foreach (var camera in scene.cameras)
             {
-                remcameras.Add(camera);
+                cameras.Remove(camera);
             }
+            remscenes.Add(scene);
         }
 
         /// <summary>
@@ -180,14 +173,12 @@
             foreach (var scene in newscenes)
             {
                 scenes.Add(scene);
+                foreach (var camera in scene.cameras)
+                {
+                    cameras.Add(camera);
+                }
             }
             newscenes.Clear();
-
-            foreach (var camera in newcameras)
-            {
-                cameras.Add(camera);
-            }
-            newcameras.Clear();
 
             SortCameras();
         }
@@ -220,15 +211,10 @@
         {
             foreach (var scene in remscenes)
             {
+                scene.Destroy();
                 scenes.Remove(scene);
             }
             remscenes.Clear();
-
-            foreach (var camera in remcameras)
-            {
-                cameras.Remove(camera);
-            }
-            remcameras.Clear();
         }
 
         /// <summary>
@@ -239,7 +225,7 @@
         {
             foreach (var scene in scenes)
             {
-                camera.Render(scene.gameObjects, renderer);
+                camera.Render(scene.gameobjects, renderer);
             }
         }
 

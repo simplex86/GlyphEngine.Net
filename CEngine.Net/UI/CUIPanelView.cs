@@ -46,8 +46,7 @@ namespace SimpleX.CEngine.UI
             width = w;
             height = h;
 
-            Apply(new CBox(this));
-            Apply(new CThickBorder(this));
+            BuildBorder(EBorderStyle.Borderless);
         }
 
         /// <summary>
@@ -213,6 +212,28 @@ namespace SimpleX.CEngine.UI
                 evt.keycode == (int)focus.keycode)
             {
                 focus.OnEnter();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="style"></param>
+        private void BuildBorder(EBorderStyle style)
+        {
+            var box = new CBox(this);
+            Apply(box);
+
+            switch (style)
+            {
+                case EBorderStyle.ThinBorder:
+                    Apply(new CThinBorder(this));
+                    break;
+                case EBorderStyle.ThickBorder:
+                    Apply(new CThickBorder(this));
+                    break;
+                default:
+                    break;
             }
         }
     }

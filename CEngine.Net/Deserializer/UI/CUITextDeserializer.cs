@@ -10,8 +10,12 @@ namespace SimpleX.CEngine.UI
             var y = data.As("y", 0);
             var name = data.As("name", string.Empty);
             var text = data.As("text", string.Empty);
+            var color = ColorTransverter.Get(data, "color");
 
-            var component = new CUIText(text, new Vector2(x, y));
+            var component = new CUIText(text, new Vector2(x, y))
+            {
+                color = color,
+            };
 
             var view = container as CUIPanelView;
             view.AddComponent(component, name);

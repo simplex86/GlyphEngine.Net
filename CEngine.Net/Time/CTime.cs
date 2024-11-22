@@ -28,10 +28,12 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        internal static void Update()
+        internal static float Update()
         {
             deltatime = (watcher.ElapsedMilliseconds - timestamp) / 1000f;
             timestamp = watcher.ElapsedMilliseconds;
+
+            return deltatime;
         }
 
         /// <summary>

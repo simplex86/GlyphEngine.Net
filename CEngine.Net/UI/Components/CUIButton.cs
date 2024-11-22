@@ -34,14 +34,14 @@
         /// 文本子组件
         /// </summary>
         private CUIText text = null;
-        /// <summary>
-        /// 
-        /// </summary>
-        private IDecorator box = null;
-        /// <summary>
-        /// 
-        /// </summary>
-        private IDecorator border = null;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //private IDecorator box = null;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //private IDecorator border = null;
 
         /// <summary>
         /// 
@@ -124,24 +124,19 @@
         /// <param name="style"></param>
         private void BuildBorder(EBorderStyle style)
         {
-            box = new CBox(this);
+            var box = new CBox(this);
             Apply(box);
 
             switch (style)
             {
                 case EBorderStyle.ThinBorder:
-                    border = new CThinBorder(this);
+                    Apply(new CThinBorder(this));
                     break;
                 case EBorderStyle.ThickBorder:
-                    border = new CThickBorder(this);
+                    Apply(new CThickBorder(this));
                     break;
                 default:
                     break;
-            }
-
-            if (border != null)
-            {
-                Apply(border);
             }
         }
     }

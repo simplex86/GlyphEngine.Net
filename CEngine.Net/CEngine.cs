@@ -1,5 +1,6 @@
-﻿using SimpleX.CEngine.UI;
-using System.Text;
+﻿using System.Text;
+using SimpleX.CEngine.UI;
+using SimpleX.CEngine.Input;
 
 namespace SimpleX.CEngine
 {
@@ -20,23 +21,14 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        public CEngine()
+        public CEngine(string title)
         {
             // 隐藏光标
             Console.CursorVisible = false;
             // 设置编码
             Console.OutputEncoding = Encoding.Unicode;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public CEngine(int width, int height)
-            : this()
-        {
-            // TODO: 暂时不知道怎么设置窗口大小
+            // 设置标题
+            Console.Title = title;
         }
 
         /// <summary>
@@ -85,8 +77,8 @@ namespace SimpleX.CEngine
 
                 while (running)
                 {
-                    CTime.Update();
-                    var dt = CTime.deltatime;
+                    var dt = CTime.Update();
+                    CKeyboard.Update(dt);
                     application?.Update(dt);
                     CSceneManager.Update(dt);
                     CUIManager.Update(dt);

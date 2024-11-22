@@ -1,4 +1,6 @@
-﻿namespace SimpleX.CEngine.Input
+﻿using System.Security.Cryptography;
+
+namespace SimpleX.CEngine.Input
 {
     /// <summary>
     /// 
@@ -44,9 +46,13 @@
     public static class CKeyboard
     {
         /// <summary>
+        /// 
+        /// </summary>
+        private static EKeyboardEventType keytype = EKeyboardEventType.None;
+        /// <summary>
         /// 有效的键值
         /// </summary>
-        private static int keycode { get; set; } = INVALID_KEY_CODE;
+        private static int keycode = INVALID_KEY_CODE;
         /// <summary>
         /// 
         /// </summary>
@@ -65,38 +71,58 @@
         /// </summary>
         public static bool Poll(out CKeyboardEvent evt)
         {
+            if (keytype == EKeyboardEventType.None)
+            {
+                evt = NONE_KEYBOARD_EVENT;
+                return false;
+            }
+
+            evt = new CKeyboardEvent()
+            {
+                type = keytype,
+                keycode = keycode,
+            };
+
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt"></param>
+        internal static void Update(float dt)
+        {
+            if (keytype == EKeyboardEventType.Up)
+            {
+                keytype = EKeyboardEventType.None;
+                keycode = INVALID_KEY_CODE;
+            }
+
             if (Console.KeyAvailable)
             {
                 var curkey = Console.ReadKey(true).Key;
 
                 if (keycode == INVALID_KEY_CODE)
                 {
+                    keytype = EKeyboardEventType.Down;
                     keycode = (int)curkey;
-                    evt = OnKeyDown();
                 }
                 else
                 {
                     if (keycode == (int)curkey)
                     {
-                        evt = OnKeyHold();
+                        keytype = EKeyboardEventType.Hold;
                     }
                     else
                     {
-                        evt = OnKeyUp();
+                        keytype = EKeyboardEventType.Up;
                     }
                 }
-
-                return true;
             }
-            
-            if (keycode != INVALID_KEY_CODE)
+            else if (keycode != INVALID_KEY_CODE)
             {
-                evt = OnKeyUp();
-                return true;
+                keytype = EKeyboardEventType.Up;
             }
-
-            evt = NONE_KEYBOARD_EVENT;
-            return false;
         }
 
         /// <summary>

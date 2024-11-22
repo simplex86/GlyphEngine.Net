@@ -46,6 +46,9 @@
             this.text = text;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void ResetPixels()
         {
             // 重置像素列表

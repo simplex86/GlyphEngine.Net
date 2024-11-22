@@ -1,4 +1,6 @@
-﻿namespace SimpleX.CEngine
+﻿using static System.Formats.Asn1.AsnWriter;
+
+namespace SimpleX.CEngine
 {
     /// <summary>
     /// 场景
@@ -12,7 +14,7 @@
         /// <summary>
         /// 
         /// </summary>
-        internal List<CGameObject> gameObjects { get; } = new List<CGameObject>();
+        internal List<CGameObject> gameobjects { get; } = new List<CGameObject>();
 
         /// <summary>
         /// 
@@ -52,16 +54,16 @@
         /// </summary>
         internal protected virtual void Exit()
         {
-
+            
         }
 
         /// <summary>
         /// 添加对象
         /// </summary>
-        /// <param name="gameObject"></param>
-        public void Add(CGameObject gameObject)
+        /// <param name="gameobject"></param>
+        public void Add(CGameObject gameobject)
         {
-            if (gameObject is CCamera camera)
+            if (gameobject is CCamera camera)
             {
                 if (!cameras.Contains(camera))
                 {
@@ -70,9 +72,9 @@
             }
             else
             {
-                if (!gameObjects.Contains(gameObject))
+                if (!gameobjects.Contains(gameobject))
                 {
-                    gameObjects.Add(gameObject);
+                    gameobjects.Add(gameobject);
                 }
             }
         }
@@ -80,10 +82,10 @@
         /// <summary>
         /// 移除对象
         /// </summary>
-        /// <param name="gameObject"></param>
-        public void Remove(CGameObject gameObject)
+        /// <param name="gameobject"></param>
+        public void Remove(CGameObject gameobject)
         {
-            if (gameObject is CCamera camera)
+            if (gameobject is CCamera camera)
             {
                 if (cameras.Contains(camera))
                 {
@@ -92,9 +94,9 @@
             }
             else
             {
-                if (gameObjects.Contains(gameObject))
+                if (gameobjects.Contains(gameobject))
                 {
-                    gameObjects.Remove(gameObject);
+                    gameobjects.Remove(gameobject);
                 }
             }
         }
@@ -103,17 +105,17 @@
         /// 查找对象
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="gameObject"></param>
+        /// <param name="gameobject"></param>
         /// <returns></returns>
-        internal bool Find(string name, out CGameObject gameObject)
+        internal bool Find(string name, out CGameObject gameobject)
         {
-            gameObject = null;
+            gameobject = null;
 
-            foreach (var o in gameObjects)
+            foreach (var o in gameobjects)
             {
                 if (o.name == name)
                 {
-                    gameObject = o;
+                    gameobject = o;
                     return true;
                 }
             }
@@ -126,18 +128,18 @@
         /// </summary>
         /// <typeparam name="TObject"></typeparam>
         /// <param name="name"></param>
-        /// <param name="gameObject"></param>
+        /// <param name="gameobject"></param>
         /// <returns></returns>
-        internal bool Find<TObject>(string name, out TObject gameObject) where TObject : CGameObject
+        internal bool Find<TObject>(string name, out TObject gameobject) where TObject : CGameObject
         {
-            gameObject = null;
+            gameobject = null;
 
-            foreach (var o in gameObjects)
+            foreach (var o in gameobjects)
             {
                 if (o is TObject &&
                     o.name == name)
                 {
-                    gameObject = o as TObject;
+                    gameobject = o as TObject;
                     return true;
                 }
             }
@@ -149,17 +151,31 @@
         /// 移除场景中已销毁的对象
         /// </summary>
         /// <param name="scene"></param>
-        /// <param name="gameObject"></param>
+        /// <param name="gameobject"></param>
         /// <returns></returns>
         internal void RemoveDestroyedGameObjects()
         {
-            for (int i = gameObjects.Count - 1; i >= 0; i--)
+            for (int i = gameobjects.Count - 1; i >= 0; i--)
             {
-                if (gameObjects[i].destroyed)
+                if (gameobjects[i].destroyed)
                 {
-                    gameObjects.RemoveAt(i);
+                    gameobjects.RemoveAt(i);
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal void Destroy()
+        {
+            cameras.Clear();
+
+            foreach (var gameobject in gameobjects)
+            {
+                CGameObject.Destroy(gameobject);
+            }
+            gameobjects.Clear();
         }
     }
 

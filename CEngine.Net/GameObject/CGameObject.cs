@@ -197,21 +197,21 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 销毁对象
         /// </summary>
-        /// <param name="gameObject"></param>
-        public static void Destroy(CGameObject gameObject)
+        /// <param name="gameobject"></param>
+        public static void Destroy(CGameObject gameobject)
         {
-            if (gameObject == null ||
-                gameObject.destroyed)
+            if (gameobject == null ||
+                gameobject.destroyed)
             {
                 return;
             }
 
             // 从父结点移除
-            gameObject.parent?.Remove(gameObject);
+            gameobject.parent?.Remove(gameobject);
             // TODO: 如何处理子节点，还在思考中
 
-            gameObject.OnDestroy();
-            gameObject.destroyed = true;
+            gameobject.OnDestroy();
+            gameobject.destroyed = true;
         }
 
         /// <summary>

@@ -15,21 +15,7 @@
                 if (_texture != value)
                 {
                     _texture = value;
-                    // 重置像素列表
-                    ClearPixels();
-                    //
-                    for (int h = 0; h < _texture.height; h++)
-                    {
-                        for (int w = 0; w < _texture.width; w++)
-                        {
-                            var i = h * _texture.width + w;
-                            var pixel = CPixelPool.Instance.Alloc(w - _texture.width  / 2, 
-                                                                  h - _texture.height / 2,
-                                                                  _texture.chars[i],
-                                                                  color);
-                            AddPixel(pixel);
-                        }
-                    }
+                    ResetPixels();
                 }
             }
             get { return _texture; }
@@ -48,6 +34,28 @@
             this.color = color;
             this.texture = tex;
             this.transform.position = position;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ResetPixels()
+        {
+            // 重置像素列表
+            ClearPixels();
+            //
+            for (int h = 0; h < _texture.height; h++)
+            {
+                for (int w = 0; w < _texture.width; w++)
+                {
+                    var i = h * _texture.width + w;
+                    var pixel = CPixelPool.Instance.Alloc(w - _texture.width / 2,
+                                                          h - _texture.height / 2,
+                                                          _texture.chars[i],
+                                                          color);
+                    AddPixel(pixel);
+                }
+            }
         }
     }
 }
