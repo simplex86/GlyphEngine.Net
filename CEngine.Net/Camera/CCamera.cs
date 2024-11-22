@@ -3,7 +3,7 @@
     /// <summary>
     /// 相机
     /// </summary>
-    public class CCamera
+    public class CCamera : CGameObject
     {
         /// <summary>
         /// 渲染顺序
@@ -14,15 +14,6 @@
         /// 渲染遮罩
         /// </summary>
         public ulong mask { get; set; } = (ulong)ERenderMask.Everything;
-        /// <summary>
-        /// 
-        /// </summary>
-        public Vector2 position { get; set; } = Vector2.zero;
-        /// <summary>
-        /// 
-        /// </summary>
-        public string name { get; }
-
         /// <summary>
         /// 宽度
         /// </summary>
@@ -129,7 +120,7 @@
         /// <returns></returns>
         private Vector2 W2V(Vector2 wpos)
         {
-            return wpos - position + CWorld.center;
+            return wpos - transform.position + CWorld.center;
         }
 
         /// <summary>
@@ -139,8 +130,13 @@
         /// <returns></returns>
         private bool Cull(int x, int y)
         {
-            if (x < 0 || x >= width ||
-                y < 0 || y >= height)
+            var x1 = (CWorld.width - width) / 2;
+            var x2 = x1 + width;
+            var y1 = (CWorld.height - height) / 2;
+            var y2 = y1 + height;
+
+            if (x < x1 || x > x2 ||
+                y < y1 || y > y2)
             {
                 return false;
             }
