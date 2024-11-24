@@ -221,8 +221,8 @@ namespace SimpleX.CEngine.UI
         /// <param name="style"></param>
         private void BuildBorder(EBorderStyle style)
         {
-            var box = new CBox(this);
-            Apply(box);
+            //var box = new CBox(this);
+            //Apply(box);
 
             switch (style)
             {
