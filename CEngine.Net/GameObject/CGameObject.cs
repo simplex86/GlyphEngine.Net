@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic.FileIO;
-
-namespace SimpleX.CEngine
+﻿namespace SimpleX.CEngine
 {
     /// <summary>
     /// 游戏对象
@@ -208,7 +206,12 @@ namespace SimpleX.CEngine
 
             // 从父结点移除
             gameobject.parent?.Remove(gameobject);
-            // TODO: 如何处理子节点，还在思考中
+            // 处理子节点
+            foreach (var child in gameobject.children)
+            {
+                child.OnDestroy();
+                child.destroyed = true;
+            }
 
             gameobject.OnDestroy();
             gameobject.destroyed = true;
