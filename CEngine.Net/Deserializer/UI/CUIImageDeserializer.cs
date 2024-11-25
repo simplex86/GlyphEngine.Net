@@ -18,7 +18,7 @@ namespace SimpleX.CEngine.UI
             var y = data.As("y", 0);
             var name = data.As("name", string.Empty);
             var color = ColorTransverter.Get(data, "color");
-            var texture = LoadTexture(data);
+            var texture = Load(data);
 
             var image = new CUIImage(texture, new Vector2(x, y), color);
 
@@ -31,11 +31,11 @@ namespace SimpleX.CEngine.UI
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private CTexture LoadTexture(JsonData data)
+        private CTexture Load(JsonData data)
         {
             if (data.AsString("texture", out var filepath))
             {
-                return new CTexture(filepath);
+                return CResourceManager.Load(filepath, true);
             }
 
             return null;

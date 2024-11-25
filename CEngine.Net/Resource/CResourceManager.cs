@@ -13,10 +13,41 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        public static CTexture LoadTextrue(string filepath, bool transparent)
+        public static CTexture Load(string filepath, bool transparent)
         {
             var tex = new CTexture(transparent);
-            tex.Load(filepath);
+
+            try
+            {
+                var lines = File.ReadAllLines($"{CPath.resourcesPath}/{filepath}");
+                if (lines.Length > 0)
+                {
+                    tex.width = 0;
+                    foreach (var line in lines)
+                    {
+                        tex.width = Math.Max(tex.width, line.Length);
+                    }
+                    tex.height = lines.Length;
+
+                    tex.chars = new List<char>(tex.width * tex.height);
+                    foreach (var line in lines)
+                    {
+                        for (int i = 0; i < tex.width; i++)
+                        {
+                            var c = (i < line.Length) ? line[i] : CChar.Space;
+                            if (tex.transparent && c == CChar.Space)
+                            {
+                                c = CChar.Empty;
+                            }
+                            tex.chars.Add(c);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                CDebug.Error($"load texture failed. filepath = {filepath}.\n{ex}");
+            }
 
             return tex;
         }
@@ -77,7 +108,7 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="tex"></param>
         /// <param name="path"></param>
-        public static void LoadTexture(this CTexture tex, string path, bool transparent)
+        internal static void Load(this CTexture tex, string path)
         {
             try
             {
@@ -97,7 +128,7 @@ namespace SimpleX.CEngine
                         for (int i = 0; i < tex.width; i++)
                         {
                             var c = (i < line.Length) ? line[i] : CChar.Space;
-                            if (transparent && c == CChar.Space)
+                            if (tex.transparent && c == CChar.Space)
                             {
                                 c = CChar.Empty;
                             }
