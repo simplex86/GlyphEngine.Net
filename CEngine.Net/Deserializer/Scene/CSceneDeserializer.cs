@@ -23,7 +23,7 @@ namespace SimpleX.CEngine
         /// <returns></returns>
         public static void Deserialize(string file, CScene scene)
         {
-            var data = ResourceManager.LoadJson(file);
+            var data = CResourceManager.LoadJson(file);
             Deserialize(data, scene);
         }
 

@@ -24,7 +24,7 @@ namespace SimpleX.CEngine.UI
         /// <returns></returns>
         public static CUIPanelView Deserialize(string file)
         {
-            var data = ResourceManager.LoadJson(file);
+            var data = CResourceManager.LoadJson(file);
             return Deserialize(data);
         }
 

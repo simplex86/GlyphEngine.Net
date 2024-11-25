@@ -6,7 +6,7 @@ namespace SimpleX.CEngine
     /// <summary>
     /// 
     /// </summary>
-    internal static class ResourceManager
+    internal static class CResourceManager
     {
         /// <summary>
         /// 

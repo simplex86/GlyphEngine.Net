@@ -16,7 +16,7 @@ namespace SimpleX.CEngine
         /// <param name="scene"></param>
         public static void Deserialize(string filepath, CRenderableObject renderable)
         {
-            var data = ResourceManager.LoadJson(filepath);
+            var data = CResourceManager.LoadJson(filepath);
 
             var children = data["children"];
             for (int i = 0; i < children.Count; i++)

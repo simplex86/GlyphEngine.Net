@@ -30,7 +30,7 @@ namespace SimpleX.CEngine
         /// <returns></returns>
         public static CGameObject Deserialize(string filepath)
         {
-            var data = ResourceManager.LoadJson(filepath);
+            var data = CResourceManager.LoadJson(filepath);
             return DeserializeObject(data, null);
         }
 
