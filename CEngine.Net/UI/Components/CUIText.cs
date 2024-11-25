@@ -58,7 +58,8 @@
             {
                 var pixel = CPixelPool.Instance.Alloc(i - _text.Length / 2,
                                                       0,
-                                                      _text[i]);
+                                                      _text[i],
+                                                      color);
                 AddPixel(pixel);
             }
         }
