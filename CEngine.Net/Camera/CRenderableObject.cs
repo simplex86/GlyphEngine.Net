@@ -24,20 +24,21 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        internal protected CRenderableObject()
-            : this(ERenderLayer.Default)
+        /// <param name="layer"></param>
+        internal protected CRenderableObject(ERenderLayer layer)
+            : this(0, 0, layer)
         {
-
+            
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="layer"></param>
-        internal protected CRenderableObject(ERenderLayer layer)
-            : this(0, 0, layer)
+        private protected CRenderableObject(ulong layer)
+            : base(0, 0)
         {
-            
+            this.layer = layer;
         }
 
         /// <summary>
@@ -91,29 +92,7 @@ namespace SimpleX.CEngine
         /// </summary>
         protected void ClearPixels()
         {
-            pixels.Clear();
-        }
-
-        /// <summary>
-        /// 加载皮肤
-        /// </summary>
-        public void LoadSkins()
-        {
-            var types = ReflectionHelper.FindAll<CSkin, CSkinOfAttribute>();
-            foreach (var type in types)
-            {
-                var attr = type.GetCustomAttribute<CSkinOfAttribute>();
-                if (attr != null && attr.Is(GetType()))
-                {
-                    var skin = Activator.CreateInstance(type) as CSkin;
-                    AddSkin(skin, attr.applied);
-                }
-            }
-        }
-
-        public void LoadSkin(string filepath)
-        {
-            CSkinDeserializer.Deserialize(filepath, this);
+            CPixelPool.Instance.Release(pixels);
         }
 
         /// <summary>
@@ -156,7 +135,11 @@ namespace SimpleX.CEngine
         /// <param name="skinname"></param>
         protected void RemoveSkin(string skinname)
         {
-            skins.Remove(skinname);
+            if (skins.TryGetValue(skinname, out var skin))
+            {
+                skin.Destroy();
+                skins.Remove(skinname);
+            }
         }
 
         /// <summary>
@@ -165,7 +148,47 @@ namespace SimpleX.CEngine
         internal protected override void OnDestroy()
         {
             CPixelPool.Instance.Release(pixels);
+            while(skins.Keys.Count > 0)
+            {
+                var key = skins.Keys.First<string>();
+                skins.Remove(key);
+            }
+
             base.OnDestroy();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override CRenderableObject Clone()
+        {
+            var clone = new CRenderableObject(layer)
+            {
+                name = name,
+                enabled = enabled,
+            };
+            clone.transform.position = transform.position;
+
+            foreach (var pixel in pixels)
+            {
+                var clonepixel = CPixelPool.Instance.Alloc(pixel.x, pixel.y, pixel.c, pixel.color);
+                clone.pixels.Add(clonepixel);
+            }
+
+            foreach (var skin in skins.Values)
+            {
+                var cloneskin = skin.Clone();
+                clone.AddSkin(cloneskin);
+            }
+
+            foreach (var child in children)
+            {
+                var clonechild = child.Clone();
+                clone.Add(clonechild);
+            }
+
+            return clone;
         }
     }
 }

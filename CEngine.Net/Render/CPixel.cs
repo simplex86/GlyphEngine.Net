@@ -45,5 +45,15 @@
             this.color = Console.ForegroundColor;
             this.backgroundColor = Console.BackgroundColor;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        internal CPixel Clone()
+        {
+            var clone = CPixelPool.Instance.Alloc(x, y, c, color);
+            return clone;
+        }
     }
 }

@@ -145,54 +145,6 @@
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="filepath"></param>
-        /// <returns></returns>
-        public static CGameObject Load(string filepath)
-        {
-            return Load(filepath, 0, 0);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="filepath"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public static CGameObject Load(string filepath, int x, int y)
-        {
-            return Load(filepath, x, y, null);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="filepath"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
-        public static CGameObject Load(string filepath, int x, int y, CGameObject parent)
-        {
-            var gameobject = CGameObjectDeserializer.Deserialize(filepath);
-            gameobject.transform.position = new Vector2(x, y);
-
-            if (parent == null)
-            {
-                var scene = CSceneManager.GetMainScene();
-                scene.Add(gameobject);
-            }
-            else
-            {
-                parent.Add(gameobject);
-            }
-
-            return gameobject;
-        }
-
-        /// <summary>
         /// 销毁对象
         /// </summary>
         /// <param name="gameobject"></param>
@@ -223,6 +175,28 @@
         internal protected virtual void OnDestroy()
         {
             
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual CGameObject Clone()
+        {
+            var clone = new CGameObject()
+            {
+                name = name,
+                enabled = enabled,
+            };
+            clone.transform.position = transform.position;
+
+            foreach (var child in children)
+            {
+                var clonechild = child.Clone();
+                clone.Add(clonechild);
+            }
+
+            return clone;
         }
     }
 }

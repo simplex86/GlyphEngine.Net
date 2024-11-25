@@ -72,8 +72,7 @@
         /// <returns></returns>
         public CPixel Alloc(int x, int y, char c, ConsoleColor color)
         {
-            var pixel = Alloc(x, y);
-            pixel.c = c;
+            var pixel = Alloc(x, y, c);
             pixel.color = color;
 
             return pixel;

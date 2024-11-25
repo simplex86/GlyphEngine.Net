@@ -6,13 +6,6 @@
     internal interface ISkinable
     {
         /// <summary>
-        /// 加载皮肤
-        /// </summary>
-        void LoadSkins();
-
-        void LoadSkin(string filepath);
-
-        /// <summary>
         /// 应用指定名字的皮肤
         /// </summary>
         /// <param name="skinname"></param>

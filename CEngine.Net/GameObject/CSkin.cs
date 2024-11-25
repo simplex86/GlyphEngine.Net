@@ -3,7 +3,7 @@
     /// <summary>
     /// 皮肤
     /// </summary>
-    public class CSkin
+    internal class CSkin
     {
         /// <summary>
         /// 
@@ -27,7 +27,7 @@
         /// <param name="y"></param>
         /// <param name="symbol"></param>
         /// <param name="color"></param>
-        public void Set(int x, int y, char c, ConsoleColor color)
+        internal void Set(int x, int y, char c, ConsoleColor color)
         {
             if (!Get(x, y, out var pixel))
             {
@@ -46,7 +46,7 @@
         /// <param name="y"></param>
         /// <param name="pixel"></param>
         /// <returns></returns>
-        public bool Get(int x, int y, out CPixel pixel)
+        private bool Get(int x, int y, out CPixel pixel)
         {
             pixel = null;
 
@@ -54,14 +54,7 @@
             {
                 if (p.x == x && p.y == y)
                 {
-                    pixel = new CPixel()
-                    {
-                        x = p.x,
-                        y = p.y,
-                        c = p.c,
-                        color = p.color
-                    };
-
+                    pixel = p;
                     return true;
                 }
             }
@@ -84,39 +77,30 @@
                 }
             });
         }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class CSkinOfAttribute : Attribute
-    {
-        private Type type = null;
-
-        /// <summary>
-        /// 加载后生效
-        /// </summary>
-        internal bool applied { get; } = false;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="applied"></param>
-        public CSkinOfAttribute(Type type, bool applied = false)
+        internal void Destroy()
         {
-            this.type = type;
-            this.applied = applied;
+            CPixelPool.Instance.Release(pixels);
+            pixels.Clear();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="type"></param>
         /// <returns></returns>
-        public bool Is(Type type)
+        internal CSkin Clone()
         {
-            return this.type == type;
+            var clone = new CSkin(name);
+            foreach (var pixel in pixels)
+            {
+                var clonepixel = pixel.Clone();
+                clone.pixels.Add(clonepixel);
+            }
+
+            return clone;
         }
     }
 }
