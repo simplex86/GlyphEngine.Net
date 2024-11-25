@@ -19,16 +19,16 @@
         private static CRenderer renderer = new CRenderer();
 
         /// <summary>
-        /// 
+        /// 新加场景列表
         /// </summary>
         private static List<CScene> newscenes = new List<CScene>();
         /// <summary>
-        /// 
+        /// 删除场景列表
         /// </summary>
         private static List<CScene> remscenes = new List<CScene>();
 
         /// <summary>
-        /// 
+        /// 初始化
         /// </summary>
         public static void Init()
         {
@@ -95,7 +95,7 @@
         }
 
         /// <summary>
-        /// 
+        /// 加载场景
         /// </summary>
         /// <typeparam name="TScene"></typeparam>
         /// <param name="immediately"></param>
@@ -230,7 +230,7 @@
         }
 
         /// <summary>
-        /// 
+        /// 相机排序
         /// </summary>
         private static void SortCameras()
         {
