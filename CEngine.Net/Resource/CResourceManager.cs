@@ -3,10 +3,19 @@
 namespace SimpleX.CEngine
 {
     /// <summary>
-    /// 
+    /// 资源管理器
     /// </summary>
     public static class CResourceManager
     {
+        /// <summary>
+        /// gameobject缓存
+        /// </summary>
+        private static Dictionary<string, CGameObject> gcatch = new Dictionary<string, CGameObject>();
+        /// <summary>
+        /// texture缓存
+        /// </summary>
+        private static Dictionary<string, CTexture> tcatch = new Dictionary<string, CTexture>();
+
         /// <summary>
         /// 加载gameobject
         /// </summary>
@@ -39,20 +48,26 @@ namespace SimpleX.CEngine
         /// <returns></returns>
         public static CGameObject Load(string filepath, int x, int y, CGameObject parent)
         {
-            var gameobject = CGameObjectDeserializer.Deserialize(filepath);
-            gameobject.transform.position = new Vector2(x, y);
+            if (!gcatch.TryGetValue(filepath, out var gameobject))
+            {
+                gameobject = CGameObjectDeserializer.Deserialize(filepath);
+                gcatch.Add(filepath, gameobject);
+            }
+
+            var instance = gameobject.Clone();
+            instance.transform.position = new Vector2(x, y);
 
             if (parent == null)
             {
                 var scene = CSceneManager.GetMainScene();
-                scene.Add(gameobject);
+                scene.Add(instance);
             }
             else
             {
-                parent.Add(gameobject);
+                parent.Add(instance);
             }
 
-            return gameobject;
+            return instance;
         }
 
         /// <summary>
@@ -62,8 +77,13 @@ namespace SimpleX.CEngine
         /// <returns></returns>
         public static CTexture Load(string filepath, bool transparent)
         {
-            var tex = new CTexture(transparent);
+            var key = $"{filepath}.{transparent}";
+            if (tcatch.TryGetValue(key, out var tex))
+            {
+                return tex;
+            }
 
+            tex = new CTexture(transparent);
             try
             {
                 var lines = File.ReadAllLines($"{CPath.resourcesPath}/{filepath}");
@@ -90,13 +110,16 @@ namespace SimpleX.CEngine
                         }
                     }
                 }
+                tcatch.Add(key, tex);
+
+                return tex;
             }
             catch (Exception ex)
             {
                 CDebug.Error($"load texture failed. filepath = {filepath}.\n{ex}");
             }
 
-            return tex;
+            return null;
         }
 
         /// <summary>
@@ -148,6 +171,22 @@ namespace SimpleX.CEngine
             }
 
             return default(T);
+        }
+
+        /// <summary>
+        /// 卸载所有
+        /// </summary>
+        public static void UnloadAll()
+        {
+            // 清空gameobject缓存
+            foreach (var gameobject in gcatch.Values)
+            {
+                CGameObject.Destroy(gameobject);
+            }
+            gcatch.Clear();
+
+            // 清空texture缓存
+            tcatch.Clear();
         }
     }
 }

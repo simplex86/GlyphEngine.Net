@@ -1,9 +1,9 @@
 ﻿namespace SimpleX.CEngine
 {
     /// <summary>
-    /// 
+    /// 纹理，以字符作像素，只读
     /// </summary>
-    public sealed class CTexture
+    internal sealed class CTexture
     {
         /// <summary>
         /// 宽

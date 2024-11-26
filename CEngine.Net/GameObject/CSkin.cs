@@ -13,7 +13,7 @@
         /// <summary>
         /// 
         /// </summary>
-        internal List<CPixel> pixels = new List<CPixel>();
+        internal List<CPixel> pixels { get; } = new List<CPixel>();
 
         public CSkin(string name)
         {
