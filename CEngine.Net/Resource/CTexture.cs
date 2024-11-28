@@ -3,7 +3,7 @@
     /// <summary>
     /// 纹理，以字符作像素，只读
     /// </summary>
-    internal sealed class CTexture
+    public sealed class CTexture
     {
         /// <summary>
         /// 宽
