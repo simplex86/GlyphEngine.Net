@@ -26,7 +26,7 @@ namespace SimpleX.CEngine
 
             var x = data.As("x", 0);
             var y = data.As("y", 0);
-            camera.transform.position = new Vector2(x, y);
+            camera.transform.worldposition = new Vector2(x, y);
 
             var scene = container as CScene;
             scene.Add(camera);

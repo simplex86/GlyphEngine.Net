@@ -47,14 +47,14 @@
         /// 
         /// </summary>
         /// <param name="text"></param>
-        /// <param name="position"></param>
+        /// <param name="localposition"></param>
         /// <param name="unfocusColor"></param>
         /// <param name="focusColor"></param>
         /// <param name="style"></param>
-        public CUIButton(string text, Vector2 position, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
+        public CUIButton(string text, Vector2 localposition, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
         {
             this.interactable = true;
-            this.transform.position = position;
+            this.transform.localposition = localposition;
             this.keycode = keycode;
             this.unfocusColor = unfocusColor;
             this.focusColor = focusColor;

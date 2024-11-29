@@ -29,11 +29,11 @@
         /// <summary>
         /// 
         /// </summary>
-        public CUIImage(CTexture tex, Vector2 position, ConsoleColor color)
+        public CUIImage(CTexture tex, Vector2 localposition, ConsoleColor color)
         {
             this.color = color;
             this.texture = tex;
-            this.transform.position = position;
+            this.transform.localposition = localposition;
         }
 
         /// <summary>

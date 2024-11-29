@@ -1,39 +1,31 @@
 ﻿using LitJson;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.ComponentModel;
 
 namespace SimpleX.CEngine
 {
     /// <summary>
     /// 
     /// </summary>
-    internal class CSkinDeserializer
+    internal class CSkinDeserializer : IDeserializer
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="scene"></param>
-        public static void Deserialize(string filepath, CRenderableObject renderable)
+        /// <param name="container"></param>
+        public void Deserialize(JsonData data, IContainer container)
         {
-            var data = CResourceManager.LoadJson(filepath);
+            var json = CResourceManager.LoadJson((string)data);
+            var renderable = container as CRenderableObject;
 
-            var children = data["children"];
+            var children = json["children"];
             for (int i = 0; i < children.Count; i++)
             {
-                DeserializeSkin(children[i], renderable, i);
+                var name = children[i].As("name", "skin");
+                var skin = new CSkin(name);
+
+                DeserializePixels(children[i], skin);
+                renderable.AddSkin(skin);
             }
-        }
-
-        private static CSkin DeserializeSkin(JsonData data, CRenderableObject renderable, int index)
-        {
-            var name = data.As("name", $"skin_{index}");
-            var skin = new CSkin(name);
-
-            DeserializePixels(data, skin);
-            renderable.AddSkin(skin);
-
-            return skin;
         }
 
         /// <summary>
@@ -41,7 +33,7 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="data"></param>
         /// <param name="skin"></param>
-        private static void DeserializePixels(JsonData data, CSkin skin)
+        private void DeserializePixels(JsonData data, CSkin skin)
         {
             var pixels = data["pixels"];
             for (int i = 0; i < pixels.Count; i++)

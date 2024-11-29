@@ -29,8 +29,8 @@
         /// <summary>
         /// 
         /// </summary>
-        public CUIText(Vector2 position) 
-            : this("Text", position)
+        public CUIText(Vector2 localposition) 
+            : this("Text", localposition)
         {
 
         }
@@ -39,10 +39,10 @@
         /// 
         /// </summary>
         /// <param name="text"></param>
-        public CUIText(string text, Vector2 position)
+        public CUIText(string text, Vector2 localposition)
              : base()
         {
-            transform.position = position;
+            transform.localposition = localposition;
             this.text = text;
         }
 

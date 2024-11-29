@@ -168,7 +168,7 @@ namespace SimpleX.CEngine
                 name = name,
                 enabled = enabled,
             };
-            clone.transform.position = transform.position;
+            clone.transform.localposition = transform.localposition;
 
             foreach (var pixel in pixels)
             {

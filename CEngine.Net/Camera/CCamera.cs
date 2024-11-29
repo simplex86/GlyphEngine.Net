@@ -51,7 +51,7 @@
         {
             foreach (var gameobject in gameobjects)
             {
-                Render(gameobject, Vector2.zero, renderer);
+                Render(gameobject, renderer);
             }
         }
 
@@ -72,11 +72,11 @@
         /// <param name="px"></param>
         /// <param name="py"></param>
         /// <param name="renderer"></param>
-        private void Render(CGameObject gameobject, Vector2 offset, CRenderer renderer)
+        private void Render(CGameObject gameobject, CRenderer renderer)
         {
             if (!gameobject.enabled) return;
 
-            var wpos = M2W(gameobject, offset);
+            var wpos = M2W(gameobject);
             var vpos = W2V(wpos);
 
             if (gameobject is IRenderable renderable &&
@@ -98,7 +98,7 @@
             // 绘制子节点
             foreach (var child in gameobject.children)
             {
-                Render(child, wpos, renderer);
+                Render(child, renderer);
             }
         }
 
@@ -108,9 +108,9 @@
         /// <param name="gameobject"></param>
         /// <param name="mpos"></param>
         /// <returns></returns>
-        private Vector2 M2W(CGameObject gameobject, Vector2 mpos)
+        private Vector2 M2W(CGameObject gameobject)
         {
-            return mpos + gameobject.transform.position;
+            return gameobject.transform.worldposition;
         }
 
         /// <summary>
@@ -120,7 +120,7 @@
         /// <returns></returns>
         private Vector2 W2V(Vector2 wpos)
         {
-            return wpos - transform.position + CWorld.center;
+            return wpos - transform.worldposition + CWorld.center;
         }
 
         /// <summary>

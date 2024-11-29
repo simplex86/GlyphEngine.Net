@@ -56,8 +56,8 @@
         /// <param name="y"></param>
         internal protected CGameObject(int x, int y)
         {
-            transform = new CTransform();
-            transform.SetXY(x, y);
+            transform = new CTransform(this);
+            transform.localposition = new Vector2(x, y);
         }
 
         /// <summary>
@@ -142,6 +142,8 @@
                 var scene = CSceneManager.GetMainScene();
                 scene.Remove(this);
             }
+
+            transform.Reposition();
         }
 
         /// <summary>
@@ -188,7 +190,8 @@
                 name = name,
                 enabled = enabled,
             };
-            clone.transform.position = transform.position;
+            clone.transform.localposition = transform.localposition;
+            clone.transform.worldposition = transform.worldposition;
 
             foreach (var child in children)
             {

@@ -44,7 +44,7 @@ namespace SimpleX.CEngine.UI
             if (height <= 0) height = CWorld.height;
 
             var view = new CUIPanelView(width, height);
-            view.transform.position = new Vector2(x, y);
+            view.transform.localposition = new Vector2(x, y);
 
             DeserializeComponents(data["components"], view);
 

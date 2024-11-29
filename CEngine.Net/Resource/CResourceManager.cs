@@ -55,7 +55,7 @@ namespace SimpleX.CEngine
             }
 
             var instance = gameobject.Clone();
-            instance.transform.position = new Vector2(x, y);
+            instance.transform.localposition = new Vector2(x, y);
 
             if (parent == null)
             {

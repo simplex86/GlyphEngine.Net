@@ -9,7 +9,8 @@ namespace SimpleX.CEngine
     {
         private static Dictionary<string, IDeserializer> deserializers = new()
         {
-            { "child", new CGameObjectDeserializer() },
+            { "gameobject", new CGameObjectDeserializer() },
+            { "skin", new CSkinDeserializer() },
             { "pixel", new CPixelDeserializer() },
         };
 
@@ -20,7 +21,7 @@ namespace SimpleX.CEngine
         /// <param name="scene"></param>
         public void Deserialize(JsonData data, IContainer container)
         {
-            DeserializeObject(data, container);
+            DeserializeImp(data, container);
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace SimpleX.CEngine
         public static CGameObject Deserialize(string filepath)
         {
             var data = CResourceManager.LoadJson(filepath);
-            return DeserializeObject(data, null);
+            return DeserializeImp(data, null);
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace SimpleX.CEngine
         /// <param name="data"></param>
         /// <param name="container"></param>
         /// <returns></returns>
-        private static CGameObject DeserializeObject(JsonData data, IContainer container)
+        private static CGameObject DeserializeImp(JsonData data, IContainer container)
         {
             CGameObject gameobject;
 
@@ -104,7 +105,7 @@ namespace SimpleX.CEngine
         {
             if (data.ContainsKey("children"))
             {
-                var deserializer = deserializers["child"];
+                var deserializer = deserializers["gameobject"];
 
                 var children = data["children"];
                 for (int i = 0; i < children.Count; i++)
@@ -123,11 +124,12 @@ namespace SimpleX.CEngine
         {
             if (data.ContainsKey("skins"))
             {
+                var deserializer = deserializers["skin"];
+
                 var skins = data["skins"];
                 for (int i = 0; i < skins.Count; i++)
                 {
-                    var path = (string)skins[i];
-                    CSkinDeserializer.Deserialize(path, renderable);
+                    deserializer.Deserialize(skins[i], renderable);
                 }
             }
         }
