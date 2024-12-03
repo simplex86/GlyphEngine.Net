@@ -1,12 +1,19 @@
-﻿using static System.Formats.Asn1.AsnWriter;
-
-namespace SimpleX.CEngine
+﻿namespace SimpleX.CEngine
 {
     /// <summary>
     /// 场景
     /// </summary>
-    public class CScene : IContainer
+    public class CScene : CGameObjectContainer
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string filepath { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal ISceneBehaviour behaviour { get; private set; } = null;
         /// <summary>
         /// 
         /// </summary>
@@ -15,53 +22,47 @@ namespace SimpleX.CEngine
         /// 
         /// </summary>
         internal List<CGameObject> gameobjects { get; } = new List<CGameObject>();
+        /// <summary>
+        /// 
+        /// </summary>
+        internal bool destroyed { get; private set; } = false;
 
         /// <summary>
         /// 
         /// </summary>
-        protected CScene()
+        internal CScene(string filepath)
         {
-            var attrs = GetType().GetCustomAttributes(true);
-            foreach (var v in attrs)
+            this.filepath = filepath;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal void Init()
+        {
+            var types = ReflectionHelper.FindAll<ISceneBehaviour, CSceneBehaviourAttribute>();
+            foreach (var type in types)
             {
-                if (v is CSceneAttribute attr)
+                var attrs = type.GetCustomAttributes(true);
+                foreach (var attr in attrs)
                 {
-                    CSceneDeserializer.Deserialize(attr.design, this);
-                    break;
+                    if (attr is CSceneBehaviourAttribute sba &&
+                        sba.tag == filepath)
+                    {
+                        behaviour = Activator.CreateInstance(type) as ISceneBehaviour;
+                        break;
+                    }
                 }
             }
-        }
 
-        /// <summary>
-        /// 进入场景
-        /// </summary>
-        internal protected virtual void Enter()
-        {
-
-        }
-
-        /// <summary>
-        /// 刷新场景
-        /// </summary>
-        /// <param name="dt"></param>
-        internal protected virtual void Update(float dt)
-        {
-
-        }
-
-        /// <summary>
-        /// 离开场景
-        /// </summary>
-        internal protected virtual void Exit()
-        {
-            
+            behaviour?.Enter();
         }
 
         /// <summary>
         /// 添加对象
         /// </summary>
         /// <param name="gameobject"></param>
-        public void Add(CGameObject gameobject)
+        internal override void Add(CGameObject gameobject)
         {
             if (gameobject is CCamera camera)
             {
@@ -83,7 +84,7 @@ namespace SimpleX.CEngine
         /// 移除对象
         /// </summary>
         /// <param name="gameobject"></param>
-        public void Remove(CGameObject gameobject)
+        internal override void Remove(CGameObject gameobject)
         {
             if (gameobject is CCamera camera)
             {
@@ -102,73 +103,10 @@ namespace SimpleX.CEngine
         }
 
         /// <summary>
-        /// 查找对象
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="gameobject"></param>
-        /// <returns></returns>
-        internal bool Find(string name, out CGameObject gameobject)
-        {
-            gameobject = null;
-
-            foreach (var o in gameobjects)
-            {
-                if (o.name == name)
-                {
-                    gameobject = o;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// 查找对象
-        /// </summary>
-        /// <typeparam name="TObject"></typeparam>
-        /// <param name="name"></param>
-        /// <param name="gameobject"></param>
-        /// <returns></returns>
-        internal bool Find<TObject>(string name, out TObject gameobject) where TObject : CGameObject
-        {
-            gameobject = null;
-
-            foreach (var o in gameobjects)
-            {
-                if (o is TObject &&
-                    o.name == name)
-                {
-                    gameobject = o as TObject;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// 移除场景中已销毁的对象
-        /// </summary>
-        /// <param name="scene"></param>
-        /// <param name="gameobject"></param>
-        /// <returns></returns>
-        internal void RemoveDestroyedGameObjects()
-        {
-            for (int i = gameobjects.Count - 1; i >= 0; i--)
-            {
-                if (gameobjects[i].destroyed)
-                {
-                    gameobjects.RemoveAt(i);
-                }
-            }
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         internal void Destroy()
-        {
+        {             
             cameras.Clear();
 
             foreach (var gameobject in gameobjects)
@@ -176,26 +114,9 @@ namespace SimpleX.CEngine
                 CGameObject.Destroy(gameobject);
             }
             gameobjects.Clear();
-        }
-    }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class CSceneAttribute : Attribute
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string design { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="design"></param>
-        public CSceneAttribute(string design)
-        {
-            this.design = design;
+            destroyed = true;
+            behaviour?.Exit();
         }
     }
 }

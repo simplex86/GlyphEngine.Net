@@ -4,7 +4,7 @@ namespace SimpleX.CEngine.UI
 {
     internal class CUIButtonDeserializer : IDeserializer
     {
-        public void Deserialize(JsonData data, IContainer contaner)
+        public void Deserialize(JsonData data, CGameObjectContainer contaner)
         {
             var x = data.As("x", 0);
             var y = data.As("y", 0);

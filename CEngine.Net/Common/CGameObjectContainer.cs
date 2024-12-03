@@ -3,18 +3,18 @@
     /// <summary>
     /// 
     /// </summary>
-    public interface IContainer
+    public abstract class CGameObjectContainer
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="gameobject"></param>
-        public void Add(CGameObject gameobject);
+        internal abstract void Add(CGameObject gameobject);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="gameobject"></param>
-        public void Remove(CGameObject gameobject);
+        internal abstract void Remove(CGameObject gameobject);
     }
 }

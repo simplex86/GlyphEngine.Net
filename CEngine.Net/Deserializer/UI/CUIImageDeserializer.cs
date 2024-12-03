@@ -12,7 +12,7 @@ namespace SimpleX.CEngine.UI
         /// </summary>
         /// <param name="data"></param>
         /// <param name="container"></param>
-        public void Deserialize(JsonData data, IContainer container)
+        public void Deserialize(JsonData data, CGameObjectContainer container)
         {
             var x = data.As("x", 0);
             var y = data.As("y", 0);
@@ -35,7 +35,7 @@ namespace SimpleX.CEngine.UI
         {
             if (data.AsString("texture", out var filepath))
             {
-                return CResourceManager.Load(filepath, true);
+                return CResourceManager.LoadTex(filepath, true);
             }
 
             return null;

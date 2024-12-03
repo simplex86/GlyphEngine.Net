@@ -12,7 +12,7 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="data"></param>
         /// <param name="scene"></param>
-        public void Deserialize(JsonData data, IContainer container)
+        public void Deserialize(JsonData data, CGameObjectContainer container)
         {
             var name = data.As("name", string.Empty);
             var order = data.As("order", 0u);

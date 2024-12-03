@@ -6,6 +6,15 @@
     public static class CSceneManager
     {
         /// <summary>
+        /// 
+        /// </summary>
+        internal static List<CGameObject> gameobjects = new List<CGameObject>(1000);
+        /// <summary>
+        /// 
+        /// </summary>
+        internal static List<CRenderableObject> renderobjects = new List<CRenderableObject>(1000);
+
+        /// <summary>
         /// 场景列表
         /// </summary>
         private static List<CScene> scenes = new List<CScene>();
@@ -19,20 +28,11 @@
         private static CRenderer renderer = new CRenderer();
 
         /// <summary>
-        /// 新加场景列表
-        /// </summary>
-        private static List<CScene> newscenes = new List<CScene>();
-        /// <summary>
-        /// 删除场景列表
-        /// </summary>
-        private static List<CScene> remscenes = new List<CScene>();
-
-        /// <summary>
         /// 初始化
         /// </summary>
         public static void Init()
         {
-            Load<CDontDestroyScene>(true);
+            Add(new CDontDestroyScene());
         }
 
         /// <summary>
@@ -40,36 +40,30 @@
         /// </summary>
         /// <typeparam name="TScene"></typeparam>
         /// <returns></returns>
-        public static TScene Load<TScene>() where TScene : CScene, new()
+        internal static void Add(CScene scene)
         {
-            return Load<TScene>(false);
+            scenes.Add(scene);
+
+            foreach (var gameobject in scene.gameobjects)
+            {
+                Add(gameobject);
+            }
+            foreach (var camera in scene.cameras)
+            {
+                cameras.Add(camera);
+            }
+            SortCameras();
+
+            scene.Init();
         }
 
         /// <summary>
         /// 卸载场景
         /// </summary>
         /// <param name="scene"></param>
-        public static void Unload(CScene scene)
+        internal static void Remove(CScene scene)
         {
-            if (scene != null)
-            {
-                scene.Exit();
-                Remove(scene);
-            }
-        }
-
-        /// <summary>
-        /// 获取主场景
-        /// </summary>
-        /// <returns></returns>
-        public static CScene GetMainScene()
-        {
-            if (newscenes.Count > 0) return newscenes[^1];
-
-            if (scenes.Count == 0) return null;
-            if (scenes.Count == 1) return scenes[0];
-
-            return scenes[^1];
+            scene?.Destroy();
         }
 
         /// <summary>
@@ -95,74 +89,21 @@
         }
 
         /// <summary>
-        /// 加载场景
+        /// 
         /// </summary>
-        /// <typeparam name="TScene"></typeparam>
-        /// <param name="immediately"></param>
-        /// <returns></returns>
-        private static TScene Load<TScene>(bool immediately) where TScene : CScene, new()
+        /// <param name="gameobject"></param>
+        internal static void Add(CGameObject gameobject)
         {
-            var scene = Get<TScene>();
-            if (scene == null)
+            gameobjects.Add(gameobject);
+            if (gameobject is CRenderableObject renderobject)
             {
-                scene = new TScene();
-                Add(scene, immediately);
-
-                scene.Enter();
+                renderobjects.Add(renderobject);
             }
 
-            return scene;
-        }
-
-        /// <summary>
-        /// 添加场景
-        /// </summary>
-        /// <param name="scene"></param>
-        private static void Add(CScene scene, bool immediately = false)
-        {
-            if (immediately)
+            foreach (var child in gameobject.children)
             {
-                scenes.Add(scene);
-                foreach (var camera in scene.cameras)
-                {
-                    cameras.Add(camera);
-                }
-                SortCameras();
+                Add(child);
             }
-            else
-            {
-                newscenes.Add(scene);
-            }
-        }
-
-        /// <summary>
-        /// 获取场景
-        /// </summary>
-        /// <typeparam name="TScene"></typeparam>
-        /// <returns></returns>
-        private static TScene Get<TScene>() where TScene : CScene
-        {
-            foreach (var scene in scenes)
-            {
-                if (scene is TScene)
-                {
-                    return scene as TScene;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// 移除场景
-        /// </summary>
-        /// <param name="scene"></param>
-        private static void Remove(CScene scene)
-        {
-            foreach (var camera in scene.cameras)
-            {
-                cameras.Remove(camera);
-            }
-            remscenes.Add(scene);
         }
 
         /// <summary>
@@ -170,16 +111,7 @@
         /// </summary>
         private static void PrevUpdate(float dt)
         {
-            foreach (var scene in newscenes)
-            {
-                scenes.Add(scene);
-                foreach (var camera in scene.cameras)
-                {
-                    cameras.Add(camera);
-                }
-            }
-            newscenes.Clear();
-
+            RemoveDestroyedObjects();
             SortCameras();
         }
 
@@ -192,12 +124,11 @@
             {
                 foreach (var scene in scenes)
                 {
-                    scene.RemoveDestroyedGameObjects();
-                    scene.Update(dt);
+                    scene.behaviour?.Update(dt);
                 }
                 foreach (var camera in cameras)
                 {
-                    RenderScenesByCamera(camera);
+                    RenderByCamera(camera);
                 }
                 renderer.Render();
             }
@@ -209,24 +140,54 @@
         /// </summary>
         private static void PostUpdate(float dt)
         {
-            foreach (var scene in remscenes)
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void RemoveDestroyedObjects()
+        {
+            // 从场景列表中移除已被销毁的场景
+            for (int i = scenes.Count - 1; i >= 0; i--)
             {
-                scene.Destroy();
-                scenes.Remove(scene);
+                if (scenes[i].destroyed)
+                {
+                    scenes.RemoveAt(i);
+                }
             }
-            remscenes.Clear();
+            // 从对象列表中移除已被销毁的对象
+            for (int i = gameobjects.Count - 1; i >= 0; i--)
+            {
+                if (gameobjects[i].destroyed)
+                {
+                    gameobjects.RemoveAt(i);
+                }
+            }
+            // 从可渲染对象列表中移除已被销毁的对象
+            for (int i = renderobjects.Count - 1; i >= 0; i--)
+            {
+                if (renderobjects[i].destroyed)
+                {
+                    renderobjects.RemoveAt(i);
+                }
+            }
+            // 从相机列表中移除已被销毁的相机
+            for (int i = cameras.Count - 1; i >= 0; i--)
+            {
+                if (cameras[i].destroyed)
+                {
+                    cameras.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>
         /// 渲染场景
         /// </summary>
         /// <param name="camera"></param>
-        private static void RenderScenesByCamera(CCamera camera)
+        private static void RenderByCamera(CCamera camera)
         {
-            foreach (var scene in scenes)
-            {
-                camera.Render(scene.gameobjects, renderer);
-            }
+            camera.Render(renderobjects, renderer);
         }
 
         /// <summary>

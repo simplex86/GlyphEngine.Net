@@ -6,11 +6,6 @@
     public static class CUIManager
     {
         /// <summary>
-        /// 根节点
-        /// </summary>
-        private static CGameObject root = null;
-
-        /// <summary>
         /// 
         /// </summary>
         private static List<IPanel> list = new List<IPanel>();
@@ -29,8 +24,6 @@
             var panel = new TPanel();
             list.Add(panel);
             dict.Add(typeof(TPanel), panel);
-            // 添加到根节点
-            root.Add(panel.gameObject);
 
             return panel;
         }
@@ -72,15 +65,6 @@
         public static bool IsOpened<TPanel>() where TPanel : IPanel
         {
             return dict.ContainsKey(typeof(TPanel));
-        }
-
-        /// <summary>
-        /// 设置根节点
-        /// </summary>
-        /// <param name="gameObject"></param>
-        internal static void SetRoot(CGameObject gameObject)
-        {
-            root = gameObject;
         }
     }
 }

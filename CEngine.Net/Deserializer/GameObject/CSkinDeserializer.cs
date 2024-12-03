@@ -12,7 +12,7 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="data"></param>
         /// <param name="container"></param>
-        public void Deserialize(JsonData data, IContainer container)
+        public void Deserialize(JsonData data, CGameObjectContainer container)
         {
             var json = CResourceManager.LoadJson((string)data);
             var renderable = container as CRenderableObject;

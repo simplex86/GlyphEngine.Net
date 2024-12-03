@@ -19,12 +19,16 @@ namespace SimpleX.CEngine
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="file"></param>
+        /// <param name="filepath"></param>
         /// <returns></returns>
-        public static void Deserialize(string file, CScene scene)
+        public static CScene Deserialize(string filepath)
         {
-            var data = CResourceManager.LoadJson(file);
-            Deserialize(data, scene);
+            var scene = new CScene(filepath);
+            {
+                var data = CResourceManager.LoadJson(filepath);
+                Deserialize(data, scene);
+            }
+            return scene;
         }
 
         /// <summary>

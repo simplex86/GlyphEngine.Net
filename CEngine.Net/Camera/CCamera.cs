@@ -46,12 +46,12 @@
         /// <summary>
         /// 渲染
         /// </summary>
-        /// <param name="gameobjects"></param>
-        internal void Render(List<CGameObject> gameobjects, CRenderer renderer)
+        /// <param name="renderobjects"></param>
+        internal void Render(List<CRenderableObject> renderobjects, CRenderer renderer)
         {
-            foreach (var gameobject in gameobjects)
+            foreach (var renderobject in renderobjects)
             {
-                Render(gameobject, renderer);
+                Render(renderobject, renderer);
             }
         }
 
@@ -72,18 +72,17 @@
         /// <param name="px"></param>
         /// <param name="py"></param>
         /// <param name="renderer"></param>
-        private void Render(CGameObject gameobject, CRenderer renderer)
+        private void Render(CRenderableObject renderobject, CRenderer renderer)
         {
-            if (!gameobject.enabled) return;
+            if (!renderobject.enabled) return;
 
-            var wpos = M2W(gameobject);
+            var wpos = M2W(renderobject);
             var vpos = W2V(wpos);
 
-            if (gameobject is IRenderable renderable &&
-                CheckLayer(renderable))
+            if (CheckLayer(renderobject))
             {
                 // 绘制像素
-                renderable.Foreach(pixel =>
+                renderobject.Foreach(pixel =>
                 {
                     var x = vpos.x + pixel.x;
                     var y = vpos.y + pixel.y;
@@ -96,10 +95,13 @@
             }
 
             // 绘制子节点
-            foreach (var child in gameobject.children)
-            {
-                Render(child, renderer);
-            }
+            //foreach (var child in renderobject.children)
+            //{
+            //    if (child is CRenderableObject rchild)
+            //    {
+            //        Render(rchild, renderer);
+            //    }
+            //}
         }
 
         /// <summary>

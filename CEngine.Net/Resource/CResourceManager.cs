@@ -48,26 +48,44 @@ namespace SimpleX.CEngine
         /// <returns></returns>
         public static CGameObject Load(string filepath, int x, int y, CGameObject parent)
         {
-            if (!gcatch.TryGetValue(filepath, out var gameobject))
+            if (!gcatch.TryGetValue(filepath, out var prototype))
             {
-                gameobject = CGameObjectDeserializer.Deserialize(filepath);
-                gcatch.Add(filepath, gameobject);
+                prototype = CGameObjectDeserializer.Deserialize(filepath);
+                gcatch.Add(filepath, prototype);
             }
 
-            var instance = gameobject.Clone();
-            instance.transform.localposition = new Vector2(x, y);
+            var gameobject = prototype.Clone();
+            gameobject.transform.localposition = new Vector2(x, y);
 
-            if (parent == null)
+            if (parent != null)
             {
-                var scene = CSceneManager.GetMainScene();
-                scene.Add(instance);
+                parent.Add(gameobject);
             }
-            else
-            {
-                parent.Add(instance);
-            }
+            CSceneManager.Add(gameobject);
 
-            return instance;
+            return gameobject;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        public static CScene LoadScene(string filepath)
+        {
+            var scene = CSceneDeserializer.Deserialize(filepath);
+            CSceneManager.Add(scene);
+
+            return scene;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="scene"></param>
+        public static void UnloadScene(CScene scene)
+        {
+            CSceneManager.Remove(scene);
         }
 
         /// <summary>
@@ -75,11 +93,12 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        public static CTexture Load(string filepath, bool transparent)
+        public static CTexture LoadTex(string filepath, bool transparent)
         {
             var key = $"{filepath}.{transparent}";
             if (tcatch.TryGetValue(key, out var tex))
             {
+                tex.refc++;
                 return tex;
             }
 
@@ -112,6 +131,7 @@ namespace SimpleX.CEngine
                 }
                 tcatch.Add(key, tex);
 
+                tex.refc++;
                 return tex;
             }
             catch (Exception ex)
@@ -120,6 +140,15 @@ namespace SimpleX.CEngine
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tex"></param>
+        public static void UnloadTex(CTexture tex)
+        {
+            tex.refc = Math.Max(0, tex.refc - 1);
         }
 
         /// <summary>

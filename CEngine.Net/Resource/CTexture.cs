@@ -22,7 +22,11 @@
         /// <summary>
         /// 字符集
         /// </summary>
-        internal List<char> chars = null;
+        internal List<char> chars { get; set; } = null;
+        /// <summary>
+        /// 
+        /// </summary>
+        internal int refc { get; set; } = 0;
         
         /// <summary>
         /// 

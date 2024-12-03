@@ -19,7 +19,7 @@ namespace SimpleX.CEngine
         /// </summary>
         /// <param name="data"></param>
         /// <param name="scene"></param>
-        public void Deserialize(JsonData data, IContainer container)
+        public void Deserialize(JsonData data, CGameObjectContainer container)
         {
             DeserializeImp(data, container);
         }
@@ -41,7 +41,7 @@ namespace SimpleX.CEngine
         /// <param name="data"></param>
         /// <param name="container"></param>
         /// <returns></returns>
-        private static CGameObject DeserializeImp(JsonData data, IContainer container)
+        private static CGameObject DeserializeImp(JsonData data, CGameObjectContainer container)
         {
             CGameObject gameobject;
 

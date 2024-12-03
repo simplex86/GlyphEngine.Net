@@ -3,7 +3,7 @@
     /// <summary>
     /// 游戏对象
     /// </summary>
-    public class CGameObject : IContainer
+    public class CGameObject : CGameObjectContainer
     {
         /// <summary>
         /// 名字
@@ -58,13 +58,15 @@
         {
             transform = new CTransform(this);
             transform.localposition = new Vector2(x, y);
+
+            CSceneManager.Add(this);
         }
 
         /// <summary>
         /// 添加子节点
         /// </summary>
         /// <param name="child"></param>
-        public void Add(CGameObject child)
+        internal override void Add(CGameObject child)
         {
             child.SetParent(this);
         }
@@ -107,7 +109,7 @@
         /// 删除子节点
         /// </summary>
         /// <param name="child"></param>
-        public void Remove(CGameObject child)
+        internal override void Remove(CGameObject child)
         {
             children.Remove(child);
             child.SetParent(null);
@@ -131,17 +133,6 @@
 
             this.parent = parent;
             this.parent?.children.Add(this);
-
-            if (this.parent == null)
-            {
-                var scene = CSceneManager.GetMainScene();
-                scene.Add(this);
-            }
-            else
-            {
-                var scene = CSceneManager.GetMainScene();
-                scene.Remove(this);
-            }
 
             transform.Reposition();
         }
