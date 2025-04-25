@@ -27,7 +27,7 @@
         /// <summary>
         /// 
         /// </summary>
-        Everything = 0xffffffff,
+        Everything = 0xFFFFFFFFFFFFFFFFuL,
         /// <summary>
         /// 
         /// </summary>
