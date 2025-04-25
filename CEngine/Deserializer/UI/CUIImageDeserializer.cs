@@ -18,7 +18,8 @@ namespace CEngine.UI
             var y = data.As("y", 0);
             var name = data.As("name", string.Empty);
             var color = CColorHelper.Get(data, "color");
-            var texture = Load(data);
+            var transparent = data.As("transparent", false);
+            var texture = Load(data, transparent);
 
             var image = new CUIImage(texture, new Vector2(x, y), color);
 
@@ -31,11 +32,11 @@ namespace CEngine.UI
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private CTexture Load(JsonData data)
+        private CTexture Load(JsonData data, bool transparent)
         {
             if (data.AsString("texture", out var filepath))
             {
-                return CResourceManager.LoadTex(filepath, true);
+                return CResourceManager.LoadTex(filepath, transparent);
             }
 
             return null;

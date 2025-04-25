@@ -68,8 +68,9 @@
         private bool Diff()
         {
             var dirty = false;
+
             renderer.Clear();
-            //
+            // 被渲染的像素
             foreach (var p in current.pixels)
             {
                 if (!previous.GetPixel(p.x, p.y, out var q))
@@ -83,7 +84,7 @@
                     dirty = true;
                 }
             }
-            // 
+            // 被擦除的像素
             foreach (var p in previous.pixels)
             {
                 if (!current.GetPixel(p.x, p.y, out var q))
