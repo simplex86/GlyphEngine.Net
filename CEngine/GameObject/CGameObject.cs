@@ -27,10 +27,6 @@
         public int count => children.Count;
 
         /// <summary>
-        /// 
-        /// </summary>
-        internal List<CBehaviour> behaviours { get; set; } = new List<CBehaviour>();
-        /// <summary>
         /// 是否已被销毁
         /// </summary>
         internal bool destroyed { get; private set; } = false;
@@ -151,14 +147,6 @@
         /// </summary>
         public void Destroy()
         {
-            foreach (var behaviour in behaviours)
-            {
-                if (behaviour is IExitBehaviour exit)
-                {
-                    exit.Exit();
-                }
-            }
-
             // 从父结点移除
             parent?.Remove(this);
             // 处理子节点
@@ -215,41 +203,6 @@
             }
 
             return clone;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        internal void AddBehaviour(Type type)
-        {
-            var behaviour = Activator.CreateInstance(type, this) as CBehaviour;
-            if (behaviour != null)
-            {
-                behaviours.Add(behaviour);
-
-                if (behaviour is IEnterBehaviour enter)
-                {
-                    enter.Enter();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TBehaviour"></typeparam>
-        /// <returns></returns>
-        public TBehaviour GetBehaviour<TBehaviour>() where TBehaviour : CBehaviour
-        {
-            foreach (var behaviour in behaviours)
-            {
-                if (behaviour is TBehaviour tbehaviour)
-                {
-                    return tbehaviour;
-                }
-            }
-            return null;
         }
     }
 }

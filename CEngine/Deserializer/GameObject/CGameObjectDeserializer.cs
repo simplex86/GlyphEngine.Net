@@ -31,10 +31,22 @@ namespace CEngine
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        public static CGameObject Deserialize(string filepath)
+        internal static CGameObject Deserialize(string filepath)
         {
             var data = CResourceManager.LoadJson(filepath);
             return DeserializeImp(data, null);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <param name="container"></param>
+        /// <returns></returns>
+        internal static CGameObject Deserialize(string filepath, CGameObjectContainer container)
+        {
+            var data = CResourceManager.LoadJson(filepath);
+            return DeserializeImp(data, container);
         }
 
         /// <summary>
@@ -70,7 +82,6 @@ namespace CEngine
                 };
             }
 
-            DeserializeBehaviours(data, gameobject);
             DeserializeChildren(data, gameobject);
 
             if (container != null)
@@ -138,24 +149,6 @@ namespace CEngine
                 for (int i = 0; i < skins.Count; i++)
                 {
                     deserializer.Deserialize(skins[i], renderable);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="gameobject"></param>
-        private static void DeserializeBehaviours(JsonData data, CGameObject gameobject)
-        {
-            var types = CReflectionHelper.FindAll<CBehaviour, CBehaviourAttribute>();
-            foreach (var type in types)
-            {
-                var attr = type.GetCustomAttribute<CBehaviourAttribute>(true);
-                if (attr.tag == gameobject.name)
-                {
-                    gameobject.AddBehaviour(type);
                 }
             }
         }
