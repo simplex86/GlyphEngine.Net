@@ -8,6 +8,27 @@ namespace CEngine
     internal static class CReflectionHelper
     {
         /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TBase"></typeparam>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        public static Type Find<TBase>(Assembly assembly, string typename)
+        {
+            var baseType = typeof(TBase);
+
+            var types = assembly.GetTypes();
+            foreach (var type in types)
+            {
+                if (type.IsAbstract || type.IsInterface || type.IsEnum) continue;
+                if (!baseType.IsAssignableFrom(type)) continue;// 不是从TBase继承
+                if (type.FullName == typename) return type;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// 从给定的程序集中获取派生自[TBase]且带有[TAttribute]特性的类型，并返回找到的第一个
         /// </summary>
         /// <param name="assembly"></param>
@@ -23,8 +44,7 @@ namespace CEngine
             foreach (var type in types)
             {
                 if (type.IsAbstract || type.IsInterface || type.IsEnum) continue;
-                // 不是从TBase继承
-                if (!baseType.IsAssignableFrom(type)) continue;
+                if (!baseType.IsAssignableFrom(type)) continue;// 不是从TBase继承
 
                 var objects = type.GetCustomAttributes(attrType, false);
                 if (objects.Length == 0) continue;
@@ -53,8 +73,7 @@ namespace CEngine
             foreach (var type in types)
             {
                 if (type.IsAbstract || type.IsInterface || type.IsEnum) continue;
-                // 不是从TBase继承
-                if (!baseType.IsAssignableFrom(type)) continue;
+                if (!baseType.IsAssignableFrom(type)) continue;// 不是从TBase继承
 
                 var objects = type.GetCustomAttributes(attrType, false);
                 if (objects.Length == 0) continue;
@@ -101,6 +120,192 @@ namespace CEngine
             }
 
             return list;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="typename"></param>
+        /// <returns></returns>
+        public static T CreateInstance<T>(string typename)
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                var type = Find<T>(assembly, typename);
+                if (type != null) return (T)Activator.CreateInstance(type);
+            }
+
+            return default(T);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="A"></typeparam>
+        /// <param name="typename"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static T CreateInstance<T, A>(string typename, A args)
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                var type = Find<T>(assembly, typename);
+                if (type != null) return (T)Activator.CreateInstance(type, args);
+            }
+
+            return default(T);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static T BitwiseClone<T>(T target)
+        {
+            if (target == null)
+            {
+                return target;
+            }
+
+            var type = target.GetType();
+            // 字符串 或 值类型
+            if (target is string || type.IsValueType)
+            {
+                return target;
+            }
+
+            var clone = Activator.CreateInstance(type);
+            var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            foreach (var field in fields)
+            {
+                try
+                {
+                    field.SetValue(clone, field.GetValue(target));
+                }
+                catch
+                {
+                }
+            }
+
+            return (T)clone;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="A"></typeparam>
+        /// <param name="target"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static T BitwiseClone<T, A>(T target, A args)
+        {
+            if (target == null)
+            {
+                return target;
+            }
+
+            var type = target.GetType();
+            // 字符串 或 值类型
+            if (target is string || type.IsValueType)
+            {
+                return target;
+            }
+
+            var clone = Activator.CreateInstance(type, args);
+            var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            foreach (var field in fields)
+            {
+                try
+                {
+                    field.SetValue(clone, field.GetValue(target));
+                }
+                catch
+                {
+                }
+            }
+
+            return (T)clone;
+        }
+
+        /// <summary>
+        /// 深拷贝
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static T MutableClone<T>(T target)
+        {
+            if (target == null)
+            {
+                return target;
+            }
+
+            var type = target.GetType();
+            // 字符串 或 值类型
+            if (target is string || type.IsValueType)
+            {
+                return target;
+            }
+
+            var clone = Activator.CreateInstance(type);
+            var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            foreach (var field in fields)
+            {
+                try
+                {
+                    field.SetValue(clone, MutableClone(field.GetValue(target)));
+                }
+                catch 
+                { 
+                }
+            }
+
+            return (T)clone;
+        }
+
+        /// <summary>
+        /// 深拷贝
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="A"></typeparam>
+        /// <param name="target"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static T MutableClone<T, A>(T target, A args)
+        {
+            if (target == null)
+            {
+                return target;
+            }
+
+            var type = target.GetType();
+            // 字符串 或 值类型
+            if (target is string || type.IsValueType)
+            {
+                return target;
+            }
+
+            var clone = Activator.CreateInstance(type, args);
+            var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            foreach (var field in fields)
+            {
+                try
+                {
+                    field.SetValue(clone, MutableClone(field.GetValue(target)));
+                }
+                catch
+                {
+                }
+            }
+
+            return (T)clone;
         }
     }
 }
