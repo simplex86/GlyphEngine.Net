@@ -92,7 +92,7 @@ namespace CEngine
         /// <returns></returns>
         public static Type Find<TBase, TAttribute>() where TAttribute : Attribute
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = AppDomain.CurrentDomain.GetReferanceAssemblies();
             foreach (var assembly in assemblies)
             {
                 var type = Find<TBase, TAttribute>(assembly);
@@ -112,7 +112,7 @@ namespace CEngine
         {
             var list = new List<Type>();
 
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = AppDomain.CurrentDomain.GetReferanceAssemblies();
             foreach (var assembly in assemblies)
             {
                 var types = FindAll<TBase, TAttribute>(assembly);
@@ -130,7 +130,7 @@ namespace CEngine
         /// <returns></returns>
         public static T CreateInstance<T>(string typename)
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = AppDomain.CurrentDomain.GetReferanceAssemblies();
             foreach (var assembly in assemblies)
             {
                 var type = Find<T>(assembly, typename);
@@ -150,7 +150,7 @@ namespace CEngine
         /// <returns></returns>
         public static T CreateInstance<T, A>(string typename, A args)
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = AppDomain.CurrentDomain.GetReferanceAssemblies();
             foreach (var assembly in assemblies)
             {
                 var type = Find<T>(assembly, typename);
@@ -306,6 +306,32 @@ namespace CEngine
             }
 
             return (T)clone;
+        }
+
+        public static List<Assembly> GetReferanceAssemblies(this AppDomain domain)
+        {
+            var list = new List<Assembly>();
+
+            var assemblies = domain.GetAssemblies();
+            Array.ForEach(assemblies, assembly =>
+            {
+                GetReferanceAssemblies(assembly, list);
+            });
+            return list;
+        }
+
+        static void GetReferanceAssemblies(Assembly assembly, List<Assembly> list)
+        {
+            var assemblyNames = assembly.GetReferencedAssemblies();
+            Array.ForEach(assemblyNames, assemblyName =>
+            {
+                var ass = Assembly.Load(assemblyName);
+                if (!list.Contains(ass))
+                {
+                    list.Add(ass);
+                    GetReferanceAssemblies(ass, list);
+                }
+            });
         }
     }
 }
