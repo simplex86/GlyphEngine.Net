@@ -49,11 +49,17 @@
         /// <param name="renderobjects"></param>
         internal void Render(List<CGameObject> gameobjects, CRenderer renderer)
         {
-            if (destroyed) return;
-
-            foreach (var gameobject in gameobjects)
+            if (destroyed)
             {
-                Render(gameobject, renderer);
+                return;
+            }
+
+            if (enabled)
+            {
+                foreach (var gameobject in gameobjects)
+                {
+                    Render(gameobject, renderer);
+                }
             }
         }
 

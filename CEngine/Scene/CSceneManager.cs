@@ -109,7 +109,6 @@
         {
             PrevUpdate();
             {
-                Behave(dt);
                 Render();
             }
             PostUpdate();
@@ -121,25 +120,6 @@
         private static void PostUpdate()
         {
 
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dt"></param>
-        private static void Behave(float dt)
-        {
-            foreach (var gameobject in gameobjects)
-            {
-                var behaviours = gameobject.behaviours;
-                foreach (var behaviour in behaviours)
-                {
-                    if (behaviour is IUpdateBehaviour update)
-                    {
-                        update.Update(dt);
-                    }
-                }
-            }
         }
 
         /// <summary>
