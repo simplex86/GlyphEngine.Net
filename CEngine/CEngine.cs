@@ -7,12 +7,12 @@ namespace CEngine
     /// <summary>
     /// 基于控制台的简易2D游戏引擎
     /// </summary>
-    public class CEngine
+    public sealed class CEngine
     {
         /// <summary>
         /// 
         /// </summary>
-        private IApplication application = null;
+        private IEngineEntry entry = null;
         /// <summary>
         /// 
         /// </summary>
@@ -50,10 +50,10 @@ namespace CEngine
             CSceneManager.Init();
             CEventManager.Init();
 
-            var type = CReflectionHelper.Find<IApplication, ApplicationEntryAttribute>();
+            var type = CReflectionHelper.Find<IEngineEntry, CEngineEntryAttribute>();
             if (type != null)
             {
-                application = Activator.CreateInstance(type) as IApplication;
+                entry = Activator.CreateInstance(type) as IEngineEntry;
             }
 
             Loop();
@@ -75,13 +75,13 @@ namespace CEngine
             try
             {
                 CTime.Start();
-                application?.Start();
+                entry?.Start();
 
                 while (running)
                 {
                     var dt = CTime.Update();
                     CKeyboard.Update(dt);
-                    application?.Update(dt);
+                    entry?.Update(dt);
                     CSceneManager.Update(dt);
                     CUIManager.Update(dt);
                 }
@@ -92,8 +92,8 @@ namespace CEngine
             }
             finally
             {
-                application?.Exit();
-                application = null;
+                entry?.Exit();
+                entry = null;
 
                 CTime.Stop();
             }

@@ -3,12 +3,12 @@
     /// <summary>
     /// 
     /// </summary>
-    public interface IApplication
+    public interface IEngineEntry
     {
         /// <summary>
         /// 
         /// </summary>
-        void Start();
+        Task Start();
         /// <summary>
         /// 
         /// </summary>
@@ -23,7 +23,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class ApplicationEntryAttribute : Attribute
+    public class CEngineEntryAttribute : Attribute
     {
 
     }
