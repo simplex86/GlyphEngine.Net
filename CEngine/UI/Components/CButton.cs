@@ -3,7 +3,7 @@
     /// <summary>
     /// 按钮
     /// </summary>
-    public class CUIButton : CUIComponent, IInteractable
+    public class CButton : CUIComponent, IInteractable
     {
         /// <summary>
         /// 是否可交互
@@ -29,7 +29,7 @@
         /// <summary>
         /// 文本子组件
         /// </summary>
-        private CUIText text = null;
+        private CText text = null;
 
         /// <summary>
         /// 
@@ -39,7 +39,7 @@
         /// <param name="unfocusColor"></param>
         /// <param name="focusColor"></param>
         /// <param name="style"></param>
-        public CUIButton(string text, Vector2 localposition, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
+        public CButton(string text, Vector2 localposition, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
         {
             this.interactable = true;
             this.transform.localposition = localposition;
@@ -48,7 +48,7 @@
             this.focusColor = focusColor;
             //this.style = style;
 
-            this.text = new CUIText(text, Vector2.zero);
+            this.text = new CText(text, Vector2.zero);
             Add(this.text);
 
             this.width  = this.text.width  + 4;

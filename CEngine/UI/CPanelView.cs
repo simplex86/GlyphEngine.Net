@@ -5,7 +5,7 @@ namespace CEngine.UI
     /// <summary>
     /// 
     /// </summary>
-    internal sealed class CUIPanelView : CRenderableObject, IView
+    internal sealed class CPanelView : CRenderableObject, IView
     {
         /// <summary>
         /// 宽度
@@ -29,7 +29,7 @@ namespace CEngine.UI
         /// <summary>
         /// 
         /// </summary>
-        internal CUIPanelView()
+        internal CPanelView()
             : this(CWorld.width, CWorld.height)
         {
 
@@ -40,7 +40,7 @@ namespace CEngine.UI
         /// </summary>
         /// <param name="w"></param>
         /// <param name="h"></param>
-        internal CUIPanelView(int w, int h)
+        internal CPanelView(int w, int h)
             : base(ERenderLayer.UI)
         {
             width = w;

@@ -2,7 +2,7 @@
 
 namespace CEngine.UI
 {
-    internal class CUITextDeserializer : IDeserializer
+    internal class CTextDeserializer : IDeserializer
     {
         public void Deserialize(JsonData data, CGameObjectContainer container)
         {
@@ -12,12 +12,12 @@ namespace CEngine.UI
             var text = data.As("text", string.Empty);
             var color = CColorHelper.Get(data, "color");
 
-            var component = new CUIText(text, new Vector2(x, y))
+            var component = new CText(text, new Vector2(x, y))
             {
                 color = color,
             };
 
-            var view = container as CUIPanelView;
+            var view = container as CPanelView;
             view.AddComponent(component, name);
         }
     }

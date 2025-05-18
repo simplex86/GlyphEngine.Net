@@ -2,7 +2,7 @@
 
 namespace CEngine.UI
 {
-    internal class CUIButtonDeserializer : IDeserializer
+    internal class CButtonDeserializer : IDeserializer
     {
         public void Deserialize(JsonData data, CGameObjectContainer contaner)
         {
@@ -24,10 +24,10 @@ namespace CEngine.UI
                 focus = false;
             }
 
-            var button = new CUIButton(text, new Vector2(x, y), keycode, unfocusColor, focusColor, border);
+            var button = new CButton(text, new Vector2(x, y), keycode, unfocusColor, focusColor, border);
             button.interactable = interactable;
 
-            var view = contaner as CUIPanelView;
+            var view = contaner as CPanelView;
             view.AddComponent(button, name, focus);
         }
     }

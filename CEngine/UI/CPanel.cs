@@ -20,7 +20,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class CUIPanel : IPanel
+    public class CPanel : IPanel
     {
         /// <summary>
         /// 
@@ -30,19 +30,19 @@
         /// <summary>
         /// 
         /// </summary>
-        private CUIPanelView view { get; }
+        private CPanelView view { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        protected CUIPanel()
+        protected CPanel()
         {
             var attrs = GetType().GetCustomAttributes(true);
             foreach (var v in attrs) 
             {
-                if (v is CUIPanelAttribute attr)
+                if (v is CPanelAttribute attr)
                 {
-                    view = CUIPanelDeserializer.Deserialize(attr.design);
+                    view = CPanelDeserializer.Deserialize(attr.design);
                     break;
                 }
             }
@@ -72,7 +72,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class CUIPanelAttribute : Attribute
+    public class CPanelAttribute : Attribute
     {
         /// <summary>
         /// 
@@ -83,7 +83,7 @@
         /// 
         /// </summary>
         /// <param name="design"></param>
-        public CUIPanelAttribute(string design)
+        public CPanelAttribute(string design)
         {
             this.design = design;
         }

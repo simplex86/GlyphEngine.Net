@@ -5,7 +5,7 @@ namespace CEngine.UI
     /// <summary>
     /// 
     /// </summary>
-    internal class CUIImageDeserializer : IDeserializer
+    internal class CImageDeserializer : IDeserializer
     {
         /// <summary>
         /// 
@@ -21,9 +21,9 @@ namespace CEngine.UI
             var transparent = data.As("transparent", false);
             var texture = Load(data, transparent);
 
-            var image = new CUIImage(texture, new Vector2(x, y), color);
+            var image = new CImage(texture, new Vector2(x, y), color);
 
-            var view = container as CUIPanelView;
+            var view = container as CPanelView;
             view.AddComponent(image, name);
         }
 

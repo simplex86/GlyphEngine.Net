@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class CUIText : CUIComponent
+    public class CText : CUIComponent
     {
         /// <summary>
         /// 
@@ -29,7 +29,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public CUIText(Vector2 localposition) 
+        public CText(Vector2 localposition) 
             : this("Text", localposition)
         {
 
@@ -39,7 +39,7 @@
         /// 
         /// </summary>
         /// <param name="text"></param>
-        public CUIText(string text, Vector2 localposition)
+        public CText(string text, Vector2 localposition)
              : base()
         {
             transform.localposition = localposition;

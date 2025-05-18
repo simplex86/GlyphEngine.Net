@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class CUIImage : CUIComponent
+    public class CImage : CUIComponent
     {
         /// <summary>
         /// 
@@ -29,7 +29,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public CUIImage(CTexture tex, Vector2 localposition, ConsoleColor color)
+        public CImage(CTexture tex, Vector2 localposition, ConsoleColor color)
         {
             this.color = color;
             this.texture = tex;

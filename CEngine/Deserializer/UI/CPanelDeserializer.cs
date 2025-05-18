@@ -5,16 +5,16 @@ namespace CEngine.UI
     /// <summary>
     /// 
     /// </summary>
-    internal static class CUIPanelDeserializer
+    internal static class CPanelDeserializer
     {
         /// <summary>
         /// 
         /// </summary>
         private static Dictionary<string, IDeserializer> deserializers = new()
         {
-            { "text", new CUITextDeserializer() },
-            { "button", new CUIButtonDeserializer() },
-            { "image", new CUIImageDeserializer() },
+            { "text", new CTextDeserializer() },
+            { "button", new CButtonDeserializer() },
+            { "image", new CImageDeserializer() },
         };
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace CEngine.UI
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public static CUIPanelView Deserialize(string file)
+        public static CPanelView Deserialize(string file)
         {
             var data = CResourceManager.LoadJson(file);
             return Deserialize(data);
@@ -33,7 +33,7 @@ namespace CEngine.UI
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private static CUIPanelView Deserialize(JsonData data)
+        private static CPanelView Deserialize(JsonData data)
         {
             var x = data.ContainsKey("x") ? (int)data["x"] : 0;
             var y = data.ContainsKey("y") ? (int)data["y"] : 0;
@@ -43,7 +43,7 @@ namespace CEngine.UI
             if (width  <= 0) width  = CWorld.width;
             if (height <= 0) height = CWorld.height;
 
-            var view = new CUIPanelView(width, height);
+            var view = new CPanelView(width, height);
             view.transform.localposition = new Vector2(x, y);
 
             DeserializeComponents(data["components"], view);
@@ -56,7 +56,7 @@ namespace CEngine.UI
         /// </summary>
         /// <param name="data"></param>
         /// <param name="view"></param>
-        private static void DeserializeComponents(JsonData data, CUIPanelView view)
+        private static void DeserializeComponents(JsonData data, CPanelView view)
         {
             for (int i = 0; i < data.Count; i++)
             {
