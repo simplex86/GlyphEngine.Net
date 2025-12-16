@@ -41,7 +41,7 @@
     /// <summary>
     /// 边框类型
     /// </summary>
-    public enum EBorderStyle
+    public enum EBorderStyle : byte
     {
         /// <summary>
         /// 无边框

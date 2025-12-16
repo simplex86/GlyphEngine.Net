@@ -54,7 +54,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        public T GetComponent<T>(string name) where T : CUIComponent
+        public T GetComponent<T>(string name) where T : CWidget
         {
             return view.GetComponent<T>(name);
         }

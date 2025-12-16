@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class CImage : CUIComponent
+    public class CImage : CWidget
     {
         /// <summary>
         /// 

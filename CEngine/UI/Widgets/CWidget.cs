@@ -1,9 +1,20 @@
 ﻿namespace CEngine.UI
 {
     /// <summary>
-    /// 
+    /// 子控件接口
     /// </summary>
-    public class CUIComponent : CRenderableObject, IView
+    public interface IWidget : IView
+    {
+        /// <summary>
+        /// 颜色
+        /// </summary>
+        ConsoleColor color { get; set; }
+    }
+
+    /// <summary>
+    /// 子控件基类
+    /// </summary>
+    public class CWidget : CRenderableObject, IWidget
     {
         /// <summary>
         /// 宽度
@@ -15,7 +26,7 @@
         public int height { get; protected set; }
 
         /// <summary>
-        /// 
+        /// 颜色
         /// </summary>
         public ConsoleColor color
         {
@@ -38,7 +49,7 @@
         /// <summary>
         /// 
         /// </summary>
-        protected CUIComponent()
+        protected CWidget()
             : base(ERenderLayer.UI)
         {
             

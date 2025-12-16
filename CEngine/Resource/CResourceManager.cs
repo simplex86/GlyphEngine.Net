@@ -105,7 +105,7 @@ namespace CEngine
             tex = new CTexture(transparent);
             try
             {
-                var lines = File.ReadAllLines($"{CPath.resourcesPath}/{filepath}");
+                var lines = File.ReadAllLines($"{CPath.resources}/{filepath}");
                 if (lines.Length > 0)
                 {
                     tex.width = 0;
@@ -158,7 +158,7 @@ namespace CEngine
         /// <returns></returns>
         public static string LoadText(string filepath)
         {
-            return File.ReadAllText($"{CPath.resourcesPath}/{filepath}");
+            return File.ReadAllText($"{CPath.resources}/{filepath}");
         }
 
         /// <summary>

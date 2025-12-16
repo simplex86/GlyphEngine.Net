@@ -24,7 +24,7 @@ namespace CEngine.UI
         /// <summary>
         /// 
         /// </summary>
-        private Dictionary<string, CUIComponent> components = new Dictionary<string, CUIComponent>();
+        private Dictionary<string, CWidget> widgets = new Dictionary<string, CWidget>();
 
         /// <summary>
         /// 
@@ -53,10 +53,10 @@ namespace CEngine.UI
         /// 
         /// </summary>
         /// <param name="component"></param>
-        internal void AddComponent(CUIComponent component, string name, bool focused = false)
+        internal void AddComponent(CWidget component, string name, bool focused = false)
         {
             Add(component);
-            components.TryAdd(name, component);
+            widgets.TryAdd(name, component);
 
             if (focused &&
                 component is IInteractable interaction &&
@@ -72,9 +72,9 @@ namespace CEngine.UI
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        internal T GetComponent<T>(string name) where T : CUIComponent
+        internal T GetComponent<T>(string name) where T : CWidget
         {
-            if (components.TryGetValue(name, out var component))
+            if (widgets.TryGetValue(name, out var component))
             {
                 return component as T;
             }
@@ -141,7 +141,7 @@ namespace CEngine.UI
         /// </summary>
         private void FocusNext()
         {
-            var idx = children.IndexOf(focus as CUIComponent);
+            var idx = children.IndexOf(focus as CWidget);
             if (idx < 0) return;
 
             for (int i = idx + 1; i < children.Count; i++)
@@ -172,7 +172,7 @@ namespace CEngine.UI
         /// </summary>
         private void FocusPrev()
         {
-            var idx = children.IndexOf(focus as CUIComponent);
+            var idx = children.IndexOf(focus as CWidget);
             if (idx < 0) return;
 
             for (int i=idx - 1; i >= 0; i--)
