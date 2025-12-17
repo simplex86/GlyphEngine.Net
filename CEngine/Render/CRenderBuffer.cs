@@ -7,24 +7,26 @@ namespace CEngine
     /// </summary>
     internal class CRenderBuffer : IEnumerable<CPixel>
     {
-        private List<CPixel> pixels { get; }
+        private List<CPixel> list;
+        private Dictionary<ulong, int> grid;
 
         internal CRenderBuffer()
         {
-            pixels = new List<CPixel>(CWorld.width * CWorld.height);
+            list = new List<CPixel>(CWorld.width * CWorld.height);
+            grid = new Dictionary<ulong, int>();
         }
 
         /// <summary>
         /// 获取迭代器
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<CPixel> GetEnumerator() => pixels.GetEnumerator();
+        public IEnumerator<CPixel> GetEnumerator() => list.GetEnumerator();
 
         /// <summary>
         /// 获取迭代器
         /// </summary>
         /// <returns></returns>
-        IEnumerator IEnumerable.GetEnumerator() => pixels.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => list.GetEnumerator();
 
         /// <summary>
         /// 写入像素
@@ -33,10 +35,11 @@ namespace CEngine
         /// <param name="y"></param>
         internal void SetPixel(int x, int y, char c)
         {
-            if (!GetPixel(x, y, out var pixel))
+            if (!GetPixel(x, y, out var key, out var pixel))
             {
                 pixel = CPixelPool.Instance.Alloc(x, y);
-                pixels.Add(pixel);
+                list.Add(pixel);
+                grid.Add(key, list.Count - 1);
             }
 
             pixel.c = c;
@@ -52,10 +55,11 @@ namespace CEngine
         /// <param name="color"></param>
         internal void SetPixel(int x, int y, char c, ConsoleColor color, ConsoleColor backgroundColor)
         {
-            if (!GetPixel(x, y, out var pixel))
+            if (!GetPixel(x, y, out var key, out var pixel))
             {
                 pixel = CPixelPool.Instance.Alloc(x, y);
-                pixels.Add(pixel);
+                list.Add(pixel);
+                grid.Add(key, list.Count - 1);
             }
 
             pixel.c = c;
@@ -68,7 +72,8 @@ namespace CEngine
         /// </summary>
         internal void Clear()
         {
-            CPixelPool.Instance.Release(pixels);
+            CPixelPool.Instance.Release(list);
+            grid.Clear();
         }
 
         /// <summary>
@@ -80,15 +85,28 @@ namespace CEngine
         /// <returns></returns>
         internal bool GetPixel(int x, int y, out CPixel pixel)
         {
+            return GetPixel(x, y, out var _, out pixel);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="key"></param>
+        /// <param name="pixel"></param>
+        /// <returns></returns>
+        private bool GetPixel(int x, int y, out ulong key, out CPixel pixel)
+        {
             pixel = null;
 
-            foreach (var v in pixels)
+            key = (ulong)x;
+            key = (key << 32) | (ulong)y;
+
+            if (grid.TryGetValue(key, out var index))
             {
-                if (v.x == x && v.y == y)
-                {
-                    pixel = v;
-                    return true;
-                }
+                pixel = list[index];
+                return true;
             }
 
             return false;

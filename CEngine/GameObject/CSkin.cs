@@ -13,7 +13,8 @@
         /// <summary>
         /// 
         /// </summary>
-        internal List<CPixel> pixels { get; } = new List<CPixel>();
+        private List<CPixel> list = new List<CPixel>();
+        private Dictionary<ulong, int> grid = new Dictionary<ulong, int>();
 
         public CSkin(string name)
         {
@@ -29,10 +30,11 @@
         /// <param name="color"></param>
         internal void Set(int x, int y, char c, ConsoleColor color)
         {
-            if (!Get(x, y, out var pixel))
+            if (!Get(x, y, out var key, out var pixel))
             {
                 pixel = CPixelPool.Instance.Alloc(x, y);
-                pixels.Add(pixel);
+                list.Add(pixel);
+                grid.Add(key, list.Count - 1);
             }
 
             pixel.c = c;
@@ -46,17 +48,17 @@
         /// <param name="y"></param>
         /// <param name="pixel"></param>
         /// <returns></returns>
-        private bool Get(int x, int y, out CPixel pixel)
+        private bool Get(int x, int y, out ulong key, out CPixel pixel)
         {
             pixel = null;
 
-            foreach (CPixel p in pixels)
+            key = (ulong)x;
+            key = (key << 32) | (ulong)y;
+
+            if (grid.TryGetValue(key, out var index))
             {
-                if (p.x == x && p.y == y)
-                {
-                    pixel = p;
-                    return true;
-                }
+                pixel = list[index];
+                return true;
             }
             
             return false;
@@ -70,7 +72,7 @@
         {
             renderable.Foreach(pixel =>
             {
-                if (Get(pixel.x, pixel.y, out var p))
+                if (Get(pixel.x, pixel.y, out var _, out var p))
                 {
                     pixel.c = p.c;
                     pixel.color = p.color;
@@ -83,8 +85,8 @@
         /// </summary>
         internal void Destroy()
         {
-            CPixelPool.Instance.Release(pixels);
-            pixels.Clear();
+            CPixelPool.Instance.Release(list);
+            grid.Clear();
         }
 
         /// <summary>
@@ -94,10 +96,15 @@
         internal CSkin Clone()
         {
             var clone = new CSkin(name);
-            foreach (var pixel in pixels)
+
+            foreach (var pixel in list)
             {
                 var clonepixel = pixel.Clone();
-                clone.pixels.Add(clonepixel);
+                clone.list.Add(clonepixel);
+            }
+            foreach (var kv in grid)
+            {
+                clone.grid.Add(kv.Key, kv.Value);
             }
 
             return clone;

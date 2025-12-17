@@ -31,16 +31,8 @@
         /// <returns></returns>
         public CPixel Alloc(int x, int y)
         {
-            if (queue.Count == 0)
-            {
-                return new CPixel()
-                {
-                    x = x,
-                    y = y,
-                };
-            }
-
-            var pixel = queue.Dequeue();
+            var pixel = (queue.Count == 0) ? new CPixel()
+                                           : queue.Dequeue();
             pixel.x = x;
             pixel.y = y;
 

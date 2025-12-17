@@ -81,17 +81,6 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        protected void AddPixel(int x, int y)
-        {
-            var pixel = CPixelPool.Instance.Alloc(x, y);
-            AddPixel(pixel);
-        }
-
-        /// <summary>
         /// 添加像素
         /// </summary>
         /// <param name="pixel"></param>

@@ -151,7 +151,7 @@
         /// </summary>
         /// <param name="pixel"></param>
         /// <returns></returns>
-        private (ConsoleColor foregroundColor, ConsoleColor backgroundColor) SetConsoleColor(CPixel pixel)
+        private static (ConsoleColor foregroundColor, ConsoleColor backgroundColor) SetConsoleColor(CPixel pixel)
         {
             var foregroundColor = Console.ForegroundColor;
             var backgroundColor = Console.BackgroundColor;
@@ -166,7 +166,7 @@
         /// 还原控制台颜色
         /// </summary>
         /// <param name="colors"></param>
-        private void ResetConsoleColor(ValueTuple<ConsoleColor, ConsoleColor> colors)
+        private static void ResetConsoleColor(ValueTuple<ConsoleColor, ConsoleColor> colors)
         {
             Console.ForegroundColor = colors.Item1;
             Console.BackgroundColor = colors.Item2;
