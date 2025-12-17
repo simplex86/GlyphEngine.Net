@@ -3,7 +3,7 @@
     /// <summary>
     /// UI视图
     /// </summary>
-    internal interface IView
+    public interface IView
     {
         /// <summary>
         /// 宽度

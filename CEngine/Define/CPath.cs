@@ -8,44 +8,44 @@
         /// <summary>
         /// 
         /// </summary>
-        public static string solutionPath
+        public static string solution
         {
             get
             {
-                if (string.IsNullOrEmpty(_solutionPath))
+                if (string.IsNullOrEmpty(_solution))
                 {
-                    _solutionPath = AppDomain.CurrentDomain.BaseDirectory.Replace("\\", "/");
+                    _solution = AppDomain.CurrentDomain.BaseDirectory.Replace("\\", "/");
                     if (InEditor())
                     {
-                        var idx = _solutionPath.IndexOf("/bin/");
+                        var idx = _solution.IndexOf("/bin/");
                         if (idx >= 0)
                         {
-                            _solutionPath = _solutionPath.Substring(0, idx);
+                            _solution = _solution.Substring(0, idx);
                         }
                     }
                 }
-                return _solutionPath;
+                return _solution;
             }
         }
 
-        private static string _solutionPath = string.Empty;
+        private static string _solution = string.Empty;
 
         /// <summary>
         /// 
         /// </summary>
-        public static string resourcesPath
+        public static string resources
         {
             get
             {
-                if (string.IsNullOrEmpty(_resourcesPath))
+                if (string.IsNullOrEmpty(_resources))
                 {
-                    _resourcesPath = $"{solutionPath}/Resources";
+                    _resources = $"{solution}/Resources";
                 }
-                return _resourcesPath;
+                return _resources;
             }
         }
 
-        private static string _resourcesPath = string.Empty;
+        private static string _resources = string.Empty;
 
         /// <summary>
         /// 

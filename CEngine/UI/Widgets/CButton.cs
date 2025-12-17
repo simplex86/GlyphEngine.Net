@@ -3,7 +3,7 @@
     /// <summary>
     /// 按钮
     /// </summary>
-    public class CButton : CUIComponent, IInteractable
+    public class CButton : CWidget, IInteractable
     {
         /// <summary>
         /// 是否可交互

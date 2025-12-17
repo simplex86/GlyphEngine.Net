@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Event\**" />
+    <EmbeddedResource Remove="Event\**" />
+    <None Remove="Event\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="GameObject\Primitives\" />
     <Folder Include="Collider\" />
   </ItemGroup>

@@ -325,6 +325,38 @@ namespace CEngine
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool AsConsoleColor(this JsonData self, string key, out ConsoleColor value)
+        {
+            value = ConsoleColor.White;
+
+            if (self.ContainsKey(key))
+            {
+                value = (ConsoleColor)(int)self[key];
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static ConsoleColor As(this JsonData self, string key, ConsoleColor defaultValue)
+        {
+            return self.AsConsoleColor(key, out var value) ? value : defaultValue;
+        }
+
+        /// <summary>
         /// 获取子节点
         /// </summary>
         /// <param name="self"></param>

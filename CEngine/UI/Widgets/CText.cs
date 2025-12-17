@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class CText : CUIComponent
+    public class CText : CWidget
     {
         /// <summary>
         /// 

@@ -48,7 +48,6 @@ namespace CEngine
             running = true;
 
             CSceneManager.Init();
-            CEventManager.Init();
 
             var type = CReflectionHelper.Find<IEngineEntry, CEngineEntryAttribute>();
             if (type != null)
