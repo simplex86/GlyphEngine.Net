@@ -323,5 +323,25 @@ namespace CEngine
 
             return false;
         }
+
+        /// <summary>
+        /// 获取子节点
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool TryGetValue(this JsonData self, string key, out JsonData value)
+        {
+            value = null;
+
+            if (self.ContainsKey(key))
+            {
+                value = self[key];
+                return true;
+            }
+
+            return false;
+        }
     }
 }

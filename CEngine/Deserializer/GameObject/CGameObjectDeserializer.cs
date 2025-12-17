@@ -99,11 +99,9 @@ namespace CEngine
         /// <param name="renderable"></param>
         private static void DeserializePixels(JsonData data, CRenderableObject renderable)
         {
-            if (data.ContainsKey("pixels"))
+            if (data.TryGetValue("pixels", out var pixels))
             {
                 var deserializer = deserializers["pixel"];
-
-                var pixels = data["pixels"];
                 for (int i = 0; i<pixels.Count; i++) 
                 {
                     deserializer.Deserialize(pixels[i], renderable);
@@ -118,9 +116,8 @@ namespace CEngine
         /// <param name="gameobject"></param>
         private static void DeserializeChildren(JsonData data, CGameObject gameobject)
         {
-            if (data.ContainsKey("children"))
+            if (data.TryGetValue("children", out var children))
             {
-                var children = data["children"];
                 for (int i = 0; i < children.Count; i++)
                 {
                     var cdata = children[i];
@@ -141,11 +138,9 @@ namespace CEngine
         /// <param name="renderable"></param>
         private static void DeserializeSkins(JsonData data, CRenderableObject renderable)
         {
-            if (data.ContainsKey("skins"))
+            if (data.TryGetValue("skins", out var skins))
             {
                 var deserializer = deserializers["skin"];
-
-                var skins = data["skins"];
                 for (int i = 0; i < skins.Count; i++)
                 {
                     deserializer.Deserialize(skins[i], renderable);
