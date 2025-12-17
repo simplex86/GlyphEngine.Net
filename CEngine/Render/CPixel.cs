@@ -8,11 +8,11 @@
         /// <summary>
         /// 
         /// </summary>
-        public int x { get; set; }
+        internal int x { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public int y { get; set; }
+        internal int y { get; set; }
         /// <summary>
         /// 
         /// </summary>

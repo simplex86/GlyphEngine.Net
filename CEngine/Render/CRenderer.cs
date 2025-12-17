@@ -71,7 +71,7 @@
 
             renderer.Clear();
             // 被渲染的像素
-            foreach (var p in current.pixels)
+            foreach (var p in current)
             {
                 if (!previous.GetPixel(p.x, p.y, out var q))
                 {
@@ -85,7 +85,7 @@
                 }
             }
             // 被擦除的像素
-            foreach (var p in previous.pixels)
+            foreach (var p in previous)
             {
                 if (!current.GetPixel(p.x, p.y, out var q))
                 {
@@ -102,7 +102,7 @@
         /// </summary>
         private void Erase()
         {
-            foreach (var pixel in erasurer.pixels)
+            foreach (var pixel in erasurer)
             {
                 DrawPixel(pixel);
             }
@@ -114,7 +114,7 @@
         /// </summary>
         private void Draw()
         {
-            foreach (var pixel in renderer.pixels)
+            foreach (var pixel in renderer)
             {
                 DrawPixel(pixel);
             }

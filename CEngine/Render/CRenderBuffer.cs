@@ -1,16 +1,30 @@
-﻿namespace CEngine
+﻿using System.Collections;
+
+namespace CEngine
 {
     /// <summary>
     /// 渲染缓冲
     /// </summary>
-    internal class CRenderBuffer
+    internal class CRenderBuffer : IEnumerable<CPixel>
     {
-        internal List<CPixel> pixels { get; }
+        private List<CPixel> pixels { get; }
 
         internal CRenderBuffer()
         {
             pixels = new List<CPixel>(CWorld.width * CWorld.height);
         }
+
+        /// <summary>
+        /// 获取迭代器
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<CPixel> GetEnumerator() => pixels.GetEnumerator();
+
+        /// <summary>
+        /// 获取迭代器
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator IEnumerable.GetEnumerator() => pixels.GetEnumerator();
 
         /// <summary>
         /// 写入像素
