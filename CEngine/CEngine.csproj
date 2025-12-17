@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="GameObject\Primitives\" />
     <Folder Include="Collider\" />
-    <Folder Include="Thirds\" />
   </ItemGroup>
 
 </Project>
