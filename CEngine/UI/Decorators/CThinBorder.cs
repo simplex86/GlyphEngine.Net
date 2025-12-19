@@ -1,35 +1,18 @@
-﻿using System.Collections.Generic;
-
-namespace CEngine.UI
+﻿namespace CEngine.UI
 {
     /// <summary>
     /// 
     /// </summary>
-    internal class CThinBorder : IDecorator
+    internal class CThinBorder : CBorder
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<CPixel> pixels { get; }
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="view"></param>
         public CThinBorder(IView view)
+            : base(view)
         {
-            pixels = new List<CPixel>(view.width * view.height);
-            for (int y = 0; y < view.height; y++)
-            {
-                for (int x = 0; x < view.width; x++)
-                {
-                    var c = GetChar(view.width, view.height, x, y);
-                    if (c != CChar.Empty)
-                    {
-                        pixels.Add(CPixelPool.Instance.Alloc(x - view.width / 2, y - view.height / 2, c));
-                    }
-                }
-            }
+
         }
 
         /// <summary>
@@ -40,7 +23,7 @@ namespace CEngine.UI
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        private static char GetChar(int w, int h, int x, int y)
+        protected override char Get(int w, int h, int x, int y)
         {
             if (y == 0)
             {
