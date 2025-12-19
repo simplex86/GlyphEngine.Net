@@ -93,6 +93,38 @@ namespace CEngine
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
+        public static bool AsByte(this JsonData self, string key, out byte value)
+        {
+            value = 0;
+
+            if (self.TryGetValue(key, out var v))
+            {
+                value = (byte)(int)v;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static int As(this JsonData self, string key, byte defaultValue)
+        {
+            return self.AsByte(key, out var value) ? value : defaultValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static bool AsInt(this JsonData self, string key, out int value)
         {
             value = 0;
@@ -259,7 +291,11 @@ namespace CEngine
             // 获取枚举的基础类型
             var underlyingType = Enum.GetUnderlyingType(typeof(TEnum));
 
-            if (underlyingType == typeof(int))
+            if (underlyingType == typeof(byte))
+            {
+                if (self.AsByte(key, out var val)) return ToEnum(val, out value);
+            }
+            else if (underlyingType == typeof(int))
             {
                 if (self.AsInt(key, out var val)) return ToEnum(val, out value);
             }
