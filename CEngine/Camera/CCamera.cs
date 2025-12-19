@@ -20,11 +20,11 @@ namespace CEngine
         /// <summary>
         /// 宽度
         /// </summary>
-        public int width { get; internal set; } = Console.BufferWidth;
+        public int width { get; internal set; } = CWorld.width;
         /// <summary>
         /// 高度
         /// </summary>
-        public int height { get; internal set; } = Console.BufferHeight;
+        public int height { get; internal set; } = CWorld.height;
 
         /// <summary>
         /// 
@@ -77,7 +77,7 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 
+        /// 渲染
         /// </summary>
         /// <param name="gameobject"></param>
         /// <param name="px"></param>
