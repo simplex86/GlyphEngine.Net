@@ -1,5 +1,6 @@
-﻿using LitJson;
-using System;
+﻿using System;
+using System.Linq;
+using LitJson;
 
 namespace CEngine
 {
@@ -19,9 +20,9 @@ namespace CEngine
         {
             value = false;
 
-            if (self.ContainsKey(key))
+            if (self.TryGetValue(key, out var v))
             {
-                value = (bool)self[key];
+                value = (bool)v;
                 return true;
             }
 
@@ -96,9 +97,9 @@ namespace CEngine
         {
             value = 0;
 
-            if (self.ContainsKey(key))
+            if (self.TryGetValue(key, out var v))
             {
-                value = (int)self[key];
+                value = (int)v;
                 return true;
             }
 
@@ -128,9 +129,9 @@ namespace CEngine
         {
             value = 0U;
 
-            if (self.ContainsKey(key))
+            if (self.TryGetValue(key, out var v))
             {
-                value = (uint)(int)self[key];
+                value = (uint)v;
                 return true;
             }
 
@@ -160,9 +161,9 @@ namespace CEngine
         {
             value = 0L;
 
-            if (self.ContainsKey(key))
+            if (self.TryGetValue(key, out var v))
             {
-                value = (long)self[key];
+                value = (long)(int)v;
                 return true;
             }
 
@@ -192,9 +193,9 @@ namespace CEngine
         {
             value = 0UL;
 
-            if (self.ContainsKey(key))
+            if (self.TryGetValue(key, out var v))
             {
-                value = (ulong)(long)self[key];
+                value = (ulong)(int)v;
                 return true;
             }
 
@@ -224,9 +225,9 @@ namespace CEngine
         {
             value = string.Empty;
 
-            if (self.ContainsKey(key))
+            if (self.TryGetValue(key, out var v))
             {
-                value = (string)self[key];
+                value = (string)v;
                 return true;
             }
 
@@ -335,9 +336,9 @@ namespace CEngine
         {
             value = ConsoleColor.White;
 
-            if (self.ContainsKey(key))
+            if (self.TryGetValue(key, out var v))
             {
-                value = (ConsoleColor)(int)self[key];
+                value = (ConsoleColor)(int)v;
                 return true;
             }
 

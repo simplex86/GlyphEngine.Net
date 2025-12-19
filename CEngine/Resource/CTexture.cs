@@ -1,4 +1,6 @@
-﻿namespace CEngine
+﻿using System.Collections.Generic;
+
+namespace CEngine
 {
     /// <summary>
     /// 纹理，以字符作像素，只读

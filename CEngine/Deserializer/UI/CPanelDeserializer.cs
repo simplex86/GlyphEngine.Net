@@ -1,4 +1,5 @@
-﻿using LitJson;
+﻿using System.Collections.Generic;
+using LitJson;
 
 namespace CEngine.UI
 {
@@ -35,10 +36,10 @@ namespace CEngine.UI
         /// <returns></returns>
         private static CPanelView Deserialize(JsonData data)
         {
-            var x = data.ContainsKey("x") ? (int)data["x"] : 0;
-            var y = data.ContainsKey("y") ? (int)data["y"] : 0;
-            var width  = data.ContainsKey("width")  ? (int)data["width"]  : CWorld.width;
-            var height = data.ContainsKey("height") ? (int)data["height"] : CWorld.height;
+            var x = data.As("x", 0);
+            var y = data.As("y", 0);
+            var width  = data.As("width", CWorld.width);
+            var height = data.As("height", CWorld.height);
 
             if (width  <= 0) width  = CWorld.width;
             if (height <= 0) height = CWorld.height;
@@ -60,13 +61,10 @@ namespace CEngine.UI
         {
             for (int i = 0; i < data.Count; i++)
             {
-                if (data[i].ContainsKey("type"))
+                if (data[i].TryGetValue("type", out var type) &&
+                    deserializers.TryGetValue((string)type, out var deserializer))
                 {
-                    var type = (string)data[i]["type"];
-                    if (deserializers.TryGetValue(type, out var deserializer))
-                    {
-                        deserializer.Deserialize(data[i], view);
-                    }
+                    deserializer.Deserialize(data[i], view);
                 }
             }
         }

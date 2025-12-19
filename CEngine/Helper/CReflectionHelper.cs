@@ -1,9 +1,11 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace CEngine
 {
     /// <summary>
-    /// 
+    /// 反射助手
     /// </summary>
     internal static class CReflectionHelper
     {
@@ -123,7 +125,7 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 
+        /// 创建实例
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="typename"></param>
@@ -141,7 +143,7 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 
+        /// 创建实例
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="A"></typeparam>
@@ -161,7 +163,7 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 
+        /// 浅拷贝
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="target"></param>
@@ -197,7 +199,7 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 
+        /// 浅拷贝
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="A"></typeparam>
@@ -308,6 +310,11 @@ namespace CEngine
             return (T)clone;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="domain"></param>
+        /// <returns></returns>
         public static List<Assembly> GetReferanceAssemblies(this AppDomain domain)
         {
             var list = new List<Assembly>();
@@ -320,7 +327,12 @@ namespace CEngine
             return list;
         }
 
-        static void GetReferanceAssemblies(Assembly assembly, List<Assembly> list)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="list"></param>
+        private static void GetReferanceAssemblies(Assembly assembly, List<Assembly> list)
         {
             var assemblyNames = assembly.GetReferencedAssemblies();
             Array.ForEach(assemblyNames, assemblyName =>

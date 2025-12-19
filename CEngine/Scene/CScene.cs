@@ -1,4 +1,6 @@
-﻿namespace CEngine
+﻿using System.Collections.Generic;
+
+namespace CEngine
 {
     /// <summary>
     /// 场景

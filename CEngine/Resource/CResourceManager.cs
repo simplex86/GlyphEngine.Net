@@ -1,4 +1,8 @@
-﻿using LitJson;
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using LitJson;
+using CEngine.UI;
 
 namespace CEngine
 {
@@ -86,6 +90,29 @@ namespace CEngine
         public static void UnloadScene(CScene scene)
         {
             CSceneManager.Remove(scene);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        public static CPanel LoadUI(string filepath, Type type)
+        {
+            var panel = Activator.CreateInstance(type) as CPanel;
+            panel.view = CPanelDeserializer.Deserialize(filepath);
+            CPanelManager.Add(panel);
+
+            return panel;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="panel"></param>
+        public static void UnloadUI(CPanel panel)
+        {
+            CPanelManager.Remove(panel);
         }
 
         /// <summary>
