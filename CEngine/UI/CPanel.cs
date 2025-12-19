@@ -1,52 +1,21 @@
-﻿namespace CEngine.UI
+﻿using System.Collections.Generic;
+
+namespace CEngine.UI
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface IPanel
+    public class CPanel
     {
         /// <summary>
         /// 
         /// </summary>
-        CGameObject gameObject { get; }
+        public CGameObject gameobject => view;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="dt"></param>
-        void Update(float dt);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class CPanel : IPanel
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public CGameObject gameObject => view;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private CPanelView view { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected CPanel()
-        {
-            var attrs = GetType().GetCustomAttributes(true);
-            foreach (var v in attrs) 
-            {
-                if (v is CPanelAttribute attr)
-                {
-                    view = CPanelDeserializer.Deserialize(attr.design);
-                    break;
-                }
-            }
-        }
+        internal CPanelView view { get; set; } = null;
 
         /// <summary>
         /// 
@@ -58,34 +27,41 @@
         {
             return view.GetComponent<T>(name);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dt"></param>
-        public void Update(float dt)
-        {
-            view?.Update(dt);
-        }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public class CPanelAttribute : Attribute
+    internal static class CPanelManager
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        internal string design { get; }
+        private static List<CPanel> panels = new List<CPanel>();
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="design"></param>
-        public CPanelAttribute(string design)
+        /// <param name="panel"></param>
+        internal static void Add(CPanel panel)
         {
-            this.design = design;
+            panels.Add(panel);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt"></param>
+        internal static void Update(float dt)
+        {
+            if (panels.Count == 0) return;
+            panels[^1].view.Update(dt);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="panel"></param>
+        internal static void Remove(CPanel panel)
+        {
+            panels.Remove(panel);
         }
     }
 }

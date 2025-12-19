@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using CEngine.UI;
 using CEngine.Input;
 
@@ -82,7 +83,7 @@ namespace CEngine
                     CKeyboard.Update(dt);
                     entry?.Update(dt);
                     CSceneManager.Update(dt);
-                    CUIManager.Update(dt);
+                    CPanelManager.Update(dt);
                 }
             }
             catch (Exception ex)

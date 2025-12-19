@@ -1,20 +1,22 @@
-﻿using CEngine.Input;
+﻿using System;
+using System.Collections.Generic;
+using CEngine.Input;
 
 namespace CEngine.UI
 {
     /// <summary>
     /// 
     /// </summary>
-    internal sealed class CPanelView : CRenderableObject, IView
+    internal class CPanelView : CRenderableObject, IView
     {
         /// <summary>
         /// 宽度
         /// </summary>
-        public int width { get; } = CWorld.width;
+        public int width { get; internal set; } = CWorld.width;
         /// <summary>
         /// 高度
         /// </summary>
-        public int height { get; } = CWorld.height;
+        public int height { get; internal set; } = CWorld.height;
 
         /// <summary>
         /// 当前获得焦点的组件
@@ -29,7 +31,7 @@ namespace CEngine.UI
         /// <summary>
         /// 
         /// </summary>
-        internal CPanelView()
+        public CPanelView()
             : this(CWorld.width, CWorld.height)
         {
 

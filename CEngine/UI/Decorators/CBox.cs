@@ -1,4 +1,6 @@
-﻿namespace CEngine.UI
+﻿using System.Collections.Generic;
+
+namespace CEngine.UI
 {
     internal class CBox : IDecorator
     {

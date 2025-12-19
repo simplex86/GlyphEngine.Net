@@ -1,4 +1,6 @@
-﻿namespace CEngine.UI
+﻿using System;
+
+namespace CEngine.UI
 {
     /// <summary>
     /// 子控件接口
