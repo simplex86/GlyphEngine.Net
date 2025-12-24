@@ -3,14 +3,14 @@
 namespace CEngine
 {
     /// <summary>
-    /// 渲染器
+    /// 通用渲染器
     /// </summary>
-    internal class CRenderer
+    internal class NRenderer : IRenderer
     {
         /// <summary>
         /// 渲染缓存数组
         /// </summary>
-        private CRenderBuffer[] buffers = { new CRenderBuffer(), new CRenderBuffer() };
+        private NRenderBuffer[] buffers = { new NRenderBuffer(), new NRenderBuffer() };
         /// <summary>
         /// 当前帧渲染缓存在缓存数组的索引
         /// </summary>
@@ -23,20 +23,20 @@ namespace CEngine
         /// <summary>
         /// 渲染缓存：需要被真正渲染的像素缓存区
         /// </summary>
-        private CRenderBuffer renderer = new CRenderBuffer();
+        private NRenderBuffer renderer = new NRenderBuffer();
         /// <summary>
         /// 擦除缓存：需要被擦除的像素缓存区
         /// </summary>
-        private CRenderBuffer erasurer = new CRenderBuffer();
+        private NRenderBuffer erasurer = new NRenderBuffer();
 
         /// <summary>
         /// 当前帧的渲染缓存
         /// </summary>
-        private CRenderBuffer current => buffers[curIndex];
+        private NRenderBuffer current => buffers[curIndex];
         /// <summary>
         /// 前一帧的渲染缓存
         /// </summary>
-        private CRenderBuffer previous => buffers[preIndex];
+        private NRenderBuffer previous => buffers[preIndex];
 
         /// <summary>
         /// 往当前帧渲染缓存写入像素数据

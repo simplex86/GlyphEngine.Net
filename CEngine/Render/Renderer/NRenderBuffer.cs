@@ -7,12 +7,12 @@ namespace CEngine
     /// <summary>
     /// 渲染缓冲
     /// </summary>
-    internal class CRenderBuffer : IEnumerable<CPixel>
+    internal class NRenderBuffer : IEnumerable<CPixel>
     {
         private List<CPixel> list;
         private Dictionary<ulong, int> grid;
 
-        internal CRenderBuffer()
+        internal NRenderBuffer()
         {
             list = new List<CPixel>(CWorld.width * CWorld.height);
             grid = new Dictionary<ulong, int>();
