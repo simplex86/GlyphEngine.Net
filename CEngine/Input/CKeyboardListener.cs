@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace CEngine.Input
+namespace CEngine
 {
     /// <summary>
-    /// 
+    /// 键盘事件类型
     /// </summary>
     public enum EKeyboardEventType
     {
@@ -41,22 +41,22 @@ namespace CEngine.Input
     }
 
     /// <summary>
-    /// 键盘输入
+    /// 键盘监听器
     /// </summary>
-    public static class CKeyboard
+    internal class CKeyboardListener
     {
         /// <summary>
         /// 
         /// </summary>
-        private static EKeyboardEventType keytype = EKeyboardEventType.None;
+        private EKeyboardEventType keytype = EKeyboardEventType.None;
         /// <summary>
         /// 有效的键值
         /// </summary>
-        private static int keycode = INVALID_KEY_CODE;
+        private int keycode = INVALID_KEY_CODE;
         /// <summary>
-        /// 
+        /// 空键盘事件
         /// </summary>
-        private static CKeyboardEvent NONE_KEYBOARD_EVENT = new CKeyboardEvent()
+        private readonly static CKeyboardEvent NONE_KEYBOARD_EVENT = new CKeyboardEvent()
         {
             type = EKeyboardEventType.None,
             keycode = INVALID_KEY_CODE,
@@ -67,9 +67,9 @@ namespace CEngine.Input
         internal const int INVALID_KEY_CODE = -1;
 
         /// <summary>
-        /// 
+        /// 轮询键盘事件
         /// </summary>
-        public static bool Poll(out CKeyboardEvent evt)
+        public bool Poll(out CKeyboardEvent evt)
         {
             if (keytype == EKeyboardEventType.None)
             {
@@ -90,7 +90,7 @@ namespace CEngine.Input
         /// 
         /// </summary>
         /// <param name="dt"></param>
-        internal static void Update(float dt)
+        internal void Update(float dt)
         {
             if (keytype == EKeyboardEventType.Up)
             {
@@ -104,24 +104,22 @@ namespace CEngine.Input
 
                 if (keycode == INVALID_KEY_CODE)
                 {
-                    keytype = EKeyboardEventType.Down;
-                    keycode = (int)curkey;
+                    OnKeyDown((int)curkey);
+                    return;
+                }
+
+                if (keycode == (int)curkey)
+                {
+                    OnKeyHold();
                 }
                 else
                 {
-                    if (keycode == (int)curkey)
-                    {
-                        keytype = EKeyboardEventType.Hold;
-                    }
-                    else
-                    {
-                        keytype = EKeyboardEventType.Up;
-                    }
+                    OnKeyUp();
                 }
             }
             else if (keycode != INVALID_KEY_CODE)
             {
-                keytype = EKeyboardEventType.Up;
+                OnKeyUp();
             }
         }
 
@@ -129,42 +127,28 @@ namespace CEngine.Input
         /// 
         /// </summary>
         /// <returns></returns>
-        private static CKeyboardEvent OnKeyDown()
+        private void OnKeyDown(int curkey)
         {
-            return new CKeyboardEvent()
-            {
-                type = EKeyboardEventType.Down,
-                keycode = keycode,
-            };
+            keytype = EKeyboardEventType.Down;
+            keycode = curkey;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        private static CKeyboardEvent OnKeyHold()
+        private void OnKeyHold()
         {
-            return new CKeyboardEvent()
-            {
-                type = EKeyboardEventType.Hold,
-                keycode = keycode,
-            };
+            keytype = EKeyboardEventType.Hold;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        private static CKeyboardEvent OnKeyUp()
+        private void OnKeyUp()
         {
-            var kevent = new CKeyboardEvent()
-            {
-                type = EKeyboardEventType.Up,
-                keycode = keycode,
-            };
-            keycode = INVALID_KEY_CODE;
-
-            return kevent;
+            keytype = EKeyboardEventType.Up;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using CEngine.UI;
-using CEngine.Input;
 
 namespace CEngine
 {
@@ -80,7 +79,7 @@ namespace CEngine
                 while (running)
                 {
                     var dt = CTime.Update();
-                    CKeyboard.Update(dt);
+                    CInput.Update(dt);
                     entry?.Update(dt);
                     CSceneManager.Update(dt);
                     CPanelManager.Update(dt);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CEngine.Input;
 
 namespace CEngine.UI
 {
@@ -112,7 +111,7 @@ namespace CEngine.UI
         /// <param name="dt"></param>
         internal void Update(float dt)
         {
-            if (CKeyboard.Poll(out var evt))
+            if (CInput.Poll(out var evt))
             {
                 switch (evt.keycode)
                 {
