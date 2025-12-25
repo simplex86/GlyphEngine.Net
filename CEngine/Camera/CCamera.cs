@@ -99,7 +99,7 @@ namespace CEngine
 
                     if (Cull(x, y))
                     {
-                        renderer.SetPixel(x, y, pixel.c, pixel.color, pixel.backgroundColor);
+                        renderer.SetPixel(x, y, pixel.glyph, pixel.color, pixel.backgroundColor);
                     }
                 });
             }

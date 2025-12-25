@@ -21,9 +21,9 @@ namespace CEngine
         /// 写入区
         /// </summary>
         private WindowsNativeAPI.SmallRect region = new WindowsNativeAPI.SmallRect() { 
-            Left = 0, 
-            Top = 0, 
-            Right = (short)CWorld.width, 
+            Left   = 0, 
+            Top    = 0, 
+            Right  = (short)CWorld.width, 
             Bottom = (short)CWorld.height 
         };
         /// <summary>
@@ -65,15 +65,15 @@ namespace CEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="symbol"></param>
+        /// <param name="glyph"></param>
         /// <param name="color"></param>
-        public void SetPixel(int x, int y, char c, ConsoleColor color, ConsoleColor backgroundColor)
+        public void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
         {
-            var i = y * CWorld.width + x;
-            if (c == 0) backgroundColor = Console.BackgroundColor;
+            var index = y * CWorld.width + x;
+            if (glyph == 0) backgroundColor = Console.BackgroundColor;
 
-            buffer[i].Attributes = (short)((int)color | ((int)backgroundColor << 4));
-            buffer[i].UnicodeChar = c;
+            buffer[index].Attributes = (short)((int)color | ((int)backgroundColor << 4));
+            buffer[index].UnicodeChar = glyph;
         }
 
         /// <summary>

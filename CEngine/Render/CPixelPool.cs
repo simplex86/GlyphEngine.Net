@@ -47,12 +47,12 @@ namespace CEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="c"></param>
+        /// <param name="glyph"></param>
         /// <returns></returns>
-        public CPixel Alloc(int x, int y, char c)
+        public CPixel Alloc(int x, int y, char glyph)
         {
             var pixel = Alloc(x, y);
-            pixel.c = c;
+            pixel.glyph = glyph;
 
             return pixel;
         }
@@ -62,12 +62,12 @@ namespace CEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="c"></param>
+        /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <returns></returns>
-        public CPixel Alloc(int x, int y, char c, ConsoleColor color)
+        public CPixel Alloc(int x, int y, char glyph, ConsoleColor color)
         {
-            var pixel = Alloc(x, y, c);
+            var pixel = Alloc(x, y, glyph);
             pixel.color = color;
 
             return pixel;

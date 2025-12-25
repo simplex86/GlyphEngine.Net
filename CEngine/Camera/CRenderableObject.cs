@@ -176,7 +176,7 @@ namespace CEngine
 
             foreach (var pixel in pixels)
             {
-                var clonepixel = CPixelPool.Instance.Alloc(pixel.x, pixel.y, pixel.c, pixel.color);
+                var clonepixel = CPixelPool.Instance.Alloc(pixel.x, pixel.y, pixel.glyph, pixel.color);
                 clone.pixels.Add(clonepixel);
             }
 

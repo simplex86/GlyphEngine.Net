@@ -12,9 +12,10 @@ namespace CEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="symbol"></param>
+        /// <param name="glyph"></param>
         /// <param name="color"></param>
-        void SetPixel(int x, int y, char c, ConsoleColor color, ConsoleColor backgroundColor);
+        /// <param name="backgroundColor"></param>
+        void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor);
 
         /// <summary>
         /// 渲染

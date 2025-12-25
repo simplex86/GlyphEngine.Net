@@ -35,7 +35,8 @@ namespace CEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        internal void SetPixel(int x, int y, char c)
+        /// <param name="glyph"></param>
+        internal void SetPixel(int x, int y, char glyph)
         {
             if (!GetPixel(x, y, out var key, out var pixel))
             {
@@ -44,7 +45,7 @@ namespace CEngine
                 grid.Add(key, list.Count - 1);
             }
 
-            pixel.c = c;
+            pixel.glyph = glyph;
             pixel.color = Console.ForegroundColor;
         }
 
@@ -53,9 +54,10 @@ namespace CEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="symbol"></param>
+        /// <param name="glyph"></param>
         /// <param name="color"></param>
-        internal void SetPixel(int x, int y, char c, ConsoleColor color, ConsoleColor backgroundColor)
+        /// <param name="backgroundColor"></param>
+        internal void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
         {
             if (!GetPixel(x, y, out var key, out var pixel))
             {
@@ -64,7 +66,7 @@ namespace CEngine
                 grid.Add(key, list.Count - 1);
             }
 
-            pixel.c = c;
+            pixel.glyph = glyph;
             pixel.color = color;
             pixel.backgroundColor = backgroundColor;
         }

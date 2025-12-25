@@ -18,7 +18,7 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        public char c { get; set; } = CChar.Empty;
+        public char glyph { get; set; } = CChar.Empty;
         /// <summary>
         /// 颜色
         /// </summary>
@@ -43,7 +43,7 @@ namespace CEngine
         {
             this.x = 0;
             this.y = 0;
-            this.c = CChar.Empty;
+            this.glyph = CChar.Empty;
             this.color = Console.ForegroundColor;
             this.backgroundColor = Console.BackgroundColor;
         }
@@ -54,7 +54,7 @@ namespace CEngine
         /// <returns></returns>
         internal CPixel Clone()
         {
-            var clone = CPixelPool.Instance.Alloc(x, y, c, color);
+            var clone = CPixelPool.Instance.Alloc(x, y, glyph, color);
             return clone;
         }
     }

@@ -40,7 +40,7 @@ namespace CEngine
                 grid.Add(key, list.Count - 1);
             }
 
-            pixel.c = c;
+            pixel.glyph = c;
             pixel.color = color;
         }
 
@@ -77,7 +77,7 @@ namespace CEngine
             {
                 if (Get(pixel.x, pixel.y, out var _, out var p))
                 {
-                    pixel.c = p.c;
+                    pixel.glyph = p.glyph;
                     pixel.color = p.color;
                 }
             });

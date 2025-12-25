@@ -43,11 +43,12 @@ namespace CEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="symbol"></param>
+        /// <param name="glyph"></param>
         /// <param name="color"></param>
-        public void SetPixel(int x, int y, char c, ConsoleColor color, ConsoleColor backgroundColor)
+        /// <param name="backgroundColor"></param>
+        public void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
         {
-            current.SetPixel(x, y, c, color, backgroundColor);
+            current.SetPixel(x, y, glyph, color, backgroundColor);
         }
 
         /// <summary>
@@ -77,12 +78,12 @@ namespace CEngine
             {
                 if (!previous.GetPixel(p.x, p.y, out var q))
                 {
-                    renderer.SetPixel(p.x, p.y, p.c, p.color, p.backgroundColor);
+                    renderer.SetPixel(p.x, p.y, p.glyph, p.color, p.backgroundColor);
                     dirty = true;
                 }
-                else if (p.c != q.c || p.color != q.color)
+                else if (p.glyph != q.glyph || p.color != q.color)
                 {
-                    renderer.SetPixel(p.x, p.y, p.c, p.color, p.backgroundColor);
+                    renderer.SetPixel(p.x, p.y, p.glyph, p.color, p.backgroundColor);
                     dirty = true;
                 }
             }
@@ -143,7 +144,7 @@ namespace CEngine
             var context = SetConsoleColor(pixel);
             {
                 Console.SetCursorPosition(pixel.x, pixel.y);
-                Console.Write(pixel.c);
+                Console.Write(pixel.glyph);
             }
             ResetConsoleColor(context);
         }

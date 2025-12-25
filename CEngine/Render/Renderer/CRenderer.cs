@@ -33,11 +33,12 @@ namespace CEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="symbol"></param>
+        /// <param name="glyph"></param>
         /// <param name="color"></param>
-        public void SetPixel(int x, int y, char c, ConsoleColor color, ConsoleColor backgroundColor)
+        /// <param name="backgroundColor"></param>
+        public void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
         {
-            renderer.SetPixel(x, y, c, color, backgroundColor);
+            renderer.SetPixel(x, y, glyph, color, backgroundColor);
         }
 
         /// <summary>
