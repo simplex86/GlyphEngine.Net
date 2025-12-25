@@ -8,7 +8,7 @@ namespace CEngine
     /// <summary>
     /// 
     /// </summary>
-    public class Color
+    internal class Color
     {
         /// <summary> 
         /// Red component. 
@@ -32,6 +32,55 @@ namespace CEngine
             this.G = (uint)g;
             this.B = (uint)b;
         }
+    }
+
+    /// <summary>
+    /// 文件访问权限
+    /// </summary>
+    internal enum EFileAccessMode : uint
+    {
+        /// <summary>
+        /// 所有可能的访问权限
+        /// </summary>
+        All = 0x10000000,
+        /// <summary>
+        /// 执行访问权限
+        /// </summary>
+        Execute = 0x20000000,
+        /// <summary>
+        /// 写入访问权限
+        /// </summary>
+        Write = 0x40000000,
+        /// <summary>
+        /// 读取访问权限
+        /// </summary>
+        Read = 0x80000000,
+    }
+
+    /// <summary>
+    /// 文件共享模式
+    /// </summary>
+    internal enum EFileShareMode
+    {
+        /// <summary>
+        /// 如果其他进程请求删除、读取或写入访问权限，则阻止其他进程打开文件或设备
+        /// </summary>
+        None = 0x00000000,
+        /// <summary>
+        /// 允许对文件或设备执行后续打开操作以请求读取访问权限。否则，如果进程请求读取访问权限，则其他进程无法打开文件或设备。
+        /// 如果未指定此标志，但已打开文件或设备进行读取访问，则函数将失败。
+        /// </summary>
+        Read = 0x00000001,
+        /// <summary>
+        /// 允许对文件或设备执行后续打开操作以请求写入访问权限。否则，如果进程请求写入访问权限，则其他进程无法打开文件或设备。
+        /// 如果未指定此标志，但已打开文件或设备进行写入访问或具有写入访问权限的文件映射，则函数将失败。
+        /// </summary>
+        Write = 0x00000002,
+        /// <summary>
+        /// 启用对文件或设备上的后续打开操作以请求删除访问权限。否则，如果进程请求删除访问权限，则无法打开文件或设备。
+        /// 如果未指定此标志，但文件或设备已打开以删除访问权限，则函数将失败。
+        /// </summary>
+        Delete = 0x00000004,
     }
 
     /// <summary>
