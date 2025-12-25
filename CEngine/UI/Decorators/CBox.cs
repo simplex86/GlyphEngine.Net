@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CEngine.UI
+namespace CEngine
 {
     internal class CBox : IDecorator
     {
@@ -11,12 +11,12 @@ namespace CEngine.UI
 
         public CBox(IView view)
         {
-            pixels = new List<CPixel>(view.width * view.height);
-            for (int y = 0; y < view.height; y++)
+            pixels = new List<CPixel>(view.Width * view.Height);
+            for (int y = 0; y < view.Height; y++)
             {
-                for (int x = 0; x < view.width; x++)
+                for (int x = 0; x < view.Width; x++)
                 {
-                    pixels.Add(CPixelPool.Instance.Alloc(x - view.width / 2, y - view.height / 2, CChar.Space));
+                    pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, CChar.Space));
                 }
             }
         }

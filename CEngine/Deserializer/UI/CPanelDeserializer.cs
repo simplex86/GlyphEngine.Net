@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using LitJson;
 
-namespace CEngine.UI
+namespace CEngine
 {
     /// <summary>
     /// 
@@ -25,7 +25,7 @@ namespace CEngine.UI
         /// <returns></returns>
         public static CPanelView Deserialize(string file)
         {
-            var data = CResourceManager.LoadJson(file);
+            var data = CResources.LoadJson(file);
             return Deserialize(data);
         }
 
@@ -38,14 +38,14 @@ namespace CEngine.UI
         {
             var x = data.As("x", 0);
             var y = data.As("y", 0);
-            var width  = data.As("width", CWorld.width);
-            var height = data.As("height", CWorld.height);
+            var width  = data.As("width", CScreen.Width);
+            var height = data.As("height", CScreen.Height);
 
-            if (width  <= 0) width  = CWorld.width;
-            if (height <= 0) height = CWorld.height;
+            if (width  <= 0) width  = CScreen.Width;
+            if (height <= 0) height = CScreen.Height;
 
             var view = new CPanelView(width, height);
-            view.transform.localposition = new Vector2(x, y);
+            view.Transform.LocalPosition = new Vector2(x, y);
 
             DeserializeComponents(data["components"], view);
 

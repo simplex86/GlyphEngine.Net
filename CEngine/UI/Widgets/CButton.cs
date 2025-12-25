@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CEngine.UI
+namespace CEngine
 {
     /// <summary>
     /// 按钮
@@ -11,19 +11,19 @@ namespace CEngine.UI
         /// <summary>
         /// 是否可交互
         /// </summary>
-        public bool interactable { get; set; } = true;
+        public bool Interactabled { get; set; } = true;
         /// <summary>
         /// 响应的按键
         /// </summary>
-        public ConsoleKey keycode { get; } = ConsoleKey.Enter;
+        public ConsoleKey Keycode { get; } = ConsoleKey.Enter;
         /// <summary>
         /// 获得焦点时的颜色
         /// </summary>
-        public ConsoleColor focusColor { get; set; } = ConsoleColor.Red;
+        public ConsoleColor FocusColor { get; set; } = ConsoleColor.Red;
         /// <summary>
         /// 失去焦点时的颜色
         /// </summary>
-        public ConsoleColor unfocusColor { get; set; } = ConsoleColor.White;
+        public ConsoleColor UnfocusColor { get; set; } = ConsoleColor.White;
 
         /// <summary>
         /// 点击事件列表
@@ -44,18 +44,18 @@ namespace CEngine.UI
         /// <param name="style"></param>
         public CButton(string text, Vector2 localposition, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
         {
-            this.interactable = true;
-            this.transform.localposition = localposition;
-            this.keycode = keycode;
-            this.unfocusColor = unfocusColor;
-            this.focusColor = focusColor;
+            this.Interactabled = true;
+            this.Transform.LocalPosition = localposition;
+            this.Keycode = keycode;
+            this.UnfocusColor = unfocusColor;
+            this.FocusColor = focusColor;
             //this.style = style;
 
-            this.text = new CText(text, Vector2.zero);
+            this.text = new CText(text, Vector2.Zero);
             Add(this.text);
 
-            this.width  = this.text.width  + 4;
-            this.height = this.text.height + 2;
+            this.Width  = this.text.Width  + 4;
+            this.Height = this.text.Height + 2;
 
             BuildBorder(style);
         }
@@ -83,7 +83,7 @@ namespace CEngine.UI
         /// </summary>
         public void OnFocus()
         {
-            color = focusColor;
+            color = FocusColor;
             text.color = color;
         }
 
@@ -92,7 +92,7 @@ namespace CEngine.UI
         /// </summary>
         public void LoseFocus()
         {
-            color = unfocusColor;
+            color = UnfocusColor;
             text.color = color;
         }
 
@@ -101,7 +101,7 @@ namespace CEngine.UI
         /// </summary>
         public void OnEnter()
         {
-            if (!interactable) return;
+            if (!Interactabled) return;
 
             foreach (var action in onClicked)
             {

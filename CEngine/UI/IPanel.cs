@@ -1,4 +1,4 @@
-﻿namespace CEngine.UI
+﻿namespace CEngine
 {
     /// <summary>
     /// 
@@ -8,7 +8,7 @@
         /// <summary>
         /// 
         /// </summary>
-        CGameObject gameobject { get; protected set; }
+        CGameObject GameObject { get; protected set; }
 
         /// <summary>
         /// 

@@ -5,38 +5,38 @@ namespace CEngine
     /// <summary>
     /// 游戏对象
     /// </summary>
-    public class CGameObject : CGameObjectContainer, IClonable<CGameObject>
+    public class CGameObject : CGameObjectContainer, ITransformable, IClonable<CGameObject>
     {
         /// <summary>
         /// 名字
         /// </summary>
-        public string name { get; set; } = "gameobject";
+        public string Name { get; set; } = "gameobject";
         /// <summary>
         /// 可见性
         /// </summary>
-        public bool enabled { get; set; } = true;
+        public bool Enabled { get; set; } = true;
         /// <summary>
         /// 位置
         /// </summary>
-        public CTransform transform { get; } = null;
+        public CTransform Transform { get; } = null;
         /// <summary>
         /// 父节点
         /// </summary>
-        public CGameObject parent { get; private set; } = null;
+        public CGameObject Parent { get; private set; } = null;
         /// <summary>
         /// 子节点数量
         /// </summary>
-        public int count => children.Count;
+        public int Count => Children.Count;
 
         /// <summary>
         /// 是否已被销毁
         /// </summary>
-        internal bool destroyed { get; private set; } = false;
+        internal bool Destroyed { get; private set; } = false;
 
         /// <summary>
         /// 子节点列表
         /// </summary>
-        protected List<CGameObject> children { get; } = new List<CGameObject>();
+        protected List<CGameObject> Children { get; } = new List<CGameObject>();
 
         /// <summary>
         /// 
@@ -60,12 +60,12 @@ namespace CEngine
 
         internal protected CGameObject(int x, int y, bool scene)
         {
-            transform = new CTransform(this);
-            transform.localposition = new Vector2(x, y);
+            Transform = new CTransform(this);
+            Transform.LocalPosition = new Vector2(x, y);
 
             if (scene)
             {
-                CSceneManager.Add(this);
+                CWorld.Add(this);
             }
         }
 
@@ -85,7 +85,7 @@ namespace CEngine
         /// <returns></returns>
         public bool Has(CGameObject child)
         {
-            return children.Contains(child);
+            return Children.Contains(child);
         }
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace CEngine
         {
             if (index < 0)
             {
-                index = children.Count + index;
+                index = Children.Count + index;
             }
-            return children[index];
+            return Children[index];
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace CEngine
         /// <param name="child"></param>
         internal override void Remove(CGameObject child)
         {
-            children.Remove(child);
+            Children.Remove(child);
             child.SetParent(null);
         }
 
@@ -128,20 +128,20 @@ namespace CEngine
         /// <param name="parent"></param>
         public void SetParent(CGameObject parent)
         {
-            if (this.parent == parent) return;
-            if (destroyed) return;
-            if (parent != null && parent.destroyed) return;
+            if (this.Parent == parent) return;
+            if (Destroyed) return;
+            if (parent != null && parent.Destroyed) return;
 
-            if (this.parent != null &&
-                this.parent.Has(this))
+            if (this.Parent != null &&
+                this.Parent.Has(this))
             {
-                this.parent.Remove(this);
+                this.Parent.Remove(this);
             }
 
-            this.parent = parent;
-            this.parent?.children.Add(this);
+            this.Parent = parent;
+            this.Parent?.Children.Add(this);
 
-            transform.Reposition();
+            Transform.Reposition();
         }
 
         /// <summary>
@@ -150,15 +150,15 @@ namespace CEngine
         public void Destroy()
         {
             // 从父结点移除
-            parent?.Remove(this);
+            Parent?.Remove(this);
             // 处理子节点
-            for (int i = count - 1; i >= 0; i--)
+            for (int i = Count - 1; i >= 0; i--)
             {
-                children[i].Destroy();
+                Children[i].Destroy();
             }
 
             OnDestroy();
-            destroyed = true;
+            Destroyed = true;
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace CEngine
         public static void Destroy(CGameObject gameobject)
         {
             if (gameobject == null ||
-                gameobject.destroyed)
+                gameobject.Destroyed)
             {
                 return;
             }
@@ -192,13 +192,13 @@ namespace CEngine
         {
             var clone = new CGameObject()
             {
-                name = name,
-                enabled = enabled,
+                Name = Name,
+                Enabled = Enabled,
             };
-            clone.transform.localposition = transform.localposition;
-            clone.transform.worldposition = transform.worldposition;
+            clone.Transform.LocalPosition = Transform.LocalPosition;
+            clone.Transform.WorldPosition = Transform.WorldPosition;
 
-            foreach (var child in children)
+            foreach (var child in Children)
             {
                 var clonechild = child.Clone();
                 clone.Add(clonechild);

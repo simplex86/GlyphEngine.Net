@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CEngine.UI
+namespace CEngine
 {
     /// <summary>
     /// 子控件接口
@@ -21,11 +21,11 @@ namespace CEngine.UI
         /// <summary>
         /// 宽度
         /// </summary>
-        public int width { get; protected set; }
+        public int Width { get; protected set; }
         /// <summary>
         /// 高度
         /// </summary>
-        public int height { get; protected set; }
+        public int Height { get; protected set; }
 
         /// <summary>
         /// 颜色
@@ -37,7 +37,7 @@ namespace CEngine.UI
                 if (_color != value)
                 {
                     _color = value;
-                    Foreach(p => p.color = _color);
+                    Foreach(p => p.Color = _color);
                 }
             }
             get { return _color; }
@@ -66,7 +66,7 @@ namespace CEngine.UI
         {
             foreach (var pixel in decorator.pixels)
             {
-                pixel.color = _color;
+                pixel.Color = _color;
                 AddPixel(pixel);
             }
         }

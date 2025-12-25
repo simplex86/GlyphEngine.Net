@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CEngine.UI
+namespace CEngine
 {
     /// <summary>
     /// 
@@ -35,7 +35,7 @@ namespace CEngine.UI
         {
             this.color = color;
             this.texture = tex;
-            this.transform.localposition = localposition;
+            this.Transform.LocalPosition = localposition;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace CEngine.UI
         {
             if (texture != null)
             {
-                CResourceManager.UnloadTex(texture);
+                CResources.UnloadTex(texture);
                 texture = null;
             }
             base.OnDestroy();
@@ -61,14 +61,14 @@ namespace CEngine.UI
 
             if (_texture == null) return;
             //
-            for (int h = 0; h < _texture.height; h++)
+            for (int h = 0; h < _texture.Height; h++)
             {
-                for (int w = 0; w < _texture.width; w++)
+                for (int w = 0; w < _texture.Width; w++)
                 {
-                    var i = h * _texture.width + w;
-                    var pixel = CPixelPool.Instance.Alloc(w - _texture.width / 2,
-                                                          h - _texture.height / 2,
-                                                          _texture.chars[i],
+                    var i = h * _texture.Width + w;
+                    var pixel = CPixelPool.Instance.Alloc(w - _texture.Width / 2,
+                                                          h - _texture.Height / 2,
+                                                          _texture.Glyphs[i],
                                                           color);
                     AddPixel(pixel);
                 }

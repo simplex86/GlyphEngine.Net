@@ -27,7 +27,7 @@ namespace CEngine
         {
             var scene = new CScene(filepath);
             {
-                var data = CResourceManager.LoadJson(filepath);
+                var data = CResources.LoadJson(filepath);
                 Deserialize(data, scene);
             }
             return scene;

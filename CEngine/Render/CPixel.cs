@@ -10,23 +10,23 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        internal int x { get; set; }
+        internal int X { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        internal int y { get; set; }
+        internal int Y { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public char glyph { get; set; } = CChar.Empty;
+        public char Glyph { get; set; } = CChar.Empty;
         /// <summary>
         /// 颜色
         /// </summary>
-        public ConsoleColor color { get; set; } = Console.ForegroundColor;
+        public ConsoleColor Color { get; set; } = Console.ForegroundColor;
         /// <summary>
         /// 背景颜色
         /// </summary>
-        public ConsoleColor backgroundColor { get; set; } = Console.BackgroundColor;
+        public ConsoleColor BackgroundColor { get; set; } = Console.BackgroundColor;
 
         /// <summary>
         /// 
@@ -41,11 +41,11 @@ namespace CEngine
         /// </summary>
         public void Reset()
         {
-            this.x = 0;
-            this.y = 0;
-            this.glyph = CChar.Empty;
-            this.color = Console.ForegroundColor;
-            this.backgroundColor = Console.BackgroundColor;
+            this.X = 0;
+            this.Y = 0;
+            this.Glyph = CChar.Empty;
+            this.Color = Console.ForegroundColor;
+            this.BackgroundColor = Console.BackgroundColor;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace CEngine
         /// <returns></returns>
         internal CPixel Clone()
         {
-            var clone = CPixelPool.Instance.Alloc(x, y, glyph, color);
+            var clone = CPixelPool.Instance.Alloc(X, Y, Glyph, Color);
             return clone;
         }
     }

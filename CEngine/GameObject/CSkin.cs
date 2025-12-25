@@ -11,7 +11,7 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        public string name { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// 
@@ -21,7 +21,7 @@ namespace CEngine
 
         public CSkin(string name)
         {
-            this.name = name;
+            this.Name = name;
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace CEngine
                 grid.Add(key, list.Count - 1);
             }
 
-            pixel.glyph = c;
-            pixel.color = color;
+            pixel.Glyph = c;
+            pixel.Color = color;
         }
 
         /// <summary>
@@ -75,10 +75,10 @@ namespace CEngine
         {
             renderable.Foreach(pixel =>
             {
-                if (Get(pixel.x, pixel.y, out var _, out var p))
+                if (Get(pixel.X, pixel.Y, out var _, out var p))
                 {
-                    pixel.glyph = p.glyph;
-                    pixel.color = p.color;
+                    pixel.Glyph = p.Glyph;
+                    pixel.Color = p.Color;
                 }
             });
         }
@@ -98,7 +98,7 @@ namespace CEngine
         /// <returns></returns>
         internal CSkin Clone()
         {
-            var clone = new CSkin(name);
+            var clone = new CSkin(Name);
 
             foreach (var pixel in list)
             {

@@ -33,7 +33,7 @@ namespace CEngine
         /// <returns></returns>
         internal static CGameObject Deserialize(string filepath)
         {
-            var data = CResourceManager.LoadJson(filepath);
+            var data = CResources.LoadJson(filepath);
             return DeserializeImp(data, null);
         }
 
@@ -45,7 +45,7 @@ namespace CEngine
         /// <returns></returns>
         internal static CGameObject Deserialize(string filepath, CGameObjectContainer container)
         {
-            var data = CResourceManager.LoadJson(filepath);
+            var data = CResources.LoadJson(filepath);
             return DeserializeImp(data, container);
         }
 
@@ -68,7 +68,7 @@ namespace CEngine
                 var layer = data.As("layer", ERenderLayer.Default);
                 gameobject = new CRenderableObject(x, y, layer, false)
                 {
-                    name = data.As("name", "gameobject"),
+                    Name = data.As("name", "gameobject"),
                 };
 
                 DeserializePixels(data, gameobject as CRenderableObject);
@@ -78,7 +78,7 @@ namespace CEngine
             {
                 gameobject = new CGameObject(x, y, false)
                 {
-                    name = data.As("name", "gameobject"),
+                    Name = data.As("name", "gameobject"),
                 };
             }
 

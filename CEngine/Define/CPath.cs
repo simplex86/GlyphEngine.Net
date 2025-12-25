@@ -10,7 +10,7 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        public static string solution
+        public static string Solution
         {
             get
             {
@@ -35,13 +35,13 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        public static string resources
+        public static string Resources
         {
             get
             {
                 if (string.IsNullOrEmpty(_resources))
                 {
-                    _resources = $"{solution}/Resources";
+                    _resources = $"{Solution}/Resources";
                 }
                 return _resources;
             }

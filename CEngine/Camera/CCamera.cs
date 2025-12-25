@@ -5,25 +5,42 @@ namespace CEngine
     /// <summary>
     /// 相机
     /// </summary>
-    public class CCamera : CGameObject
+    public class CCamera : ITransformable
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name { get; set; } = "camera";
+        /// <summary>
+        /// 
+        /// </summary>
+        public CTransform Transform { get; } = new CTransform();
         /// <summary>
         /// 渲染顺序
         /// 值越小越先被渲染
         /// </summary>
-        public uint order { get; } = 0;
+        public uint Order { get; } = 0;
         /// <summary>
         /// 渲染遮罩
         /// </summary>
-        public ulong mask { get; set; } = (ulong)ERenderMask.Everything;
+        public ulong Mask { get; set; } = (ulong)ERenderMask.Everything;
         /// <summary>
         /// 宽度
         /// </summary>
-        public int width { get; internal set; } = CWorld.width;
+        public int Width { get; internal set; } = CScreen.Width;
         /// <summary>
         /// 高度
         /// </summary>
-        public int height { get; internal set; } = CWorld.height;
+        public int Height { get; internal set; } = CScreen.Height;
+        /// <summary>
+        /// 可见性
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+
+        /// <summary>
+        /// 是否已被销毁
+        /// </summary>
+        internal bool Destroyed { get; private set; } = false;
 
         /// <summary>
         /// 
@@ -41,8 +58,8 @@ namespace CEngine
         /// <param name="order"></param>
         public CCamera(string name, uint order)
         {
-            this.name = name;
-            this.order = order;
+            this.Name = name;
+            this.Order = order;
         }
 
         /// <summary>
@@ -51,12 +68,12 @@ namespace CEngine
         /// <param name="renderobjects"></param>
         internal void Render(List<CGameObject> gameobjects, CRenderer renderer)
         {
-            if (destroyed)
+            if (Destroyed)
             {
                 return;
             }
 
-            if (enabled)
+            if (Enabled)
             {
                 foreach (var gameobject in gameobjects)
                 {
@@ -72,7 +89,7 @@ namespace CEngine
         /// <returns></returns>
         private bool CheckLayer(IRenderable renderable)
         {
-            return (renderable.layer & mask) == renderable.layer;
+            return (renderable.Layer & Mask) == renderable.Layer;
         }
 
         /// <summary>
@@ -84,9 +101,9 @@ namespace CEngine
         /// <param name="renderer"></param>
         private void Render(CGameObject gameobject, CRenderer renderer)
         {
-            if (gameobject.enabled &&
+            if (gameobject.Enabled &&
                 gameobject is IRenderable renderable &&
-                renderable.enabled &&
+                renderable.Enabled &&
                 CheckLayer(renderable))
             {
                 var wpos = M2W(gameobject);
@@ -94,12 +111,12 @@ namespace CEngine
                 // 绘制像素
                 renderable.Foreach(pixel =>
                 {
-                    var x = vpos.x + pixel.x;
-                    var y = vpos.y + pixel.y;
+                    var x = vpos.X + pixel.X;
+                    var y = vpos.Y + pixel.Y;
 
                     if (Cull(x, y))
                     {
-                        renderer.SetPixel(x, y, pixel.glyph, pixel.color, pixel.backgroundColor);
+                        renderer.SetPixel(x, y, pixel.Glyph, pixel.Color, pixel.BackgroundColor);
                     }
                 });
             }
@@ -113,7 +130,7 @@ namespace CEngine
         /// <returns></returns>
         private Vector2 M2W(CGameObject gameobject)
         {
-            return gameobject.transform.worldposition;
+            return gameobject.Transform.WorldPosition;
         }
 
         /// <summary>
@@ -123,7 +140,7 @@ namespace CEngine
         /// <returns></returns>
         private Vector2 W2V(Vector2 wpos)
         {
-            return wpos - transform.worldposition + CWorld.center;
+            return wpos - Transform.WorldPosition + CScreen.Center;
         }
 
         /// <summary>
@@ -133,10 +150,10 @@ namespace CEngine
         /// <returns></returns>
         private bool Cull(int x, int y)
         {
-            var x1 = (CWorld.width - width) / 2;
-            var x2 = x1 + width;
-            var y1 = (CWorld.height - height) / 2;
-            var y2 = y1 + height;
+            var x1 = (CScreen.Width - Width) / 2;
+            var x2 = x1 + Width;
+            var y1 = (CScreen.Height - Height) / 2;
+            var y2 = y1 + Height;
 
             if (x < x1 || x > x2 ||
                 y < y1 || y > y2)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CEngine.UI
+namespace CEngine
 {
     /// <summary>
     /// 
@@ -11,17 +11,16 @@ namespace CEngine.UI
         /// <summary>
         /// 宽度
         /// </summary>
-        public int width { get; internal set; } = CWorld.width;
+        public int Width { get; internal set; } = CScreen.Width;
         /// <summary>
         /// 高度
         /// </summary>
-        public int height { get; internal set; } = CWorld.height;
+        public int Height { get; internal set; } = CScreen.Height;
 
         /// <summary>
         /// 当前获得焦点的组件
         /// </summary>
         private IInteractable focus { get; set; }
-
         /// <summary>
         /// 
         /// </summary>
@@ -31,7 +30,7 @@ namespace CEngine.UI
         /// 
         /// </summary>
         public CPanelView()
-            : this(CWorld.width, CWorld.height)
+            : this(CScreen.Width, CScreen.Height)
         {
 
         }
@@ -44,8 +43,8 @@ namespace CEngine.UI
         internal CPanelView(int w, int h)
             : base(ERenderLayer.UI)
         {
-            width = w;
-            height = h;
+            Width = w;
+            Height = h;
 
             BuildBorder(EBorderStyle.Borderless);
         }
@@ -61,7 +60,7 @@ namespace CEngine.UI
 
             if (focused &&
                 component is IInteractable interaction &&
-                interaction.interactable)
+                interaction.Interactabled)
             {
                 Focus(interaction);
             }
@@ -142,14 +141,14 @@ namespace CEngine.UI
         /// </summary>
         private void FocusNext()
         {
-            var idx = children.IndexOf(focus as CWidget);
+            var idx = Children.IndexOf(focus as CWidget);
             if (idx < 0) return;
 
-            for (int i = idx + 1; i < children.Count; i++)
+            for (int i = idx + 1; i < Children.Count; i++)
             {
-                var child = children[i];
+                var child = Children[i];
                 if (child is IInteractable interaction &&
-                    interaction.interactable)
+                    interaction.Interactabled)
                 {
                     Focus(interaction);
                     return;
@@ -158,9 +157,9 @@ namespace CEngine.UI
 
             for (int i = 0; i < idx; i++)
             {
-                var child = children[i];
+                var child = Children[i];
                 if (child is IInteractable interaction &&
-                    interaction.interactable)
+                    interaction.Interactabled)
                 {
                     Focus(interaction);
                     return;
@@ -173,25 +172,25 @@ namespace CEngine.UI
         /// </summary>
         private void FocusPrev()
         {
-            var idx = children.IndexOf(focus as CWidget);
+            var idx = Children.IndexOf(focus as CWidget);
             if (idx < 0) return;
 
             for (int i=idx - 1; i >= 0; i--)
             {
-                var child = children[i];
+                var child = Children[i];
                 if (child is IInteractable interaction &&
-                    interaction.interactable)
+                    interaction.Interactabled)
                 {
                     Focus(interaction);
                     return;
                 }
             }
 
-            for (int i = children.Count - 1; i > idx; i--)
+            for (int i = Children.Count - 1; i > idx; i--)
             {
-                var child = children[i];
+                var child = Children[i];
                 if (child is IInteractable interaction &&
-                    interaction.interactable)
+                    interaction.Interactabled)
                 {
                     Focus(interaction);
                     return;
@@ -210,7 +209,7 @@ namespace CEngine.UI
             }
             
             if (evt.type == EKeyboardEventType.Up &&
-                evt.keycode == (int)focus.keycode)
+                evt.keycode == (int)focus.Keycode)
             {
                 focus.OnEnter();
             }

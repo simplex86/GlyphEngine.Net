@@ -36,8 +36,8 @@ namespace CEngine
         {
             var pixel = (queue.Count == 0) ? new CPixel()
                                            : queue.Dequeue();
-            pixel.x = x;
-            pixel.y = y;
+            pixel.X = x;
+            pixel.Y = y;
 
             return pixel;
         }
@@ -52,7 +52,7 @@ namespace CEngine
         public CPixel Alloc(int x, int y, char glyph)
         {
             var pixel = Alloc(x, y);
-            pixel.glyph = glyph;
+            pixel.Glyph = glyph;
 
             return pixel;
         }
@@ -68,7 +68,7 @@ namespace CEngine
         public CPixel Alloc(int x, int y, char glyph, ConsoleColor color)
         {
             var pixel = Alloc(x, y, glyph);
-            pixel.color = color;
+            pixel.Color = color;
 
             return pixel;
         }

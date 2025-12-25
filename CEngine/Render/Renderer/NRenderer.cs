@@ -76,23 +76,23 @@ namespace CEngine
             // 被渲染的像素
             foreach (var p in current)
             {
-                if (!previous.GetPixel(p.x, p.y, out var q))
+                if (!previous.GetPixel(p.X, p.Y, out var q))
                 {
-                    renderer.SetPixel(p.x, p.y, p.glyph, p.color, p.backgroundColor);
+                    renderer.SetPixel(p.X, p.Y, p.Glyph, p.Color, p.BackgroundColor);
                     dirty = true;
                 }
-                else if (p.glyph != q.glyph || p.color != q.color)
+                else if (p.Glyph != q.Glyph || p.Color != q.Color)
                 {
-                    renderer.SetPixel(p.x, p.y, p.glyph, p.color, p.backgroundColor);
+                    renderer.SetPixel(p.X, p.Y, p.Glyph, p.Color, p.BackgroundColor);
                     dirty = true;
                 }
             }
             // 被擦除的像素
             foreach (var p in previous)
             {
-                if (!current.GetPixel(p.x, p.y, out var q))
+                if (!current.GetPixel(p.X, p.Y, out var q))
                 {
-                    erasurer.SetPixel(p.x, p.y, CChar.Space);
+                    erasurer.SetPixel(p.X, p.Y, CChar.Space);
                     dirty = true;
                 }
             }
@@ -143,8 +143,8 @@ namespace CEngine
         {
             var context = SetConsoleColor(pixel);
             {
-                Console.SetCursorPosition(pixel.x, pixel.y);
-                Console.Write(pixel.glyph);
+                Console.SetCursorPosition(pixel.X, pixel.Y);
+                Console.Write(pixel.Glyph);
             }
             ResetConsoleColor(context);
         }
@@ -159,8 +159,8 @@ namespace CEngine
             var foregroundColor = Console.ForegroundColor;
             var backgroundColor = Console.BackgroundColor;
 
-            Console.ForegroundColor = pixel.color;
-            Console.BackgroundColor = pixel.backgroundColor;
+            Console.ForegroundColor = pixel.Color;
+            Console.BackgroundColor = pixel.BackgroundColor;
 
             return (foregroundColor, backgroundColor);
         }

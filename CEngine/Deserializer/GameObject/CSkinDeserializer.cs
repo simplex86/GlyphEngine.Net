@@ -14,7 +14,7 @@ namespace CEngine
         /// <param name="container"></param>
         public void Deserialize(JsonData data, CGameObjectContainer container)
         {
-            var json = CResourceManager.LoadJson((string)data);
+            var json = CResources.LoadJson((string)data);
             var renderable = container as CRenderableObject;
 
             var children = json["children"];

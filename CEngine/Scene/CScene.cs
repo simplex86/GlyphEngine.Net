@@ -10,19 +10,32 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        public string filepath { get; }
+        public string FilePath { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        internal List<CGameObject> gameobjects { get; } = new List<CGameObject>();
+        internal List<CCamera> Cameras { get; } = new List<CCamera>();
+        /// <summary>
+        /// 
+        /// </summary>
+        internal List<CGameObject> GameObjects { get; } = new List<CGameObject>();
 
         /// <summary>
         /// 
         /// </summary>
         internal CScene(string filepath)
         {
-            this.filepath = filepath;
+            this.FilePath = filepath;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="camera"></param>
+        internal void Add(CCamera camera)
+        {
+            Cameras.Add(camera);
         }
 
         /// <summary>
@@ -31,9 +44,9 @@ namespace CEngine
         /// <param name="gameobject"></param>
         internal override void Add(CGameObject gameobject)
         {
-            if (!gameobjects.Contains(gameobject))
+            if (!GameObjects.Contains(gameobject))
             {
-                gameobjects.Add(gameobject);
+                GameObjects.Add(gameobject);
             }
         }
 
@@ -43,9 +56,9 @@ namespace CEngine
         /// <param name="gameobject"></param>
         internal override void Remove(CGameObject gameobject)
         {
-            if (gameobjects.Contains(gameobject))
+            if (GameObjects.Contains(gameobject))
             {
-                gameobjects.Remove(gameobject);
+                GameObjects.Remove(gameobject);
             }
         }
 
@@ -54,11 +67,11 @@ namespace CEngine
         /// </summary>
         internal void Destroy()
         {
-            foreach (var gameobject in gameobjects)
+            foreach (var gameobject in GameObjects)
             {
                 gameobject.Destroy();
             }
-            gameobjects.Clear();
+            GameObjects.Clear();
         }
     }
 }

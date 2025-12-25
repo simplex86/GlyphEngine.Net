@@ -10,32 +10,32 @@ namespace CEngine
         /// <summary>
         /// 宽
         /// </summary>
-        public int width { get; internal set; }
+        public int Width { get; internal set; }
 
         /// <summary>
         /// 高
         /// </summary>
-        public int height { get; internal set; }
+        public int Height { get; internal set; }
         /// <summary>
         /// 是否透明
         /// </summary>
-        public bool transparent { get; } = true;
+        public bool Transparent { get; } = true;
 
         /// <summary>
         /// 字符集
         /// </summary>
-        internal List<char> chars { get; set; } = null;
+        internal List<char> Glyphs { get; set; } = null;
         /// <summary>
         /// 
         /// </summary>
-        internal int refc { get; set; } = 0;
+        internal int Refc { get; set; } = 0;
         
         /// <summary>
         /// 
         /// </summary>
         internal CTexture(bool transparent)
         {
-            this.transparent = transparent;
+            this.Transparent = transparent;
         }
     }
 }

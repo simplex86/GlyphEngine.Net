@@ -1,7 +1,7 @@
 ﻿using System;
 using LitJson;
 
-namespace CEngine.UI
+namespace CEngine
 {
     internal class CButtonDeserializer : IDeserializer
     {
@@ -26,7 +26,7 @@ namespace CEngine.UI
             }
 
             var button = new CButton(text, new Vector2(x, y), keycode, unfocusColor, focusColor, border);
-            button.interactable = interactable;
+            button.Interactabled = interactable;
 
             var view = contaner as CPanelView;
             view.AddComponent(button, name, focus);

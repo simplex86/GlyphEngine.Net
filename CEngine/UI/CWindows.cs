@@ -1,40 +1,24 @@
 ﻿using System.Collections.Generic;
 
-namespace CEngine.UI
+namespace CEngine
 {
     /// <summary>
     /// 
     /// </summary>
-    public class CPanel
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public CGameObject gameobject => view;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        internal CPanelView view { get; set; } = null;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public T GetComponent<T>(string name) where T : CWidget
-        {
-            return view.GetComponent<T>(name);
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    internal static class CPanelManager
+    internal static class CWindows
     {
         private static List<CPanel> panels = new List<CPanel>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void Init()
+        {
+            CWorld.Add(new CCamera("ui_camera", uint.MaxValue)
+            {
+                Mask = (ulong)ERenderMask.UI,
+            });
+        }
 
         /// <summary>
         /// 
@@ -52,7 +36,7 @@ namespace CEngine.UI
         internal static void Update(float dt)
         {
             if (panels.Count == 0) return;
-            panels[^1].view.Update(dt);
+            panels[^1].View.Update(dt);
         }
 
         /// <summary>

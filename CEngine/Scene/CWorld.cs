@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace CEngine
 {
     /// <summary>
-    /// 场景管理器
+    /// 世界，即场景管理器
     /// </summary>
-    internal static class CSceneManager
+    internal static class CWorld
     {
         /// <summary>
         /// 对象列表
@@ -27,10 +25,7 @@ namespace CEngine
         /// </summary>
         internal static void Init()
         {
-            Add(new CCamera("ui_camera", uint.MaxValue)
-            {
-                mask = (ulong)ERenderMask.UI,
-            });
+            
         }
 
         /// <summary>
@@ -39,11 +34,16 @@ namespace CEngine
         /// <param name="scene"></param>
         internal static void Add(CScene scene)
         {
-            foreach (var gameobject in scene.gameobjects)
+            foreach (var camera in scene.Cameras)
+            {
+                Add(camera);
+            }
+            SortCameras();
+
+            foreach (var gameobject in scene.GameObjects)
             {
                 Add(gameobject);
             }
-            SortCameras();
         }
 
         /// <summary>
@@ -58,27 +58,38 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="gameobject"></param>
-        internal static void Add(CGameObject gameobject)
+        /// <param name="camera"></param>
+        internal static void Add(CCamera camera)
         {
-            if (cameras.Contains(gameobject) || 
-                gameobjects.Contains(gameobject))
-            {
-                return;
-            }
-
-            if (gameobject is CCamera camera)
+            if (!cameras.Contains(camera))
             {
                 cameras.Add(camera);
             }
-            else
+            SortCameras();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="camera"></param>
+        internal static void Remove(CCamera camera)
+        {
+            cameras.Remove(camera);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameobject"></param>
+        internal static void Add(CGameObject gameobject)
+        {
+            if (!gameobjects.Contains(gameobject))
             {
                 gameobjects.Add(gameobject);
-            }
-
-            for (int i=0; i<gameobject.count; i++) 
-            {
-                Add(gameobject[i]);
+                for (int i = 0; i < gameobject.Count; i++)
+                {
+                    Add(gameobject[i]);
+                }
             }
         }
 
@@ -90,7 +101,7 @@ namespace CEngine
             // 从对象列表中移除已被销毁的对象
             for (int i = gameobjects.Count - 1; i >= 0; i--)
             {
-                if (gameobjects[i].destroyed)
+                if (gameobjects[i].Destroyed)
                 {
                     gameobjects.RemoveAt(i);
                 }
@@ -98,12 +109,12 @@ namespace CEngine
             // 从相机列表中移除已被销毁的相机
             for (int i = cameras.Count - 1; i >= 0; i--)
             {
-                if (cameras[i].destroyed)
+                if (cameras[i].Destroyed)
                 {
                     cameras.RemoveAt(i);
                 }
             }
-            SortCameras();
+            //SortCameras();
         }
 
         /// <summary>
@@ -127,7 +138,7 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 
+        /// 渲染
         /// </summary>
         private static void Render()
         {
@@ -145,7 +156,7 @@ namespace CEngine
         {
             cameras.Sort((a, b) =>
             {
-                if (a.order < b.order) return -1;
+                if (a.Order < b.Order) return -1;
                 return 1;
             });
         }

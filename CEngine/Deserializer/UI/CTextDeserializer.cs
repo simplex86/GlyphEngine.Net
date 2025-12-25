@@ -1,6 +1,6 @@
 ﻿using LitJson;
 
-namespace CEngine.UI
+namespace CEngine
 {
     internal class CTextDeserializer : IDeserializer
     {

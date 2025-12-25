@@ -19,14 +19,14 @@ namespace CEngine
 
             var camera = new CCamera(name, order)
             {
-                width = data.As("width", CWorld.width),
-                height = data.As("height", CWorld.height),
-                mask = data.As("mask", (ulong)ERenderMask.Default),
+                Width = data.As("width", CScreen.Width),
+                Height = data.As("height", CScreen.Height),
+                Mask = data.As("mask", (ulong)ERenderMask.Default),
             };
 
             var x = data.As("x", 0);
             var y = data.As("y", 0);
-            camera.transform.worldposition = new Vector2(x, y);
+            camera.Transform.WorldPosition = new Vector2(x, y);
 
             var scene = container as CScene;
             scene.Add(camera);

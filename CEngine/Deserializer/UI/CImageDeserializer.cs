@@ -1,6 +1,6 @@
 ﻿using LitJson;
 
-namespace CEngine.UI
+namespace CEngine
 {
     /// <summary>
     /// 
@@ -36,7 +36,7 @@ namespace CEngine.UI
         {
             if (data.AsString("texture", out var filepath))
             {
-                return CResourceManager.LoadTex(filepath, transparent);
+                return CResources.LoadTex(filepath, transparent);
             }
 
             return null;

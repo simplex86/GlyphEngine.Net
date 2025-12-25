@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CEngine.UI
+namespace CEngine
 {
     /// <summary>
     /// 
@@ -10,22 +10,22 @@ namespace CEngine.UI
         /// <summary>
         /// 是否可交互
         /// </summary>
-        bool interactable { get; set; }
+        bool Interactabled { get; set; }
 
         /// <summary>
         /// 响应交互的按键
         /// </summary>
-        ConsoleKey keycode { get; }
+        ConsoleKey Keycode { get; }
 
         /// <summary>
         /// 获得焦点时的颜色
         /// </summary>
-        ConsoleColor focusColor { get; set; }
+        ConsoleColor FocusColor { get; set; }
 
         /// <summary>
         /// 失去焦点时的颜色
         /// </summary>
-        ConsoleColor unfocusColor { get; set; }
+        ConsoleColor UnfocusColor { get; set; }
 
         /// <summary>
         /// 获得焦点

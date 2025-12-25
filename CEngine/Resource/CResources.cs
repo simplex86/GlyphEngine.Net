@@ -2,14 +2,13 @@
 using System.IO;
 using System.Collections.Generic;
 using LitJson;
-using CEngine.UI;
 
 namespace CEngine
 {
     /// <summary>
     /// 资源管理器
     /// </summary>
-    public static class CResourceManager
+    public static class CResources
     {
         /// <summary>
         /// gameobject缓存
@@ -59,13 +58,13 @@ namespace CEngine
             }
 
             var gameobject = prototype.Clone();
-            gameobject.transform.localposition = new Vector2(x, y);
+            gameobject.Transform.LocalPosition = new Vector2(x, y);
 
             if (parent != null)
             {
                 parent.Add(gameobject);
             }
-            CSceneManager.Add(gameobject);
+            CWorld.Add(gameobject);
 
             return gameobject;
         }
@@ -78,7 +77,7 @@ namespace CEngine
         public static CScene LoadScene(string filepath)
         {
             var scene = CSceneDeserializer.Deserialize(filepath);
-            CSceneManager.Add(scene);
+            CWorld.Add(scene);
 
             return scene;
         }
@@ -89,7 +88,7 @@ namespace CEngine
         /// <param name="scene"></param>
         public static void UnloadScene(CScene scene)
         {
-            CSceneManager.Remove(scene);
+            CWorld.Remove(scene);
         }
 
         /// <summary>
@@ -100,8 +99,8 @@ namespace CEngine
         public static CPanel LoadUI(string filepath, Type type)
         {
             var panel = Activator.CreateInstance(type) as CPanel;
-            panel.view = CPanelDeserializer.Deserialize(filepath);
-            CPanelManager.Add(panel);
+            panel.View = CPanelDeserializer.Deserialize(filepath);
+            CWindows.Add(panel);
 
             return panel;
         }
@@ -112,7 +111,7 @@ namespace CEngine
         /// <param name="panel"></param>
         public static void UnloadUI(CPanel panel)
         {
-            CPanelManager.Remove(panel);
+            CWindows.Remove(panel);
         }
 
         /// <summary>
@@ -125,40 +124,40 @@ namespace CEngine
             var key = $"{filepath}.{transparent}";
             if (tcatch.TryGetValue(key, out var tex))
             {
-                tex.refc++;
+                tex.Refc++;
                 return tex;
             }
 
             tex = new CTexture(transparent);
             try
             {
-                var lines = File.ReadAllLines($"{CPath.resources}/{filepath}");
+                var lines = File.ReadAllLines($"{CPath.Resources}/{filepath}");
                 if (lines.Length > 0)
                 {
-                    tex.width = 0;
+                    tex.Width = 0;
                     foreach (var line in lines)
                     {
-                        tex.width = Math.Max(tex.width, line.Length);
+                        tex.Width = Math.Max(tex.Width, line.Length);
                     }
-                    tex.height = lines.Length;
+                    tex.Height = lines.Length;
 
-                    tex.chars = new List<char>(tex.width * tex.height);
+                    tex.Glyphs = new List<char>(tex.Width * tex.Height);
                     foreach (var line in lines)
                     {
-                        for (int i = 0; i < tex.width; i++)
+                        for (int i = 0; i < tex.Width; i++)
                         {
                             var c = (i < line.Length) ? line[i] : CChar.Space;
-                            if (tex.transparent && c == CChar.Space)
+                            if (tex.Transparent && c == CChar.Space)
                             {
                                 c = CChar.Empty;
                             }
-                            tex.chars.Add(c);
+                            tex.Glyphs.Add(c);
                         }
                     }
                 }
                 tcatch.Add(key, tex);
 
-                tex.refc++;
+                tex.Refc++;
                 return tex;
             }
             catch (Exception ex)
@@ -175,7 +174,7 @@ namespace CEngine
         /// <param name="tex"></param>
         public static void UnloadTex(CTexture tex)
         {
-            tex.refc = Math.Max(0, tex.refc - 1);
+            tex.Refc = Math.Max(0, tex.Refc - 1);
         }
 
         /// <summary>
@@ -185,7 +184,7 @@ namespace CEngine
         /// <returns></returns>
         public static string LoadText(string filepath)
         {
-            return File.ReadAllText($"{CPath.resources}/{filepath}");
+            return File.ReadAllText($"{CPath.Resources}/{filepath}");
         }
 
         /// <summary>

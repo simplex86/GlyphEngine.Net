@@ -10,11 +10,11 @@ namespace CEngine
         /// <summary>
         /// 渲染层
         /// </summary>
-        ulong layer { get; }
+        ulong Layer { get; }
         /// <summary>
         /// 可见性
         /// </summary>
-        bool enabled { get; }
+        bool Enabled { get; }
 
         /// <summary>
         /// 遍历像素

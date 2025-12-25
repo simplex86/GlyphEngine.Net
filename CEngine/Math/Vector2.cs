@@ -11,20 +11,20 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        public int x;
+        public int X;
         /// <summary>
         /// 
         /// </summary>
-        public int y;
+        public int Y;
 
         /// <summary>
         /// 
         /// </summary>
-        public static Vector2 zero { get; } = new Vector2(0, 0);
+        public static Vector2 Zero { get; } = new Vector2(0, 0);
         /// <summary>
         /// 
         /// </summary>
-        public static Vector2 one { get; } = new Vector2(1, 1);
+        public static Vector2 One { get; } = new Vector2(1, 1);
 
         /// <summary>
         /// 
@@ -33,8 +33,8 @@ namespace CEngine
         /// <param name="y"></param>
         public Vector2(int x, int y)
         {
-            this.x = x; 
-            this.y = y;
+            this.X = x; 
+            this.Y = y;
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace CEngine
         /// <param name="v"></param>
         public Vector2(Vector2 v)
         {
-            this.x = v.x;
-            this.y = v.y;
+            this.X = v.X;
+            this.Y = v.Y;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace CEngine
         /// <returns></returns>
         public static Vector2 operator +(Vector2 a, Vector2 b)
         {
-            return new Vector2(a.x + b.x, a.y + b.y);
+            return new Vector2(a.X + b.X, a.Y + b.Y);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace CEngine
         /// <returns></returns>
         public static Vector2 operator -(Vector2 a, Vector2 b)
         {
-            return new Vector2(a.x - b.x, a.y - b.y);
+            return new Vector2(a.X - b.X, a.Y - b.Y);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace CEngine
         /// <returns></returns>
         public static bool operator ==(Vector2 a, Vector2 b)
         {
-            return a.x == b.x && a.y == b.y;
+            return a.X == b.X && a.Y == b.Y;
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace CEngine
         /// <returns></returns>
         public static bool operator != (Vector2 a, Vector2 b)
         {
-            return a.x != b.x || a.y != b.y;
+            return a.X != b.X || a.Y != b.Y;
         }
     }
 }

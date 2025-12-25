@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CEngine.UI
+namespace CEngine
 {
     /// <summary>
     /// 
@@ -27,46 +27,46 @@ namespace CEngine.UI
         /// <param name="view"></param>
         protected virtual void Fill(IView view)
         {
-            pixels = new List<CPixel>(view.width * 2 + view.height * 2 - 4);
+            pixels = new List<CPixel>(view.Width * 2 + view.Height * 2 - 4);
 
             char c = (char)0;
             // 水平
             {
                 int y = 0;
-                for (int x = 0; x < view.width; x++)
+                for (int x = 0; x < view.Width; x++)
                 {
                     y = 0;
-                    c = Get(view.width, view.height, x, y);
+                    c = Get(view.Width, view.Height, x, y);
                     if (c != CChar.Empty)
                     {
-                        pixels.Add(CPixelPool.Instance.Alloc(x - view.width / 2, y - view.height / 2, c));
+                        pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, c));
                     }
 
-                    y = view.height - 1;
-                    c = Get(view.width, view.height, x, y);
+                    y = view.Height - 1;
+                    c = Get(view.Width, view.Height, x, y);
                     if (c != CChar.Empty)
                     {
-                        pixels.Add(CPixelPool.Instance.Alloc(x - view.width / 2, y - view.height / 2, c));
+                        pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, c));
                     }
                 }
             }
             // 垂直
             {
                 int x = 0;
-                for (int y = 1; y < view.height - 1; y++)
+                for (int y = 1; y < view.Height - 1; y++)
                 {
                     x = 0;
-                    c = Get(view.width, view.height, x, y);
+                    c = Get(view.Width, view.Height, x, y);
                     if (c != CChar.Empty)
                     {
-                        pixels.Add(CPixelPool.Instance.Alloc(x - view.width / 2, y - view.height / 2, c));
+                        pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, c));
                     }
 
-                    x = view.width - 1;
-                    c = Get(view.width, view.height, x, y);
+                    x = view.Width - 1;
+                    c = Get(view.Width, view.Height, x, y);
                     if (c != CChar.Empty)
                     {
-                        pixels.Add(CPixelPool.Instance.Alloc(x - view.width / 2, y - view.height / 2, c));
+                        pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, c));
                     }
                 }
             }

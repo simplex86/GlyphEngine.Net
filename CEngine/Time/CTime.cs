@@ -14,11 +14,11 @@ namespace CEngine
         /// <summary>
         /// 持续时间，单位：秒
         /// </summary>
-        public static float elapsed => watcher.ElapsedMilliseconds / 1000f;
+        public static float ElapsedTime => watcher.ElapsedMilliseconds / 1000f;
         /// <summary>
         /// 间隔时间，单位：秒
         /// </summary>
-        public static float deltatime { get; private set; } = 0f;
+        public static float DeltaTime { get; private set; } = 0f;
 
         /// <summary>
         /// 
@@ -34,10 +34,10 @@ namespace CEngine
         /// </summary>
         internal static float Update()
         {
-            deltatime = (watcher.ElapsedMilliseconds - timestamp) / 1000f;
+            DeltaTime = (watcher.ElapsedMilliseconds - timestamp) / 1000f;
             timestamp = watcher.ElapsedMilliseconds;
 
-            return deltatime;
+            return DeltaTime;
         }
 
         /// <summary>

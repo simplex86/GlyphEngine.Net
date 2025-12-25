@@ -12,7 +12,7 @@ namespace CEngine
         /// <summary>
         /// 渲染层级
         /// </summary>
-        public ulong layer { get; }
+        public ulong Layer { get; }
 
         /// <summary>
         /// 像素列表
@@ -40,7 +40,7 @@ namespace CEngine
         private protected CRenderableObject(ulong layer)
             : base(0, 0)
         {
-            this.layer = layer;
+            this.Layer = layer;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace CEngine
         internal protected CRenderableObject(int x, int y, ERenderLayer layer, bool scene)
             : base(x, y, scene)
         {
-            this.layer = (ulong)layer;
+            this.Layer = (ulong)layer;
         }
 
         /// <summary>
@@ -106,13 +106,13 @@ namespace CEngine
         /// <param name="skin"></param>
         internal void AddSkin(CSkin skin, bool apply = false)
         {
-            if (skins.TryGetValue(skin.name, out var _))
+            if (skins.TryGetValue(skin.Name, out var _))
             {
-                skins[skin.name] = skin;
+                skins[skin.Name] = skin;
             }
             else
             {
-                skins.Add(skin.name, skin);
+                skins.Add(skin.Name, skin);
             }
 
             if (apply)
@@ -167,16 +167,16 @@ namespace CEngine
         /// <returns></returns>
         public override CRenderableObject Clone()
         {
-            var clone = new CRenderableObject(layer)
+            var clone = new CRenderableObject(Layer)
             {
-                name = name,
-                enabled = enabled,
+                Name = Name,
+                Enabled = Enabled,
             };
-            clone.transform.localposition = transform.localposition;
+            clone.Transform.LocalPosition = Transform.LocalPosition;
 
             foreach (var pixel in pixels)
             {
-                var clonepixel = CPixelPool.Instance.Alloc(pixel.x, pixel.y, pixel.glyph, pixel.color);
+                var clonepixel = CPixelPool.Instance.Alloc(pixel.X, pixel.Y, pixel.Glyph, pixel.Color);
                 clone.pixels.Add(clonepixel);
             }
 
@@ -186,7 +186,7 @@ namespace CEngine
                 clone.AddSkin(cloneskin);
             }
 
-            foreach (var child in children)
+            foreach (var child in Children)
             {
                 var clonechild = child.Clone();
                 clone.Add(clonechild);

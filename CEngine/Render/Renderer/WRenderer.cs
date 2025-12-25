@@ -23,15 +23,15 @@ namespace CEngine
         private WindowsNativeAPI.SmallRect region = new WindowsNativeAPI.SmallRect() { 
             Left   = 0, 
             Top    = 0, 
-            Right  = (short)CWorld.width, 
-            Bottom = (short)CWorld.height 
+            Right  = (short)CScreen.Width, 
+            Bottom = (short)CScreen.Height 
         };
         /// <summary>
         /// 写入缓存的大小
         /// </summary>
         private readonly static WindowsNativeAPI.Coord BUFFER_SIZE = new WindowsNativeAPI.Coord() { 
-            X = (short)CWorld.width, 
-            Y = (short)CWorld.height 
+            X = (short)CScreen.Width, 
+            Y = (short)CScreen.Height 
         };
         /// <summary>
         /// 写入缓存的位置
@@ -56,7 +56,7 @@ namespace CEngine
 
             if (!handle.IsInvalid)
             {
-                buffer = new WindowsNativeAPI.CharInfo[CWorld.width * CWorld.height];
+                buffer = new WindowsNativeAPI.CharInfo[CScreen.Width * CScreen.Height];
             }
         }
 
@@ -69,7 +69,7 @@ namespace CEngine
         /// <param name="color"></param>
         public void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
         {
-            var index = y * CWorld.width + x;
+            var index = y * CScreen.Width + x;
             if (glyph == 0) backgroundColor = Console.BackgroundColor;
 
             buffer[index].Attributes = (short)((int)color | ((int)backgroundColor << 4));
@@ -98,8 +98,8 @@ namespace CEngine
 
             region.Left   = 0;
             region.Top    = 0;
-            region.Right  = (short)CWorld.width;
-            region.Bottom = (short)CWorld.height;
+            region.Right  = (short)CScreen.Width;
+            region.Bottom = (short)CScreen.Height;
         }
     }
 }

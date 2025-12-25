@@ -1,4 +1,4 @@
-﻿namespace CEngine.UI
+﻿namespace CEngine
 {
     /// <summary>
     /// UI视图
@@ -8,10 +8,10 @@
         /// <summary>
         /// 宽度
         /// </summary>
-        int width { get; }
+        int Width { get; }
         /// <summary>
         /// 高度
         /// </summary>
-        int height { get; }
+        int Height { get; }
     }
 }

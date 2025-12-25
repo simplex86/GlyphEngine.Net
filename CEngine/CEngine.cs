@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using CEngine.UI;
 
 namespace CEngine
 {
@@ -47,7 +46,8 @@ namespace CEngine
         {
             running = true;
 
-            CSceneManager.Init();
+            CWorld.Init();
+            CWindows.Init();
 
             var type = CReflectionHelper.Find<IEngineEntry, CEngineEntryAttribute>();
             if (type != null)
@@ -81,8 +81,8 @@ namespace CEngine
                     var dt = CTime.Update();
                     CInput.Update(dt);
                     entry?.Update(dt);
-                    CSceneManager.Update(dt);
-                    CPanelManager.Update(dt);
+                    CWindows.Update(dt);
+                    CWorld.Update(dt);
                 }
             }
             catch (Exception ex)

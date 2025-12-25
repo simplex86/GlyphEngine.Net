@@ -14,7 +14,7 @@ namespace CEngine
 
         internal NRenderBuffer()
         {
-            list = new List<CPixel>(CWorld.width * CWorld.height);
+            list = new List<CPixel>(CScreen.Width * CScreen.Height);
             grid = new Dictionary<ulong, int>();
         }
 
@@ -45,8 +45,8 @@ namespace CEngine
                 grid.Add(key, list.Count - 1);
             }
 
-            pixel.glyph = glyph;
-            pixel.color = Console.ForegroundColor;
+            pixel.Glyph = glyph;
+            pixel.Color = Console.ForegroundColor;
         }
 
         /// <summary>
@@ -66,9 +66,9 @@ namespace CEngine
                 grid.Add(key, list.Count - 1);
             }
 
-            pixel.glyph = glyph;
-            pixel.color = color;
-            pixel.backgroundColor = backgroundColor;
+            pixel.Glyph = glyph;
+            pixel.Color = color;
+            pixel.BackgroundColor = backgroundColor;
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace CEngine.UI
+﻿namespace CEngine
 {
     /// <summary>
     /// 
@@ -17,8 +17,8 @@
                     _text = value;
                     ResetPixels();
 
-                    width = _text.Length;
-                    height = 1;
+                    Width = _text.Length;
+                    Height = 1;
                 }
             }
             get { return _text; }
@@ -42,7 +42,7 @@
         public CText(string text, Vector2 localposition)
              : base()
         {
-            transform.localposition = localposition;
+            Transform.LocalPosition = localposition;
             this.text = text;
         }
 
