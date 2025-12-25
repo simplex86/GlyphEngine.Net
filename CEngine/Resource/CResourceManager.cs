@@ -193,7 +193,7 @@ namespace CEngine
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        public static JsonData LoadJson(string filepath)
+        internal static JsonData LoadJson(string filepath)
         {
             try
             {
@@ -214,7 +214,7 @@ namespace CEngine
         /// <typeparam name="T"></typeparam>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        public static T LoadJson<T>(string filepath)
+        internal static T LoadJson<T>(string filepath)
         {
             try
             {

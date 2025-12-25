@@ -7,7 +7,7 @@ namespace CEngine
     /// <summary>
     /// 扩展LitJson
     /// </summary>
-    public static class CLitJson
+    internal static class CLitJson
     {
         /// <summary>
         /// 
