@@ -12,7 +12,11 @@ namespace CEngine
         private static long timestamp = 0;
 
         /// <summary>
-        /// 单位：秒
+        /// 持续时间，单位：秒
+        /// </summary>
+        public static float elapsed => watcher.ElapsedMilliseconds / 1000f;
+        /// <summary>
+        /// 间隔时间，单位：秒
         /// </summary>
         public static float deltatime { get; private set; } = 0f;
 
