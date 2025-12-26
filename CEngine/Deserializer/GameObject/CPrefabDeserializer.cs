@@ -23,6 +23,7 @@ namespace CEngine
                     var x = data.As("x", 0);
                     var y = data.As("y", 0);
                     gameobject.Transform.LocalPosition = new Vector2(x, y);
+                    gameobject.Name = data.As("name", gameobject.Name);
                 }
             }
         }
