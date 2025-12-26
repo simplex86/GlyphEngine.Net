@@ -83,6 +83,14 @@ namespace CEngine
         }
 
         /// <summary>
+        /// 销毁
+        /// </summary>
+        internal void Destroy()
+        {
+            Destroyed = true;
+        }
+
+        /// <summary>
         /// 检查渲染层
         /// </summary>
         /// <param name="renderable"></param>

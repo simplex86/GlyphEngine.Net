@@ -10,7 +10,11 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        public string FilePath { get; }
+        public string Name { get; internal set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool Destroyed { get; private set; } = false;
 
         /// <summary>
         /// 
@@ -24,17 +28,10 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        internal CScene(string filepath)
-        {
-            this.FilePath = filepath;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="camera"></param>
         internal void Add(CCamera camera)
         {
+            if (Destroyed) return;
             Cameras.Add(camera);
         }
 
@@ -44,6 +41,8 @@ namespace CEngine
         /// <param name="gameobject"></param>
         internal override void Add(CGameObject gameobject)
         {
+            if (Destroyed) return;
+
             if (!GameObjects.Contains(gameobject))
             {
                 GameObjects.Add(gameobject);
@@ -56,6 +55,8 @@ namespace CEngine
         /// <param name="gameobject"></param>
         internal override void Remove(CGameObject gameobject)
         {
+            if (Destroyed) return;
+
             if (GameObjects.Contains(gameobject))
             {
                 GameObjects.Remove(gameobject);
@@ -63,10 +64,18 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 
+        /// 销毁场景
         /// </summary>
         internal void Destroy()
         {
+            Destroyed = true;
+            // 销毁相机
+            foreach (var camera in Cameras)
+            {
+                camera.Destroy();
+            }
+            Cameras.Clear();
+            // 销毁物件
             foreach (var gameobject in GameObjects)
             {
                 gameobject.Destroy();

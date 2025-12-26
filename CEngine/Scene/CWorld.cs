@@ -8,9 +8,9 @@ namespace CEngine
     internal static class CWorld
     {
         /// <summary>
-        /// 对象列表
+        /// 场景列表
         /// </summary>
-        private static List<CGameObject> gameobjects = new List<CGameObject>(1000);
+        private static List<CScene> scenes = new List<CScene>();
         /// <summary>
         /// 相机列表
         /// </summary>
@@ -25,7 +25,7 @@ namespace CEngine
         /// </summary>
         internal static void Init()
         {
-            
+
         }
 
         /// <summary>
@@ -34,16 +34,13 @@ namespace CEngine
         /// <param name="scene"></param>
         internal static void Add(CScene scene)
         {
+            scenes.Add(scene);
+
             foreach (var camera in scene.Cameras)
             {
                 Add(camera);
             }
             SortCameras();
-
-            foreach (var gameobject in scene.GameObjects)
-            {
-                Add(gameobject);
-            }
         }
 
         /// <summary>
@@ -83,29 +80,36 @@ namespace CEngine
         /// <param name="gameobject"></param>
         internal static void Add(CGameObject gameobject)
         {
-            if (!gameobjects.Contains(gameobject))
+            var current = GetCurrentScene();
+            current?.Add(gameobject);
+        }
+
+        /// <summary>
+        /// 更新场景
+        /// </summary>
+        internal static void Update(float dt)
+        {
+            PrevProcess();
             {
-                gameobjects.Add(gameobject);
-                for (int i = 0; i < gameobject.Count; i++)
-                {
-                    Add(gameobject[i]);
-                }
+                Render();
             }
+            PostProcess();
         }
 
         /// <summary>
         /// 更新场景预处理
         /// </summary>
-        private static void PrevUpdate()
+        private static void PrevProcess()
         {
-            // 从对象列表中移除已被销毁的对象
-            for (int i = gameobjects.Count - 1; i >= 0; i--)
+            // 从场景列表中移除已被销毁的场景
+            for (int i = scenes.Count - 1; i >= 0; i--)
             {
-                if (gameobjects[i].Destroyed)
+                if (scenes[i].Destroyed)
                 {
-                    gameobjects.RemoveAt(i);
+                    scenes.RemoveAt(i);
                 }
             }
+
             // 从相机列表中移除已被销毁的相机
             for (int i = cameras.Count - 1; i >= 0; i--)
             {
@@ -114,27 +118,6 @@ namespace CEngine
                     cameras.RemoveAt(i);
                 }
             }
-            //SortCameras();
-        }
-
-        /// <summary>
-        /// 更新场景
-        /// </summary>
-        internal static void Update(float dt)
-        {
-            PrevUpdate();
-            {
-                Render();
-            }
-            PostUpdate();
-        }
-
-        /// <summary>
-        /// 更新场景后处理
-        /// </summary>
-        private static void PostUpdate()
-        {
-
         }
 
         /// <summary>
@@ -144,9 +127,36 @@ namespace CEngine
         {
             foreach (var camera in cameras)
             {
-                camera.Render(gameobjects, renderer);
+                if (!camera.Enabled) continue;
+
+                foreach (var scene in scenes)
+                {
+                    camera.Render(scene.GameObjects, renderer);
+                }
             }
             renderer.Render();
+        }
+
+        /// <summary>
+        /// 更新场景后处理
+        /// </summary>
+        private static void PostProcess()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private static CScene GetCurrentScene()
+        {
+            for (int i=scenes.Count - 1; i >= 0; i--)
+            {
+                if (!scenes[i].Destroyed) return scenes[i];
+            }
+
+            return null;
         }
 
         /// <summary>

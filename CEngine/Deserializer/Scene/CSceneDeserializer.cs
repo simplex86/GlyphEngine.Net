@@ -25,7 +25,7 @@ namespace CEngine
         /// <returns></returns>
         public static CScene Deserialize(string filepath)
         {
-            var scene = new CScene(filepath);
+            var scene = new CScene();
             {
                 var data = CResources.LoadJson(filepath);
                 Deserialize(data, scene);
@@ -40,12 +40,20 @@ namespace CEngine
         /// <returns></returns>
         public static void Deserialize(JsonData data, CScene scene)
         {
-            for (int i = 0; i < data.Count; i++)
+            if (data.AsString("name", out var name))
             {
-                if (data[i].AsString("type", out var type) &&
-                    deserializers.TryGetValue(type, out var deserializer))
+                scene.Name = name;
+            }
+
+            if (data.TryGetValue("children", out var children))
+            {
+                for (int i = 0; i < children.Count; i++)
                 {
-                    deserializer.Deserialize(data[i], scene);
+                    if (children[i].AsString("type", out var type) &&
+                        deserializers.TryGetValue(type, out var deserializer))
+                    {
+                        deserializer.Deserialize(children[i], scene);
+                    }
                 }
             }
         }

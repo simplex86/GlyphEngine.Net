@@ -64,7 +64,10 @@ namespace CEngine
             {
                 parent.Add(gameobject);
             }
-            CWorld.Add(gameobject);
+            else
+            {
+                CWorld.Add(gameobject);
+            }
 
             return gameobject;
         }
