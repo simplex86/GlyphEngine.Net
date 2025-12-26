@@ -32,6 +32,7 @@ namespace CEngine
         /// 
         /// </summary>
         public CImage(CTexture tex, Vector2 localposition, ConsoleColor color)
+            : base()
         {
             this.color = color;
             this.texture = tex;

@@ -119,6 +119,11 @@ namespace CEngine
                         renderer.SetPixel(x, y, pixel.Glyph, pixel.Color, pixel.BackgroundColor);
                     }
                 });
+                // 绘制子节点
+                for (int i = 0; i < gameobject.Count; i++)
+                {
+                    Render(gameobject[i], renderer);
+                }
             }
         }
 

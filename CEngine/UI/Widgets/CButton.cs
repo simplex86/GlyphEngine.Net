@@ -43,6 +43,7 @@ namespace CEngine
         /// <param name="focusColor"></param>
         /// <param name="style"></param>
         public CButton(string text, Vector2 localposition, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
+            : base()
         {
             this.Interactabled = true;
             this.Transform.LocalPosition = localposition;
