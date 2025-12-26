@@ -52,7 +52,7 @@ namespace CEngine
         /// 
         /// </summary>
         protected CWidget()
-            : base(0, 0, ERenderLayer.UI, false)
+            : base(0, 0, ERenderLayer.UI)
         {
             
         }

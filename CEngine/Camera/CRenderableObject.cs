@@ -49,21 +49,9 @@ namespace CEngine
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="layer"></param>
-        internal protected CRenderableObject(int x, int y, ERenderLayer layer)
-            : this(x, y, layer, true)
-        {
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="layer"></param>
         /// <param name="scene"></param>
-        internal protected CRenderableObject(int x, int y, ERenderLayer layer, bool scene)
-            : base(x, y, scene)
+        internal protected CRenderableObject(int x, int y, ERenderLayer layer)
+            : base(x, y)
         {
             this.Layer = (ulong)layer;
         }

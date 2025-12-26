@@ -27,6 +27,7 @@ namespace CEngine
         internal static void Add(CPanel panel)
         {
             panels.Add(panel);
+            CWorld.Add(panel.GameObject);
         }
 
         /// <summary>

@@ -81,8 +81,8 @@ namespace CEngine
                     var dt = CTime.Update();
                     CInput.Update(dt);
                     entry?.Update(dt);
-                    CWindows.Update(dt);
                     CWorld.Update(dt);
+                    CWindows.Update(dt);
                 }
             }
             catch (Exception ex)

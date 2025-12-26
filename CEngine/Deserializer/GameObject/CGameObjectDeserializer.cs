@@ -66,7 +66,7 @@ namespace CEngine
             if (renderable)
             {
                 var layer = data.As("layer", ERenderLayer.Default);
-                gameobject = new CRenderableObject(x, y, layer, false)
+                gameobject = new CRenderableObject(x, y, layer)
                 {
                     Name = data.As("name", "gameobject"),
                 };
@@ -76,7 +76,7 @@ namespace CEngine
             }
             else
             {
-                gameobject = new CGameObject(x, y, false)
+                gameobject = new CGameObject(x, y)
                 {
                     Name = data.As("name", "gameobject"),
                 };

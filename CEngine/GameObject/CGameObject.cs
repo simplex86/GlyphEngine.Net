@@ -41,7 +41,7 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        internal protected CGameObject()
+        private CGameObject()
             : this(0, 0)
         {
 
@@ -52,21 +52,10 @@ namespace CEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        internal protected CGameObject(int x, int y)
-            : this(x, y, true)
-        {
-
-        }
-
-        internal protected CGameObject(int x, int y, bool scene)
+        internal CGameObject(int x, int y)
         {
             Transform = new CTransform(this);
             Transform.LocalPosition = new Vector2(x, y);
-
-            if (scene)
-            {
-                CWorld.Add(this);
-            }
         }
 
         /// <summary>
@@ -162,21 +151,6 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 销毁对象
-        /// </summary>
-        /// <param name="gameobject"></param>
-        public static void Destroy(CGameObject gameobject)
-        {
-            if (gameobject == null ||
-                gameobject.Destroyed)
-            {
-                return;
-            }
-
-            gameobject.Destroy();
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         internal protected virtual void OnDestroy()
@@ -185,7 +159,7 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 
+        /// 克隆
         /// </summary>
         /// <returns></returns>
         public virtual CGameObject Clone()
@@ -205,6 +179,50 @@ namespace CEngine
             }
 
             return clone;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static CGameObject Create()
+        {
+            return Create(null);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public static CGameObject Create(CGameObject parent)
+        {
+            var gameobject = new CGameObject();
+            if (parent == null)
+            {
+                CWorld.Add(gameobject);
+            }
+            else
+            {
+                gameobject.SetParent(parent);
+            }
+
+            return gameobject;
+        }
+
+        /// <summary>
+        /// 销毁对象
+        /// </summary>
+        /// <param name="gameobject"></param>
+        public static void Destroy(CGameObject gameobject)
+        {
+            if (gameobject == null ||
+                gameobject.Destroyed)
+            {
+                return;
+            }
+
+            gameobject.Destroy();
         }
     }
 }
