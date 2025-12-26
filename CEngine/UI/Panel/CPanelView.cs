@@ -29,22 +29,14 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        public CPanelView()
-            : this(CScreen.Width, CScreen.Height)
-        {
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="w"></param>
-        /// <param name="h"></param>
-        internal CPanelView(int w, int h)
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        internal CPanelView(int width, int height, string name)
             : base(ERenderLayer.UI)
         {
-            Width = w;
-            Height = h;
+            Width = width;
+            Height = height;
+            Name = name;
 
             BuildBorder(EBorderStyle.Borderless);
         }

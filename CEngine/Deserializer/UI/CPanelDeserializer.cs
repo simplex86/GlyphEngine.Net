@@ -40,11 +40,12 @@ namespace CEngine
             var y = data.As("y", 0);
             var width  = data.As("width", CScreen.Width);
             var height = data.As("height", CScreen.Height);
+            var name = data.As("name", "panel");
 
             if (width  <= 0) width  = CScreen.Width;
             if (height <= 0) height = CScreen.Height;
 
-            var view = new CPanelView(width, height);
+            var view = new CPanelView(width, height, name);
             view.Transform.LocalPosition = new Vector2(x, y);
 
             DeserializeComponents(data["components"], view);
