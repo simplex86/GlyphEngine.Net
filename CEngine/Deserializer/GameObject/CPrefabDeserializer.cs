@@ -12,7 +12,7 @@ namespace CEngine
         /// </summary>
         /// <param name="data"></param>
         /// <param name="scene"></param>
-        public void Deserialize(JsonData data, CGameObjectContainer container)
+        public void Deserialize(JsonData data, IContainable<CGameObject> container)
         {
             var filepath = data.As("filepath", string.Empty);
             if (!string.IsNullOrEmpty(filepath))

@@ -68,17 +68,9 @@ namespace CEngine
         /// <param name="renderobjects"></param>
         internal void Render(List<CGameObject> gameobjects, CRenderer renderer)
         {
-            if (Destroyed)
+            foreach (var gameobject in gameobjects)
             {
-                return;
-            }
-
-            if (Enabled)
-            {
-                foreach (var gameobject in gameobjects)
-                {
-                    Render(gameobject, renderer);
-                }
+                Render(gameobject, renderer);
             }
         }
 

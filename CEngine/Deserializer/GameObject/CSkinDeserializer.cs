@@ -12,7 +12,7 @@ namespace CEngine
         /// </summary>
         /// <param name="data"></param>
         /// <param name="container"></param>
-        public void Deserialize(JsonData data, CGameObjectContainer container)
+        public void Deserialize(JsonData data, IContainable<CGameObject> container)
         {
             var json = CResources.LoadJson((string)data);
             var renderable = container as CRenderableObject;

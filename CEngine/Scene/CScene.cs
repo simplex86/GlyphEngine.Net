@@ -5,12 +5,16 @@ namespace CEngine
     /// <summary>
     /// 场景
     /// </summary>
-    public class CScene : CGameObjectContainer
+    public class CScene : IContainable<CGameObject>
     {
         /// <summary>
         /// 
         /// </summary>
         public string Name { get; internal set; }
+        /// <summary>
+        /// 物体数量
+        /// </summary>
+        public int Count => GameObjects.Count;
         /// <summary>
         /// 
         /// </summary>
@@ -31,7 +35,6 @@ namespace CEngine
         /// <param name="camera"></param>
         internal void Add(CCamera camera)
         {
-            if (Destroyed) return;
             Cameras.Add(camera);
         }
 
@@ -39,10 +42,8 @@ namespace CEngine
         /// 添加对象
         /// </summary>
         /// <param name="gameobject"></param>
-        internal override void Add(CGameObject gameobject)
+        public void Add(CGameObject gameobject)
         {
-            if (Destroyed) return;
-
             if (!GameObjects.Contains(gameobject))
             {
                 GameObjects.Add(gameobject);
@@ -53,14 +54,26 @@ namespace CEngine
         /// 移除对象
         /// </summary>
         /// <param name="gameobject"></param>
-        internal override void Remove(CGameObject gameobject)
+        public void Remove(CGameObject gameobject)
         {
-            if (Destroyed) return;
-
             if (GameObjects.Contains(gameobject))
             {
                 GameObjects.Remove(gameobject);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public CGameObject GetChild(int index)
+        {
+            if (index < 0)
+            {
+                index = GameObjects.Count + index;
+            }
+            return GameObjects[index];
         }
 
         /// <summary>

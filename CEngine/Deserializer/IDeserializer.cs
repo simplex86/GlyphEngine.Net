@@ -4,6 +4,6 @@ namespace CEngine
 {
     internal interface IDeserializer
     {
-        public void Deserialize(JsonData data, CGameObjectContainer container);
+        public void Deserialize(JsonData data, IContainable<CGameObject> container);
     }
 }

@@ -38,7 +38,7 @@ namespace CEngine
 
             foreach (var camera in scene.Cameras)
             {
-                Add(camera);
+                cameras.Add(camera);
             }
             SortCameras();
         }
@@ -49,7 +49,7 @@ namespace CEngine
         /// <param name="scene"></param>
         internal static void Remove(CScene scene)
         {
-            scene?.Destroy();
+            scene.Destroy();
         }
 
         /// <summary>

@@ -5,7 +5,7 @@ namespace CEngine
     /// <summary>
     /// 游戏对象
     /// </summary>
-    public class CGameObject : CGameObjectContainer, ITransformable, IClonable<CGameObject>
+    public class CGameObject : ITransformable, IContainable<CGameObject>, IClonable<CGameObject>
     {
         /// <summary>
         /// 名字
@@ -73,9 +73,19 @@ namespace CEngine
         /// 添加子节点
         /// </summary>
         /// <param name="child"></param>
-        internal override void Add(CGameObject child)
+        public void Add(CGameObject child)
         {
             child.SetParent(this);
+        }
+
+        /// <summary>
+        /// 删除子节点
+        /// </summary>
+        /// <param name="child"></param>
+        public void Remove(CGameObject child)
+        {
+            Children.Remove(child);
+            child.SetParent(null);
         }
 
         /// <summary>
@@ -93,7 +103,17 @@ namespace CEngine
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public CGameObject Get(int index)
+        public CGameObject this[int index]
+        {
+            get { return GetChild(index); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public CGameObject GetChild(int index)
         {
             if (index < 0)
             {
@@ -103,43 +123,23 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 获取子节点
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public CGameObject this[int index]
-        {
-            get { return Get(index); }
-        }
-
-        /// <summary>
-        /// 删除子节点
-        /// </summary>
-        /// <param name="child"></param>
-        internal override void Remove(CGameObject child)
-        {
-            Children.Remove(child);
-            child.SetParent(null);
-        }
-
-        /// <summary>
         /// 设置父节点
         /// </summary>
         /// <param name="parent"></param>
         public void SetParent(CGameObject parent)
         {
-            if (this.Parent == parent) return;
+            if (Parent == parent) return;
             if (Destroyed) return;
             if (parent != null && parent.Destroyed) return;
 
-            if (this.Parent != null &&
-                this.Parent.Has(this))
+            if (Parent != null &&
+                Parent.Has(this))
             {
-                this.Parent.Remove(this);
+                Parent.Remove(this);
             }
 
-            this.Parent = parent;
-            this.Parent?.Children.Add(this);
+            Parent = parent;
+            Parent?.Children.Add(this);
 
             Transform.Reposition();
         }

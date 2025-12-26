@@ -5,7 +5,7 @@ namespace CEngine
 {
     internal class CButtonDeserializer : IDeserializer
     {
-        public void Deserialize(JsonData data, CGameObjectContainer contaner)
+        public void Deserialize(JsonData data, IContainable<CGameObject> contaner)
         {
             var x = data.As("x", 0);
             var y = data.As("y", 0);

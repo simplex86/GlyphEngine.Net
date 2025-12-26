@@ -21,7 +21,7 @@ namespace CEngine
         /// </summary>
         /// <param name="data"></param>
         /// <param name="scene"></param>
-        public void Deserialize(JsonData data, CGameObjectContainer container)
+        public void Deserialize(JsonData data, IContainable<CGameObject> container)
         {
             DeserializeImp(data, container);
         }
@@ -43,7 +43,7 @@ namespace CEngine
         /// <param name="filepath"></param>
         /// <param name="container"></param>
         /// <returns></returns>
-        internal static CGameObject Deserialize(string filepath, CGameObjectContainer container)
+        internal static CGameObject Deserialize(string filepath, IContainable<CGameObject> container)
         {
             var data = CResources.LoadJson(filepath);
             return DeserializeImp(data, container);
@@ -55,7 +55,7 @@ namespace CEngine
         /// <param name="data"></param>
         /// <param name="container"></param>
         /// <returns></returns>
-        private static CGameObject DeserializeImp(JsonData data, CGameObjectContainer container)
+        private static CGameObject DeserializeImp(JsonData data, IContainable<CGameObject> container)
         {
             CGameObject gameobject;
 
