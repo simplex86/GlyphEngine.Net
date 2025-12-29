@@ -44,10 +44,10 @@ namespace CEngine
         /// </summary>
         protected override void OnDestroy()
         {
-            if (Texture != null)
+            if (texture != null)
             {
-                CResources.UnloadTex(Texture);
-                Texture = null;
+                CResources.UnloadTex(texture);
+                texture = null;
             }
             base.OnDestroy();
         }

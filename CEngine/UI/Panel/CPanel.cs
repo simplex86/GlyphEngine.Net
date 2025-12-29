@@ -121,12 +121,17 @@ namespace CEngine
         }
 
         /// <summary>
-        /// 
+        /// 销毁
         /// </summary>
         public void Destroy()
         {
+            // 销毁子节点
+            foreach (var widget in widgets.Values)
+            {
+                widget.Destroy();
+            }
             widgets.Clear();
-
+            // 销毁视图
             view.Destroy();
             view = null;
         }

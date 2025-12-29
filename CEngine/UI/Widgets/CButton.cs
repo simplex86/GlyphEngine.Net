@@ -112,6 +112,15 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
+        protected override void OnDestroy()
+        {
+            onClicked.Clear();
+            base.OnDestroy();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="style"></param>
         private void Apply(EBorderStyle style)
         {
