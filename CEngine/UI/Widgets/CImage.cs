@@ -10,23 +10,23 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        public CTexture texture
+        public CTexture Texture
         {
             set
             {
-                if (_texture != value)
+                if (texture != value)
                 {
-                    _texture = value;
+                    texture = value;
                     ResetPixels();
                 }
             }
-            get { return _texture; }
+            get { return texture; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        private CTexture _texture;
+        private CTexture texture;
 
         /// <summary>
         /// 
@@ -34,20 +34,20 @@ namespace CEngine
         public CImage(CTexture tex, Vector2 localposition, ConsoleColor color)
             : base()
         {
-            this.color = color;
-            this.texture = tex;
+            this.Color = color;
+            this.Texture = tex;
             this.Transform.LocalPosition = localposition;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        protected internal override void OnDestroy()
+        protected override void OnDestroy()
         {
-            if (texture != null)
+            if (Texture != null)
             {
-                CResources.UnloadTex(texture);
-                texture = null;
+                CResources.UnloadTex(Texture);
+                Texture = null;
             }
             base.OnDestroy();
         }
@@ -58,20 +58,20 @@ namespace CEngine
         private void ResetPixels()
         {
             // 重置像素列表
-            ClearPixels();
+            view.ClearPixels();
 
-            if (_texture == null) return;
+            if (texture == null) return;
             //
-            for (int h = 0; h < _texture.Height; h++)
+            for (int h = 0; h < texture.Height; h++)
             {
-                for (int w = 0; w < _texture.Width; w++)
+                for (int w = 0; w < texture.Width; w++)
                 {
-                    var i = h * _texture.Width + w;
-                    var pixel = CPixelPool.Instance.Alloc(w - _texture.Width / 2,
-                                                          h - _texture.Height / 2,
-                                                          _texture.Glyphs[i],
-                                                          color);
-                    AddPixel(pixel);
+                    var i = h * texture.Width + w;
+                    var pixel = CPixelPool.Instance.Alloc(w - texture.Width / 2,
+                                                          h - texture.Height / 2,
+                                                          texture.Glyphs[i],
+                                                          Color);
+                    view.AddPixel(pixel);
                 }
             }
         }

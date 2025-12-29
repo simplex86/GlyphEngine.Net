@@ -5,7 +5,7 @@ namespace CEngine
     /// <summary>
     /// 
     /// </summary>
-    internal class CCameraDeserializer : IDeserializer
+    internal class CCameraDeserializer : IDeserializer<CGameObject>
     {
         /// <summary>
         /// 

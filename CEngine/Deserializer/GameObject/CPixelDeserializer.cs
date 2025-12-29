@@ -5,7 +5,7 @@ namespace CEngine
     /// <summary>
     /// 
     /// </summary>
-    internal class CPixelDeserializer : IDeserializer
+    internal class CPixelDeserializer : IDeserializer<CGameObject>
     {
         /// <summary>
         /// 

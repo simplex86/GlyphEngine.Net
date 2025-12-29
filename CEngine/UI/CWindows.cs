@@ -7,7 +7,9 @@ namespace CEngine
     /// </summary>
     internal static class CWindows
     {
-        private static List<CPanel> panels = new List<CPanel>();
+        private static List<CPanel> adds = new List<CPanel>();
+        private static List<CPanel> retains = new List<CPanel>();
+        private static List<CPanel> removes = new List<CPanel>();
 
         /// <summary>
         /// 
@@ -26,8 +28,7 @@ namespace CEngine
         /// <param name="panel"></param>
         internal static void Add(CPanel panel)
         {
-            panels.Add(panel);
-            CWorld.Add(panel.GameObject);
+            adds.Add(panel);
         }
 
         /// <summary>
@@ -36,8 +37,14 @@ namespace CEngine
         /// <param name="dt"></param>
         internal static void Update(float dt)
         {
-            if (panels.Count == 0) return;
-            panels[^1].View.Update(dt);
+            PrevProcess();
+            {
+                foreach (var panel in retains)
+                {
+                    panel.Update(dt);
+                }
+            }
+            PostProcess();
         }
 
         /// <summary>
@@ -46,7 +53,33 @@ namespace CEngine
         /// <param name="panel"></param>
         internal static void Remove(CPanel panel)
         {
-            panels.Remove(panel);
+            removes.Add(panel);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void PrevProcess()
+        {
+            foreach (var add in adds)
+            {
+                retains.Add(add);
+                CWorld.Add(add.GameObject);
+            }
+            adds.Clear();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void PostProcess()
+        {
+            foreach (var remove in removes)
+            {
+                remove.Destroy();
+                retains.Remove(remove);
+            }
+            removes.Clear();
         }
     }
 }

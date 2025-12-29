@@ -6,9 +6,9 @@ namespace CEngine
     /// <summary>
     /// 
     /// </summary>
-    internal class CGameObjectDeserializer : IDeserializer
+    internal class CGameObjectDeserializer : IDeserializer<CGameObject>
     {
-        private static Dictionary<string, IDeserializer> deserializers = new()
+        private static Dictionary<string, IDeserializer<CGameObject>> deserializers = new()
         {
             { "gameobject", new CGameObjectDeserializer() },
             { "skin", new CSkinDeserializer() },

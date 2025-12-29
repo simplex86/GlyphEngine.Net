@@ -7,7 +7,7 @@ namespace CEngine
     /// <summary>
     /// 可渲染对象
     /// </summary>
-    public class CRenderableObject : CGameObject, IRenderable, ISkinable
+    internal class CRenderableObject : CGameObject, IRenderable, ISkinable
     {
         /// <summary>
         /// 渲染层级
@@ -27,7 +27,7 @@ namespace CEngine
         /// 
         /// </summary>
         /// <param name="layer"></param>
-        internal protected CRenderableObject(ERenderLayer layer)
+        internal CRenderableObject(ERenderLayer layer)
             : this(0, 0, layer)
         {
             
@@ -37,7 +37,7 @@ namespace CEngine
         /// 
         /// </summary>
         /// <param name="layer"></param>
-        private protected CRenderableObject(ulong layer)
+        private CRenderableObject(ulong layer)
             : base(0, 0)
         {
             this.Layer = layer;
@@ -50,7 +50,7 @@ namespace CEngine
         /// <param name="y"></param>
         /// <param name="layer"></param>
         /// <param name="scene"></param>
-        internal protected CRenderableObject(int x, int y, ERenderLayer layer)
+        internal CRenderableObject(int x, int y, ERenderLayer layer)
             : base(x, y)
         {
             this.Layer = (ulong)layer;
@@ -82,7 +82,7 @@ namespace CEngine
         /// <summary>
         /// 清空像素
         /// </summary>
-        protected void ClearPixels()
+        internal void ClearPixels()
         {
             CPixelPool.Instance.Release(pixels);
         }
@@ -137,7 +137,7 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        internal protected override void OnDestroy()
+        protected override void OnDestroy()
         {
             CPixelPool.Instance.Release(pixels);
             while(skins.Keys.Count > 0)

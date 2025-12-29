@@ -5,7 +5,7 @@ namespace CEngine
     /// <summary>
     /// 
     /// </summary>
-    internal class CSkinDeserializer : IDeserializer
+    internal class CSkinDeserializer : IDeserializer<CGameObject>
     {
         /// <summary>
         /// 

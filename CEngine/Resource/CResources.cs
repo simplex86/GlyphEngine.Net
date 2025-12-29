@@ -101,8 +101,7 @@ namespace CEngine
         /// <returns></returns>
         public static CPanel LoadUI(string filepath, Type type)
         {
-            var panel = Activator.CreateInstance(type) as CPanel;
-            panel.View = CPanelDeserializer.Deserialize(filepath);
+            var panel = CPanelDeserializer.Deserialize(filepath, type);
             CWindows.Add(panel);
 
             return panel;
@@ -178,6 +177,9 @@ namespace CEngine
         public static void UnloadTex(CTexture tex)
         {
             tex.Refc = Math.Max(0, tex.Refc - 1);
+            if (tex.Refc == 0)
+            { 
+            }
         }
 
         /// <summary>

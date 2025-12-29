@@ -8,42 +8,33 @@
         /// <summary>
         /// 
         /// </summary>
-        public string text
+        public string Text
         {
             set
             {
-                if (_text != value)
+                if (text != value)
                 {
-                    _text = value;
+                    text = value;
                     ResetPixels();
 
-                    Width = _text.Length;
+                    Width = text.Length;
                     Height = 1;
                 }
             }
-            get { return _text; }
+            get { return text; }
         }
 
-        private string _text = string.Empty;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public CText(Vector2 localposition) 
-            : this("Text", localposition)
-        {
-
-        }
+        private string text = string.Empty;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="text"></param>
-        public CText(string text, Vector2 localposition)
+        internal CText(string text, Vector2 localposition)
              : base()
         {
             Transform.LocalPosition = localposition;
-            this.text = text;
+            Text = text;
         }
 
         /// <summary>
@@ -52,15 +43,15 @@
         private void ResetPixels()
         {
             // 重置像素列表
-            ClearPixels();
+            view.ClearPixels();
             // 
-            for (int i = 0; i < _text.Length; i++)
+            for (int i = 0; i < text.Length; i++)
             {
-                var pixel = CPixelPool.Instance.Alloc(i - _text.Length / 2,
+                var pixel = CPixelPool.Instance.Alloc(i - text.Length / 2,
                                                       0,
-                                                      _text[i],
-                                                      color);
-                AddPixel(pixel);
+                                                      text[i],
+                                                      Color);
+                view.AddPixel(pixel);
             }
         }
     }

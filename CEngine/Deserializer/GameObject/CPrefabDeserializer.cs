@@ -5,7 +5,7 @@ namespace CEngine
     /// <summary>
     /// 
     /// </summary>
-    internal class CPrefabDeserializer : IDeserializer
+    internal class CPrefabDeserializer : IDeserializer<CGameObject>
     {
         /// <summary>
         /// 

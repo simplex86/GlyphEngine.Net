@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CEngine
 {
@@ -10,13 +11,13 @@ namespace CEngine
         /// <summary>
         /// 颜色
         /// </summary>
-        ConsoleColor color { get; set; }
+        ConsoleColor Color { get; set; }
     }
 
     /// <summary>
     /// 子控件基类
     /// </summary>
-    public class CWidget : CRenderableObject, IWidget
+    public class CWidget : IWidget, IContainable<CWidget>
     {
         /// <summary>
         /// 宽度
@@ -26,35 +27,117 @@ namespace CEngine
         /// 高度
         /// </summary>
         public int Height { get; protected set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name
+        {
+            get { return view.Name; }
+            internal set { view.Name = value; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public CGameObject GameObject => view;
+        /// <summary>
+        /// 
+        /// </summary>
+        public CTransform Transform => view.Transform;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Count => view.Count;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal CRenderableObject view = new CRenderableObject(ERenderLayer.UI);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private Dictionary<CGameObject, CWidget> widgets = new Dictionary<CGameObject, CWidget>();
 
         /// <summary>
         /// 颜色
         /// </summary>
-        public ConsoleColor color
+        public ConsoleColor Color
         {
             set
             {
-                if (_color != value)
+                if (color != value)
                 {
-                    _color = value;
-                    Foreach(p => p.Color = _color);
+                    color = value;
+                    view.Foreach(p => p.Color = color);
                 }
             }
-            get { return _color; }
+            get { return color; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        private ConsoleColor _color = ConsoleColor.White;
+        private ConsoleColor color = ConsoleColor.White;
 
         /// <summary>
         /// 
         /// </summary>
         protected CWidget()
-            : base(0, 0, ERenderLayer.UI)
         {
-            
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="weidget"></param>
+        public void Add(CWidget widget)
+        {
+            view.Add(widget.GameObject);
+            widgets.TryAdd(widget.GameObject, widget);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public CWidget GetChild(int index)
+        {
+            var gameobject = view.GetChild(index);
+            if (widgets.TryGetValue(gameobject, out var widget))
+            {
+                return widget;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="widget"></param>
+        public void Remove(CWidget widget)
+        {
+            view.Remove(widget.GameObject);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public T Get<T>(string name) where T : CWidget
+        {
+            foreach (var widget in widgets.Values)
+            {
+                if (widget.Name == name)
+                {
+                    return widget as T;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -66,17 +149,28 @@ namespace CEngine
         {
             foreach (var pixel in decorator.pixels)
             {
-                pixel.Color = _color;
-                AddPixel(pixel);
+                pixel.Color = color;
+                view.AddPixel(pixel);
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        protected internal override void OnDestroy()
+        internal void Destroy()
         {
-            ClearPixels();
+            view.Destroy();
+            view = null;
+
+            OnDestroy();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void OnDestroy()
+        {
+
         }
     }
 }

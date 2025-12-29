@@ -2,9 +2,9 @@
 
 namespace CEngine
 {
-    internal class CTextDeserializer : IDeserializer
+    internal class CTextDeserializer : IDeserializer<CWidget>
     {
-        public void Deserialize(JsonData data, IContainable<CGameObject> container)
+        public void Deserialize(JsonData data, IContainable<CWidget> container)
         {
             var x = data.As("x", 0);
             var y = data.As("y", 0);
@@ -12,13 +12,13 @@ namespace CEngine
             var text = data.As("text", string.Empty);
             var color = CColorHelper.Get(data, "color");
 
-            var component = new CText(text, new Vector2(x, y))
+            var widget = new CText(text, new Vector2(x, y))
             {
-                color = color,
+                Name = name,
+                Color = color,
             };
 
-            var view = container as CPanelView;
-            view.AddComponent(component, name);
+            container.Add(widget);
         }
     }
 }

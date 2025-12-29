@@ -42,7 +42,7 @@ namespace CEngine
         /// <param name="unfocusColor"></param>
         /// <param name="focusColor"></param>
         /// <param name="style"></param>
-        public CButton(string text, Vector2 localposition, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
+        internal CButton(string text, Vector2 localposition, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
             : base()
         {
             this.Interactabled = true;
@@ -50,7 +50,6 @@ namespace CEngine
             this.Keycode = keycode;
             this.UnfocusColor = unfocusColor;
             this.FocusColor = focusColor;
-            //this.style = style;
 
             this.text = new CText(text, Vector2.Zero);
             Add(this.text);
@@ -58,7 +57,7 @@ namespace CEngine
             this.Width  = this.text.Width  + 4;
             this.Height = this.text.Height + 2;
 
-            BuildBorder(style);
+            Apply(style);
         }
 
         /// <summary>
@@ -84,8 +83,8 @@ namespace CEngine
         /// </summary>
         public void OnFocus()
         {
-            color = FocusColor;
-            text.color = color;
+            Color = FocusColor;
+            text.Color = Color;
         }
 
         /// <summary>
@@ -93,8 +92,8 @@ namespace CEngine
         /// </summary>
         public void LoseFocus()
         {
-            color = UnfocusColor;
-            text.color = color;
+            Color = UnfocusColor;
+            text.Color = Color;
         }
 
         /// <summary>
@@ -114,11 +113,8 @@ namespace CEngine
         /// 
         /// </summary>
         /// <param name="style"></param>
-        private void BuildBorder(EBorderStyle style)
+        private void Apply(EBorderStyle style)
         {
-            var box = new CBox(this);
-            Apply(box);
-
             switch (style)
             {
                 case EBorderStyle.ThinBorder:

@@ -5,14 +5,14 @@ namespace CEngine
     /// <summary>
     /// 
     /// </summary>
-    internal class CImageDeserializer : IDeserializer
+    internal class CImageDeserializer : IDeserializer<CWidget>
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="data"></param>
         /// <param name="container"></param>
-        public void Deserialize(JsonData data, IContainable<CGameObject> container)
+        public void Deserialize(JsonData data, IContainable<CWidget> container)
         {
             var x = data.As("x", 0);
             var y = data.As("y", 0);
@@ -21,10 +21,12 @@ namespace CEngine
             var transparent = data.As("transparent", false);
             var texture = Load(data, transparent);
 
-            var image = new CImage(texture, new Vector2(x, y), color);
+            var image = new CImage(texture, new Vector2(x, y), color)
+            {
+                Name = name,
+            };
 
-            var view = container as CPanelView;
-            view.AddComponent(image, name);
+            container.Add(image);
         }
 
         /// <summary>

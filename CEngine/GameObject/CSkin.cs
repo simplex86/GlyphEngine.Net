@@ -6,7 +6,7 @@ namespace CEngine
     /// <summary>
     /// 皮肤
     /// </summary>
-    internal class CSkin
+    public sealed partial class CSkin
     {
         /// <summary>
         /// 
@@ -17,9 +17,16 @@ namespace CEngine
         /// 
         /// </summary>
         private List<CPixel> list = new List<CPixel>();
+        /// <summary>
+        /// 
+        /// </summary>
         private Dictionary<ulong, int> grid = new Dictionary<ulong, int>();
 
-        public CSkin(string name)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        internal CSkin(string name)
         {
             this.Name = name;
         }

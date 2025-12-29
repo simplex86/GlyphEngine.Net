@@ -3,9 +3,9 @@ using LitJson;
 
 namespace CEngine
 {
-    internal class CButtonDeserializer : IDeserializer
+    internal class CButtonDeserializer : IDeserializer<CWidget>
     {
-        public void Deserialize(JsonData data, IContainable<CGameObject> contaner)
+        public void Deserialize(JsonData data, IContainable<CWidget> contaner)
         {
             var x = data.As("x", 0);
             var y = data.As("y", 0);
@@ -25,11 +25,13 @@ namespace CEngine
                 focus = false;
             }
 
-            var button = new CButton(text, new Vector2(x, y), keycode, unfocusColor, focusColor, border);
-            button.Interactabled = interactable;
+            var button = new CButton(text, new Vector2(x, y), keycode, unfocusColor, focusColor, border)
+            {
+                Name = name,
+                Interactabled = interactable,
+            };
 
-            var view = contaner as CPanelView;
-            view.AddComponent(button, name, focus);
+            contaner.Add(button);
         }
     }
 }

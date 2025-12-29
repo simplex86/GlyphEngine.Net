@@ -5,7 +5,7 @@ namespace CEngine
     /// <summary>
     /// 游戏对象
     /// </summary>
-    public class CGameObject : ITransformable, IContainable<CGameObject>, IClonable<CGameObject>
+    public partial class CGameObject : ITransformable, IContainable<CGameObject>, IClonable<CGameObject>
     {
         /// <summary>
         /// 名字
@@ -153,7 +153,7 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        internal protected virtual void OnDestroy()
+        protected virtual void OnDestroy()
         {
             
         }
@@ -179,50 +179,6 @@ namespace CEngine
             }
 
             return clone;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public static CGameObject Create()
-        {
-            return Create(null);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <returns></returns>
-        public static CGameObject Create(CGameObject parent)
-        {
-            var gameobject = new CGameObject();
-            if (parent == null)
-            {
-                CWorld.Add(gameobject);
-            }
-            else
-            {
-                gameobject.SetParent(parent);
-            }
-
-            return gameobject;
-        }
-
-        /// <summary>
-        /// 销毁对象
-        /// </summary>
-        /// <param name="gameobject"></param>
-        public static void Destroy(CGameObject gameobject)
-        {
-            if (gameobject == null ||
-                gameobject.Destroyed)
-            {
-                return;
-            }
-
-            gameobject.Destroy();
         }
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     /// UI视图
     /// </summary>
-    public interface IView
+    public interface IView : ITransformable
     {
         /// <summary>
         /// 宽度
@@ -13,5 +13,9 @@
         /// 高度
         /// </summary>
         int Height { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        CGameObject GameObject { get; }
     }
 }

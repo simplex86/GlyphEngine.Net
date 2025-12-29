@@ -11,7 +11,7 @@ namespace CEngine
         /// <summary>
         /// 
         /// </summary>
-        private static Dictionary<string, IDeserializer> deserializers = new()
+        private static Dictionary<string, IDeserializer<CGameObject>> deserializers = new()
         {
             { "camera", new CCameraDeserializer() },
             { "gameobject", new CGameObjectDeserializer() },
