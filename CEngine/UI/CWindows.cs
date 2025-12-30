@@ -3,7 +3,7 @@
 namespace CEngine
 {
     /// <summary>
-    /// 
+    /// 窗口管理器
     /// </summary>
     internal static class CWindows
     {
@@ -61,10 +61,12 @@ namespace CEngine
         /// </summary>
         private static void PrevProcess()
         {
-            foreach (var add in adds)
+            foreach (var panel in adds)
             {
-                retains.Add(add);
-                CWorld.Add(add.GameObject);
+                retains.Add(panel);
+                CWorld.Add(panel.GameObject);
+
+                panel.Open();
             }
             adds.Clear();
         }
@@ -74,10 +76,10 @@ namespace CEngine
         /// </summary>
         private static void PostProcess()
         {
-            foreach (var remove in removes)
+            foreach (var panel in removes)
             {
-                remove.Destroy();
-                retains.Remove(remove);
+                panel.Destroy();
+                retains.Remove(panel);
             }
             removes.Clear();
         }

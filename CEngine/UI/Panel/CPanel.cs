@@ -6,7 +6,7 @@ namespace CEngine
     /// <summary>
     /// 
     /// </summary>
-    public class CPanel : IView, IContainable<CWidget>
+    public abstract class CPanel : IView, IContainable<CWidget>
     {
         /// <summary>
         /// 宽度
@@ -60,6 +60,19 @@ namespace CEngine
         {
             Apply(EBorderStyle.Borderless);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal void Open()
+        {
+            OnOpen();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected abstract void OnOpen();
 
         /// <summary>
         /// 
@@ -123,7 +136,7 @@ namespace CEngine
         /// <summary>
         /// 销毁
         /// </summary>
-        public void Destroy()
+        internal void Destroy()
         {
             // 销毁子节点
             foreach (var widget in widgets.Values)
@@ -134,7 +147,11 @@ namespace CEngine
             // 销毁视图
             view.Destroy();
             view = null;
+            // 
+            OnDestroy();
         }
+
+        protected abstract void OnDestroy();
 
         /// <summary>
         /// 
