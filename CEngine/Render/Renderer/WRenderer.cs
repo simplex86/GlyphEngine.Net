@@ -30,10 +30,6 @@ namespace CEngine
         /// 
         /// </summary>
         private bool dirty = false;
-        //private int minx = int.MaxValue;
-        //private int miny = int.MaxValue;
-        //private int maxx = int.MinValue;
-        //private int maxy = int.MinValue;
         /// <summary>
         /// 写入缓存的大小
         /// </summary>
@@ -91,11 +87,6 @@ namespace CEngine
                 dirty = true;
                 buffer[index].Attributes = attrs;
                 buffer[index].UnicodeChar = glyph;
-
-                //minx = (short)Math.Min(minx, x);
-                //miny = (short)Math.Min(miny, y);
-                //maxx = (short)Math.Max(maxx, x);
-                //maxy = (short)Math.Max(maxy, y);
             }
         }
 
@@ -117,10 +108,7 @@ namespace CEngine
         /// </summary>
         private void PrevProcess()
         {
-            //BUFFER_SIZE.X = (short)Math.Abs(maxx - minx);
-            //BUFFER_SIZE.Y = (short)Math.Abs(maxy - miny);
-            //BUFFER_COOD.X = (short)minx;
-            //BUFFER_COOD.Y = (short)miny;
+
         }
 
         /// <summary>
@@ -138,11 +126,6 @@ namespace CEngine
             region.Top    = 0;
             region.Right  = (short)CScreen.Width;
             region.Bottom = (short)CScreen.Height;
-
-            //minx = int.MaxValue;
-            //miny = int.MaxValue;
-            //maxx = int.MinValue;
-            //maxy = int.MinValue;
 
             dirty = false;
         }
