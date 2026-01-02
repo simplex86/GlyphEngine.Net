@@ -5,30 +5,104 @@ using System.Collections.Generic;
 namespace CEngine
 {
     /// <summary>
+    /// NRenderBuffer的迭代器
+    /// </summary>
+    internal class NRenderBufferEnumerator : IEnumerator<CPixel>
+    {
+        private List<CPixel> list = null;
+        private int index = -1;
+        private int count = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public CPixel Current => list[index];
+
+        /// <summary>
+        /// 
+        /// </summary>
+        object IEnumerator.Current => Current;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="count"></param>
+        public NRenderBufferEnumerator(List<CPixel> list, int count)
+        {
+            this.list = list;
+            this.count = count;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool MoveNext()
+        {
+            index++;
+            return index < count;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Reset()
+        {
+            index = -1;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Dispose()
+        {
+            index = -1;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="count"></param>
+        internal void Reset(int count)
+        {
+            this.index = -1;
+            this.count = count;
+        }
+    }
+
+    /// <summary>
     /// 渲染缓冲
     /// </summary>
     internal class NRenderBuffer : IEnumerable<CPixel>
     {
         private List<CPixel> list;
         private Dictionary<ulong, int> grid;
+        private int count = 0;
+        private NRenderBufferEnumerator enumerator = null;
 
+        /// <summary>
+        /// 
+        /// </summary>
         internal NRenderBuffer()
         {
             list = new List<CPixel>(CScreen.Width * CScreen.Height);
             grid = new Dictionary<ulong, int>();
+
+            enumerator = new NRenderBufferEnumerator(list, count);
         }
 
         /// <summary>
         /// 获取迭代器
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<CPixel> GetEnumerator() => list.GetEnumerator();
+        public IEnumerator<CPixel> GetEnumerator() => enumerator;
 
         /// <summary>
         /// 获取迭代器
         /// </summary>
         /// <returns></returns>
-        IEnumerator IEnumerable.GetEnumerator() => list.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
         /// 写入像素
@@ -38,15 +112,7 @@ namespace CEngine
         /// <param name="glyph"></param>
         internal void SetPixel(int x, int y, char glyph)
         {
-            if (!GetPixel(x, y, out var key, out var pixel))
-            {
-                pixel = CPixelPool.Instance.Alloc(x, y);
-                list.Add(pixel);
-                grid.Add(key, list.Count - 1);
-            }
-
-            pixel.Glyph = glyph;
-            pixel.Color = Console.ForegroundColor;
+            SetPixel(x, y, glyph, Console.ForegroundColor, Console.BackgroundColor);
         }
 
         /// <summary>
@@ -63,7 +129,7 @@ namespace CEngine
             {
                 pixel = CPixelPool.Instance.Alloc(x, y);
                 list.Add(pixel);
-                grid.Add(key, list.Count - 1);
+                AddGrid(key, count);
             }
 
             pixel.Glyph = glyph;
@@ -76,8 +142,10 @@ namespace CEngine
         /// </summary>
         internal void Clear()
         {
-            CPixelPool.Instance.Release(list);
+            count = 0;
             grid.Clear();
+
+            enumerator?.Reset(count);
         }
 
         /// <summary>
@@ -89,7 +157,28 @@ namespace CEngine
         /// <returns></returns>
         internal bool GetPixel(int x, int y, out CPixel pixel)
         {
-            return GetPixel(x, y, out var _, out pixel);
+            pixel = null;
+
+            var key = GetGridKey(x, y);
+            if (grid.TryGetValue(key, out var index))
+            {
+                pixel = list[index];
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal void Dispose()
+        {
+            Clear();
+            CPixelPool.Instance.Release(list);
+
+            enumerator?.Dispose();
+            enumerator = null;
         }
 
         /// <summary>
@@ -104,16 +193,51 @@ namespace CEngine
         {
             pixel = null;
 
-            key = (ulong)x;
-            key = (key << 32) | (ulong)y;
-
+            key = GetGridKey(x, y);
             if (grid.TryGetValue(key, out var index))
             {
                 pixel = list[index];
                 return true;
             }
 
+            if (count < list.Count)
+            {
+                pixel = list[count];
+                pixel.X = x;
+                pixel.Y = y;
+
+                AddGrid(key, count);
+                return true;
+            }
+
             return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private ulong GetGridKey(int x, int y)
+        {
+            var key = (ulong)x;
+            key = (key << 32) | (ulong)y;
+
+            return key;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="index"></param>
+        private void AddGrid(ulong key, int index)
+        {
+            grid.Add(key, index);
+            count++;
+
+            enumerator?.Reset(count);
         }
     }
 }

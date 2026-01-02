@@ -20,7 +20,7 @@ namespace CEngine
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                renderer = new WRenderer();
+                renderer = new NRenderer();
             }
             else
             {
