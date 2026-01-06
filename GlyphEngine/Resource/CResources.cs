@@ -171,15 +171,13 @@ namespace GlyphEngine
         }
 
         /// <summary>
-        /// 卸载纹理
+        /// 
         /// </summary>
-        /// <param name="tex"></param>
-        public static void UnloadTex(CTexture tex)
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        public static CAudioSource LoadAudio(string filepath)
         {
-            tex.Refc = Math.Max(0, tex.Refc - 1);
-            if (tex.Refc == 0)
-            { 
-            }
+            return CAudioDeserializer.Deserialize(filepath);
         }
 
         /// <summary>
