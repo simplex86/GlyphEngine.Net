@@ -241,6 +241,38 @@ namespace GlyphEngine
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
+        public static float As(this  JsonData self, string key, float defaultValue)
+        {
+            return self.AsFloat(key, out var value) ? value : defaultValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool AsFloat(this JsonData self, string key, out float value)
+        {
+            value = 0.0f;
+
+            if (self.TryGetValue(key, out var v))
+            {
+                value = (float)(double)v;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
         public static ulong As(this JsonData self, string key, ulong defaultValue)
         {
             return self.AsULong(key, out var value) ? value : defaultValue;

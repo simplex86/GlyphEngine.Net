@@ -52,6 +52,26 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static string Combine(string a, string b)
+        {
+            if (!a.EndsWith("\\") && !a.EndsWith("/"))
+            {
+                a = a + "/";
+            }
+            if (b.StartsWith("\\") || b.StartsWith("/"))
+            {
+                b = b.Substring(1);
+            }
+
+            return (a + b).Replace("\\", "/");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         private static bool InEditor()
         {
