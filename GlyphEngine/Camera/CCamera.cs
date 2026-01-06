@@ -70,7 +70,10 @@ namespace GlyphEngine
         {
             foreach (var gameobject in gameobjects)
             {
-                Render(gameobject, renderer);
+                if (gameobject.Enabled)
+                {
+                    Render(gameobject, renderer);
+                }
             }
         }
 
@@ -101,8 +104,7 @@ namespace GlyphEngine
         /// <param name="renderer"></param>
         private void Render(CGameObject gameobject, CRenderer renderer)
         {
-            if (gameobject.Enabled &&
-                gameobject is IRenderable renderable &&
+            if (gameobject is IRenderable renderable &&
                 renderable.Enabled &&
                 CheckLayer(renderable))
             {
@@ -119,11 +121,12 @@ namespace GlyphEngine
                         renderer.SetPixel(x, y, pixel.Glyph, pixel.Color, pixel.BackgroundColor);
                     }
                 });
-                // 绘制子节点
-                for (int i = 0; i < gameobject.Count; i++)
-                {
-                    Render(gameobject[i], renderer);
-                }
+            }
+
+            // 绘制子节点
+            for (int i = 0; i < gameobject.Count; i++)
+            {
+                Render(gameobject[i], renderer);
             }
         }
 

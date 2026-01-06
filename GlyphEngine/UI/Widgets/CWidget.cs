@@ -32,26 +32,22 @@ namespace GlyphEngine
         /// </summary>
         public string Name
         {
-            get { return view.Name; }
-            internal set { view.Name = value; }
+            get { return GameObject.Name; }
+            internal set { GameObject.Name = value; }
         }
         /// <summary>
         /// 
         /// </summary>
-        public CGameObject GameObject => view;
+        public CTransform Transform => GameObject.Transform;
         /// <summary>
         /// 
         /// </summary>
-        public CTransform Transform => view.Transform;
-        /// <summary>
-        /// 
-        /// </summary>
-        public int Count => view.Count;
+        public int Count => GameObject.Count;
 
         /// <summary>
         /// 
         /// </summary>
-        internal CRenderableObject view = new CRenderableObject(ERenderLayer.UI);
+        internal CRenderableObject GameObject { get; private set; } = new CRenderableObject(ERenderLayer.UI);
 
         /// <summary>
         /// 
@@ -68,7 +64,7 @@ namespace GlyphEngine
                 if (color != value)
                 {
                     color = value;
-                    view.Foreach(p => p.Color = color);
+                    GameObject.Foreach(p => p.Color = color);
                 }
             }
             get { return color; }
@@ -93,7 +89,7 @@ namespace GlyphEngine
         /// <param name="weidget"></param>
         public void Add(CWidget widget)
         {
-            view.Add(widget.GameObject);
+            widget.SetParent(GameObject);
             widgets.TryAdd(widget.GameObject, widget);
         }
 
@@ -104,7 +100,7 @@ namespace GlyphEngine
         /// <returns></returns>
         public CWidget GetChild(int index)
         {
-            var gameobject = view.GetChild(index);
+            var gameobject = GameObject.GetChild(index);
             if (widgets.TryGetValue(gameobject, out var widget))
             {
                 return widget;
@@ -118,7 +114,7 @@ namespace GlyphEngine
         /// <param name="widget"></param>
         public void Remove(CWidget widget)
         {
-            view.Remove(widget.GameObject);
+            GameObject.Remove(widget.GameObject);
         }
 
         /// <summary>
@@ -150,8 +146,17 @@ namespace GlyphEngine
             foreach (var pixel in decorator.pixels)
             {
                 pixel.Color = color;
-                view.AddPixel(pixel);
+                GameObject.AddPixel(pixel);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        internal void SetParent(CGameObject parent)
+        {
+            GameObject.SetParent(parent);
         }
 
         /// <summary>
@@ -159,6 +164,7 @@ namespace GlyphEngine
         /// </summary>
         internal void Destroy()
         {
+            OnDestroy();
             // 销毁子节点
             foreach (var widget in widgets.Values)
             {
@@ -166,10 +172,8 @@ namespace GlyphEngine
             }
             widgets.Clear();
             // 销毁视图
-            view.Destroy();
-            view = null;
-
-            OnDestroy();
+            GameObject.Destroy();
+            GameObject = null;
         }
 
         /// <summary>

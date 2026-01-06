@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 
 namespace GlyphEngine
 {
@@ -27,6 +28,10 @@ namespace GlyphEngine
         /// 子节点数量
         /// </summary>
         public int Count => Children.Count;
+        /// <summary>
+        /// 
+        /// </summary>
+        public long InstanceId { get; }
 
         /// <summary>
         /// 是否已被销毁
@@ -41,8 +46,19 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
+        private static long sInstanceId = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
         private CGameObject()
             : this(0, 0)
+        {
+            
+        }
+
+        internal CGameObject(string name)
+            : this(name, 0, 0)
         {
 
         }
@@ -53,9 +69,32 @@ namespace GlyphEngine
         /// <param name="x"></param>
         /// <param name="y"></param>
         internal CGameObject(int x, int y)
+            : this(null, x, y)
         {
-            Transform = new CTransform(this);
-            Transform.LocalPosition = new Vector2(x, y);
+            Transform = new CTransform(this)
+            {
+                LocalPosition = new Vector2(x, y)
+            };
+            InstanceId = Interlocked.Increment(ref sInstanceId);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        internal CGameObject(string name, int x, int y)
+        {
+            Transform = new CTransform(this)
+            {
+                LocalPosition = new Vector2(x, y)
+            };
+
+            InstanceId = Interlocked.Increment(ref sInstanceId);
+
+            Name = string.IsNullOrEmpty(name) ? $"gameobject_{InstanceId}" 
+                                              : name;
         }
 
         /// <summary>

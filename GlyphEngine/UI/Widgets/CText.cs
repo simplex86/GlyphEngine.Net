@@ -43,7 +43,7 @@
         private void ResetPixels()
         {
             // 重置像素列表
-            view.ClearPixels();
+            GameObject.ClearPixels();
             // 
             for (int i = 0; i < text.Length; i++)
             {
@@ -51,7 +51,7 @@
                                                       0,
                                                       text[i],
                                                       Color);
-                view.AddPixel(pixel);
+                GameObject.AddPixel(pixel);
             }
         }
     }

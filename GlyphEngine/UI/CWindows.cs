@@ -7,9 +7,11 @@ namespace GlyphEngine
     /// </summary>
     internal static class CWindows
     {
+        private static CGameObject root;
+
         private static List<CPanel> adds = new List<CPanel>();
         private static List<CPanel> retains = new List<CPanel>();
-        private static List<CPanel> removes = new List<CPanel>();
+        //private static List<CPanel> removes = new List<CPanel>();
 
         /// <summary>
         /// 
@@ -20,6 +22,9 @@ namespace GlyphEngine
             {
                 Mask = (ulong)ERenderMask.UI,
             });
+
+            root = new CGameObject("ui_root", 0, 0);
+            CWorld.Add(root);
         }
 
         /// <summary>
@@ -53,7 +58,7 @@ namespace GlyphEngine
         /// <param name="panel"></param>
         internal static void Remove(CPanel panel)
         {
-            removes.Add(panel);
+            panel.Destroy();
         }
 
         /// <summary>
@@ -64,9 +69,7 @@ namespace GlyphEngine
             foreach (var panel in adds)
             {
                 retains.Add(panel);
-                CWorld.Add(panel.GameObject);
-
-                panel.Open();
+                panel.SetParent(root);
             }
             adds.Clear();
         }
@@ -76,12 +79,15 @@ namespace GlyphEngine
         /// </summary>
         private static void PostProcess()
         {
-            foreach (var panel in removes)
+            for (int i = retains.Count - 1; i >= 0; i--)
             {
-                panel.Destroy();
-                retains.Remove(panel);
+                var panel = retains[i];
+                if (panel.Destroyed)
+                {
+                    retains.RemoveAt(i);
+                    panel.DestroyImmediately();
+                }
             }
-            removes.Clear();
         }
     }
 }

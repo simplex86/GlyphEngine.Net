@@ -91,7 +91,8 @@ namespace GlyphEngine
         /// <param name="scene"></param>
         public static void UnloadScene(CScene scene)
         {
-            CWorld.Remove(scene);
+            //CWorld.Remove(scene);
+            scene.Destroy();
         }
 
         /// <summary>
@@ -113,7 +114,8 @@ namespace GlyphEngine
         /// <param name="panel"></param>
         public static void UnloadUI(CPanel panel)
         {
-            CWindows.Remove(panel);
+            //CWindows.Remove(panel);
+            panel.Destroy();
         }
 
         /// <summary>
@@ -126,7 +128,7 @@ namespace GlyphEngine
             var key = $"{filepath}.{transparent}";
             if (tcatch.TryGetValue(key, out var tex))
             {
-                tex.Refc++;
+                tex.Refrence();
                 return tex;
             }
 
@@ -159,7 +161,6 @@ namespace GlyphEngine
                 }
                 tcatch.Add(key, tex);
 
-                tex.Refc++;
                 return tex;
             }
             catch (Exception ex)

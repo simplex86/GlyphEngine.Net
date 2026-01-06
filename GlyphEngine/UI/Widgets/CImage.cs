@@ -16,7 +16,10 @@ namespace GlyphEngine
             {
                 if (texture != value)
                 {
+                    texture?.Destroy();
                     texture = value;
+                    texture?.Refrence();
+
                     ResetPixels();
                 }
             }
@@ -46,7 +49,7 @@ namespace GlyphEngine
         {
             if (texture != null)
             {
-                CResources.UnloadTex(texture);
+                texture.Destroy();
                 texture = null;
             }
             base.OnDestroy();
@@ -58,7 +61,7 @@ namespace GlyphEngine
         private void ResetPixels()
         {
             // 重置像素列表
-            view.ClearPixels();
+            GameObject.ClearPixels();
 
             if (texture == null) return;
             //
@@ -71,7 +74,7 @@ namespace GlyphEngine
                                                           h - texture.Height / 2,
                                                           texture.Glyphs[i],
                                                           Color);
-                    view.AddPixel(pixel);
+                    GameObject.AddPixel(pixel);
                 }
             }
         }

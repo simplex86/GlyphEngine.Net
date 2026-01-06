@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GlyphEngine
 {
@@ -30,7 +31,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        internal int Refc { get; set; } = 0;
+        internal int Refc { get; private set; } = 0;
         
         /// <summary>
         /// 
@@ -38,6 +39,22 @@ namespace GlyphEngine
         internal CTexture(bool transparent)
         {
             this.Transparent = transparent;
+        }
+
+        /// <summary>
+        /// 增加引用
+        /// </summary>
+        internal void Refrence()
+        {
+            Refc++;
+        }
+
+        /// <summary>
+        /// 减少引用
+        /// </summary>
+        internal void Destroy()
+        {
+            Refc = Math.Max(0, Refc - 1);
         }
     }
 }

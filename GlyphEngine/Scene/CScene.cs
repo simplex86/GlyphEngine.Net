@@ -32,6 +32,14 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
+        internal CScene()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="camera"></param>
         internal void Add(CCamera camera)
         {
@@ -74,6 +82,20 @@ namespace GlyphEngine
                 index = GameObjects.Count + index;
             }
             return GameObjects[index];
+        }
+
+        internal void Update()
+        {
+            if (Destroyed) return;
+
+            for (int i = Count - 1 ; i >= 0; i--)
+            {
+                var gameobject = GetChild(i);
+                if (gameobject.Destroyed)
+                {
+                    GameObjects.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>

@@ -21,26 +21,33 @@ namespace GlyphEngine
         /// </summary>
         public string Name
         {
-            get { return view.Name; }
-            set { view.Name = value; }
+            get { return GameObject.Name; }
+            set { GameObject.Name = value; }
         }
-        /// <summary>
-        /// 物件
-        /// </summary>
-        public CGameObject GameObject => view;
         /// <summary>
         /// 
         /// </summary>
-        public CTransform Transform => view.Transform;
+        public CTransform Transform => Destroyed ? null : GameObject.Transform;
         /// <summary>
         /// 子节点数量
         /// </summary>
-        public int Count => view.Count;
+        public int Count => Destroyed ? 0 : GameObject.Count;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool Destroyed
+        {
+            get
+            {
+                if (!CheckView()) return true;
+                return destroyed;
+            }
+        }
 
         /// <summary>
         /// 视图
         /// </summary>
-        internal CRenderableObject view = new CRenderableObject(ERenderLayer.UI);
+        private CRenderableObject GameObject = new CRenderableObject(ERenderLayer.UI);
         /// <summary>
         /// 当前获得焦点的组件
         /// </summary>
@@ -49,6 +56,10 @@ namespace GlyphEngine
         /// 
         /// </summary>
         private Dictionary<CGameObject, CWidget> widgets = new Dictionary<CGameObject, CWidget>();
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool destroyed = false;
 
         /// <summary>
         /// 
@@ -64,29 +75,19 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        internal void Open()
-        {
-            OnOpen();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected abstract void OnOpen();
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="weidget"></param>
         public void Add(CWidget widget)
         {
-            view.Add(widget.GameObject);
-            widgets.TryAdd(widget.GameObject, widget);
-
-            if (widget is IInteractable interaction &&
-                interaction.Interactabled)
+            if (CheckView())
             {
-                Focus(interaction);
+                widget.SetParent(GameObject);
+                widgets.TryAdd(widget.GameObject, widget);
+
+                if (widget is IInteractable interaction &&
+                    interaction.Interactabled)
+                {
+                    Focus(interaction);
+                }
             }
         }
 
@@ -97,10 +98,13 @@ namespace GlyphEngine
         /// <returns></returns>
         public CWidget GetChild(int index)
         {
-            var gameobject = view.GetChild(index);
-            if (widgets.TryGetValue(gameobject, out var widget))
+            if (CheckView())
             {
-                return widget;
+                var gameobject = GameObject.GetChild(index);
+                if (widgets.TryGetValue(gameobject, out var widget))
+                {
+                    return widget;
+                }
             }
             return null;
         }
@@ -111,7 +115,10 @@ namespace GlyphEngine
         /// <param name="widget"></param>
         public void Remove(CWidget widget)
         {
-            view.Remove(widget.GameObject);
+            if (CheckView())
+            {
+                GameObject.Remove(widget.GameObject);
+            }
         }
 
         /// <summary>
@@ -122,11 +129,14 @@ namespace GlyphEngine
         /// <returns></returns>
         public T Get<T>(string name) where T : CWidget
         {
-            foreach (var widget in widgets.Values)
+            if (CheckView())
             {
-                if (widget.Name == name)
+                foreach (var widget in widgets.Values)
                 {
-                    return widget as T;
+                    if (widget.Name == name)
+                    {
+                        return widget as T;
+                    }
                 }
             }
 
@@ -134,10 +144,28 @@ namespace GlyphEngine
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        internal void SetParent(CGameObject parent)
+        {
+            GameObject.SetParent(parent);
+        }
+
+        /// <summary>
         /// 销毁
         /// </summary>
         internal void Destroy()
         {
+            destroyed = true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal void DestroyImmediately()
+        {
+            OnDestroy();
             // 销毁子节点
             foreach (var widget in widgets.Values)
             {
@@ -145,13 +173,24 @@ namespace GlyphEngine
             }
             widgets.Clear();
             // 销毁视图
-            view.Destroy();
-            view = null;
-            // 
-            OnDestroy();
+            GameObject.Destroy();
+            GameObject = null;
         }
 
         protected abstract void OnDestroy();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckView()
+        {
+            if (GameObject == null || GameObject.Destroyed)
+            {
+                return false;
+            }
+            return true;
+        }
 
         /// <summary>
         /// 
@@ -191,7 +230,7 @@ namespace GlyphEngine
         {
             foreach (var pixel in decorator.pixels)
             {
-                view.AddPixel(pixel);
+                GameObject.AddPixel(pixel);
             }
         }
 

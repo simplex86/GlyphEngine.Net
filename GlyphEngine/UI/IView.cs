@@ -13,9 +13,5 @@
         /// 高度
         /// </summary>
         int Height { get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        CGameObject GameObject { get; }
     }
 }

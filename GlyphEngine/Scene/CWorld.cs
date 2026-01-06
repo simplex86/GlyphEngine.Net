@@ -25,7 +25,10 @@ namespace GlyphEngine
         /// </summary>
         internal static void Init()
         {
-
+            scenes.Add(new CScene()
+            {
+                Name = "default_scene",
+            });
         }
 
         /// <summary>
@@ -101,16 +104,21 @@ namespace GlyphEngine
         /// </summary>
         private static void PrevProcess()
         {
-            // 从场景列表中移除已被销毁的场景
+            // 1、移除已销毁的场景
+            // 2、刷新未销毁的场景
             for (int i = scenes.Count - 1; i >= 0; i--)
             {
                 if (scenes[i].Destroyed)
                 {
                     scenes.RemoveAt(i);
                 }
+                else
+                {
+                    scenes[i].Update();
+                }
             }
 
-            // 从相机列表中移除已被销毁的相机
+            // 移除已销毁的相机
             for (int i = cameras.Count - 1; i >= 0; i--)
             {
                 if (cameras[i].Destroyed)
