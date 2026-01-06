@@ -84,14 +84,24 @@ namespace GlyphEngine
             return GameObjects[index];
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         internal void Update()
         {
             if (Destroyed) return;
-
-            for (int i = Count - 1 ; i >= 0; i--)
+            //
+            for (int i = Cameras.Count - 1; i >= 0; i--)
             {
-                var gameobject = GetChild(i);
-                if (gameobject.Destroyed)
+                if (Cameras[i].Destroyed)
+                {
+                    Cameras.RemoveAt(i);
+                }
+            }
+            // 
+            for (int i = GameObjects.Count - 1 ; i >= 0; i--)
+            {
+                if (GameObjects[i].Destroyed)
                 {
                     GameObjects.RemoveAt(i);
                 }
@@ -103,7 +113,6 @@ namespace GlyphEngine
         /// </summary>
         internal void Destroy()
         {
-            Destroyed = true;
             // 销毁相机
             foreach (var camera in Cameras)
             {
@@ -116,6 +125,8 @@ namespace GlyphEngine
                 gameobject.Destroy();
             }
             GameObjects.Clear();
+            // 标记
+            Destroyed = true;
         }
     }
 }

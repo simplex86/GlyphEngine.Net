@@ -91,7 +91,6 @@ namespace GlyphEngine
         /// <param name="scene"></param>
         public static void UnloadScene(CScene scene)
         {
-            //CWorld.Remove(scene);
             scene.Destroy();
         }
 
@@ -114,7 +113,6 @@ namespace GlyphEngine
         /// <param name="panel"></param>
         public static void UnloadUI(CPanel panel)
         {
-            //CWindows.Remove(panel);
             panel.Destroy();
         }
 

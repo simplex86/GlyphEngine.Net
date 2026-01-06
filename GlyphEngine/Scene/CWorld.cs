@@ -47,15 +47,6 @@ namespace GlyphEngine
         }
 
         /// <summary>
-        /// 卸载场景
-        /// </summary>
-        /// <param name="scene"></param>
-        internal static void Remove(CScene scene)
-        {
-            scene.Destroy();
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="camera"></param>
