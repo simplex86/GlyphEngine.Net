@@ -42,7 +42,7 @@ namespace GlyphEngine
         /// <param name="unfocusColor"></param>
         /// <param name="focusColor"></param>
         /// <param name="style"></param>
-        internal CButton(string text, Vector2 localposition, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
+        internal CButton(string text, CVector2 localposition, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
             : base()
         {
             this.Interactabled = true;
@@ -51,7 +51,7 @@ namespace GlyphEngine
             this.UnfocusColor = unfocusColor;
             this.FocusColor = focusColor;
 
-            this.text = new CText(text, Vector2.Zero);
+            this.text = new CText(text, CVector2.Zero);
             Add(this.text);
 
             this.Width  = this.text.Width  + 4;

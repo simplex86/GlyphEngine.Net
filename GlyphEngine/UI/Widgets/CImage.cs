@@ -34,7 +34,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        public CImage(CTexture tex, Vector2 localposition, ConsoleColor color)
+        public CImage(CTexture tex, CVector2 localposition, ConsoleColor color)
             : base()
         {
             this.Color = color;

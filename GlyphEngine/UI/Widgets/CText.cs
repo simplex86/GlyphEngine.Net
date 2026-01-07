@@ -30,7 +30,7 @@
         /// 
         /// </summary>
         /// <param name="text"></param>
-        internal CText(string text, Vector2 localposition)
+        internal CText(string text, CVector2 localposition)
              : base()
         {
             Transform.LocalPosition = localposition;

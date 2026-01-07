@@ -6,7 +6,7 @@ namespace GlyphEngine
     /// <summary>
     /// 二维向量
     /// </summary>
-    public struct Vector2
+    public struct CVector2
     {
         /// <summary>
         /// 
@@ -20,18 +20,18 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        public static Vector2 Zero { get; } = new Vector2(0, 0);
+        public static CVector2 Zero { get; } = new CVector2(0, 0);
         /// <summary>
         /// 
         /// </summary>
-        public static Vector2 One { get; } = new Vector2(1, 1);
+        public static CVector2 One { get; } = new CVector2(1, 1);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public Vector2(int x, int y)
+        public CVector2(int x, int y)
         {
             this.X = x; 
             this.Y = y;
@@ -41,7 +41,7 @@ namespace GlyphEngine
         /// 
         /// </summary>
         /// <param name="v"></param>
-        public Vector2(Vector2 v)
+        public CVector2(CVector2 v)
         {
             this.X = v.X;
             this.Y = v.Y;
@@ -53,9 +53,9 @@ namespace GlyphEngine
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static Vector2 operator +(Vector2 a, Vector2 b)
+        public static CVector2 operator +(CVector2 a, CVector2 b)
         {
-            return new Vector2(a.X + b.X, a.Y + b.Y);
+            return new CVector2(a.X + b.X, a.Y + b.Y);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace GlyphEngine
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static Vector2 Add(Vector2 a, Vector2 b)
+        public static CVector2 Add(CVector2 a, CVector2 b)
         {
             return a + b;
         }
@@ -75,9 +75,9 @@ namespace GlyphEngine
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static Vector2 operator -(Vector2 a, Vector2 b)
+        public static CVector2 operator -(CVector2 a, CVector2 b)
         {
-            return new Vector2(a.X - b.X, a.Y - b.Y);
+            return new CVector2(a.X - b.X, a.Y - b.Y);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace GlyphEngine
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static Vector2 Sub(Vector2 a, Vector2 b)
+        public static CVector2 Sub(CVector2 a, CVector2 b)
         {
             return a - b;
         }
@@ -97,7 +97,7 @@ namespace GlyphEngine
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static bool operator ==(Vector2 a, Vector2 b)
+        public static bool operator ==(CVector2 a, CVector2 b)
         {
             return a.X == b.X && a.Y == b.Y;
         }
@@ -108,7 +108,7 @@ namespace GlyphEngine
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static bool operator != (Vector2 a, Vector2 b)
+        public static bool operator != (CVector2 a, CVector2 b)
         {
             return a.X != b.X || a.Y != b.Y;
         }

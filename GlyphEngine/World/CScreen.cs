@@ -18,6 +18,6 @@ namespace GlyphEngine
         /// <summary>
         /// 世界坐标系中心
         /// </summary>
-        internal static Vector2 Center { get; } = new Vector2(Width / 2, Height / 2);
+        internal static CVector2 Center { get; } = new CVector2(Width / 2, Height / 2);
     }
 }

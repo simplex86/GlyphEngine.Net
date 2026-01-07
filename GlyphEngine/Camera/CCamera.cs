@@ -136,7 +136,7 @@ namespace GlyphEngine
         /// <param name="gameobject"></param>
         /// <param name="mpos"></param>
         /// <returns></returns>
-        private Vector2 M2W(CGameObject gameobject)
+        private CVector2 M2W(CGameObject gameobject)
         {
             return gameobject.Transform.WorldPosition;
         }
@@ -146,7 +146,7 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="wpos"></param>
         /// <returns></returns>
-        private Vector2 W2V(Vector2 wpos)
+        private CVector2 W2V(CVector2 wpos)
         {
             return wpos - Transform.WorldPosition + CScreen.Center;
         }

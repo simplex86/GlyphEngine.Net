@@ -50,7 +50,7 @@ namespace GlyphEngine
             panel.Width = width;
             panel.Height = height;
             panel.Name = name;
-            panel.Transform.LocalPosition = new Vector2(x, y);
+            panel.Transform.LocalPosition = new CVector2(x, y);
 
             DeserializeComponents(data["components"], panel);
 

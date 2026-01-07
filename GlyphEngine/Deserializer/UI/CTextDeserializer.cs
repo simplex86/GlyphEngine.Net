@@ -12,7 +12,7 @@ namespace GlyphEngine
             var text = data.As("text", string.Empty);
             var color = CColorHelper.Get(data, "color");
 
-            var widget = new CText(text, new Vector2(x, y))
+            var widget = new CText(text, new CVector2(x, y))
             {
                 Name = name,
                 Color = color,
