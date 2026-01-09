@@ -75,6 +75,19 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
+        internal void Start()
+        {
+            OnOpen();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected abstract void OnOpen();
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="weidget"></param>
         public void Add(CWidget widget)
         {
@@ -165,7 +178,7 @@ namespace GlyphEngine
         /// </summary>
         internal void DestroyImmediately()
         {
-            OnDestroy();
+            OnClose();
             // 销毁子节点
             foreach (var widget in widgets.Values)
             {
@@ -177,7 +190,7 @@ namespace GlyphEngine
             GameObject = null;
         }
 
-        protected abstract void OnDestroy();
+        protected abstract void OnClose();
 
         /// <summary>
         /// 

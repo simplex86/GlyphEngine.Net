@@ -11,7 +11,6 @@ namespace GlyphEngine
 
         private static List<CPanel> adds = new List<CPanel>();
         private static List<CPanel> retains = new List<CPanel>();
-        //private static List<CPanel> removes = new List<CPanel>();
 
         /// <summary>
         /// 
@@ -55,21 +54,13 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="panel"></param>
-        internal static void Remove(CPanel panel)
-        {
-            panel.Destroy();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         private static void PrevProcess()
         {
             foreach (var panel in adds)
             {
                 retains.Add(panel);
                 panel.SetParent(root);
+                panel.Start();
             }
             adds.Clear();
         }
