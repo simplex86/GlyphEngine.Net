@@ -25,7 +25,7 @@ namespace GlyphEngine
                 focus = false;
             }
 
-            var button = new CButton(text, new Vector2(x, y), keycode, unfocusColor, focusColor, border)
+            var button = new CButton(text, new CVector2(x, y), keycode, unfocusColor, focusColor, border)
             {
                 Name = name,
                 Interactabled = interactable,

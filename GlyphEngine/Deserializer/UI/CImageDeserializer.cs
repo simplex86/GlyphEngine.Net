@@ -21,7 +21,7 @@ namespace GlyphEngine
             var transparent = data.As("transparent", false);
             var texture = Load(data, transparent);
 
-            var image = new CImage(texture, new Vector2(x, y), color)
+            var image = new CImage(texture, new CVector2(x, y), color)
             {
                 Name = name,
             };

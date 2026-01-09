@@ -58,7 +58,7 @@ namespace GlyphEngine
             }
 
             var gameobject = prototype.Clone();
-            gameobject.Transform.LocalPosition = new Vector2(x, y);
+            gameobject.Transform.LocalPosition = new CVector2(x, y);
 
             if (parent != null)
             {

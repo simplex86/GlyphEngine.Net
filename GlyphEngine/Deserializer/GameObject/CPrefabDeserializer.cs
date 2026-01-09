@@ -22,7 +22,7 @@ namespace GlyphEngine
                 {
                     var x = data.As("x", 0);
                     var y = data.As("y", 0);
-                    gameobject.Transform.LocalPosition = new Vector2(x, y);
+                    gameobject.Transform.LocalPosition = new CVector2(x, y);
                     gameobject.Name = data.As("name", gameobject.Name);
                 }
             }

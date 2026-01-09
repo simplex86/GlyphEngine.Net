@@ -73,7 +73,7 @@ namespace GlyphEngine
         {
             Transform = new CTransform(this)
             {
-                LocalPosition = new Vector2(x, y)
+                LocalPosition = new CVector2(x, y)
             };
             InstanceId = Interlocked.Increment(ref sInstanceId);
         }
@@ -88,7 +88,7 @@ namespace GlyphEngine
         {
             Transform = new CTransform(this)
             {
-                LocalPosition = new Vector2(x, y)
+                LocalPosition = new CVector2(x, y)
             };
 
             InstanceId = Interlocked.Increment(ref sInstanceId);

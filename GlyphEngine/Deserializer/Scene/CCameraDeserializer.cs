@@ -26,7 +26,7 @@ namespace GlyphEngine
 
             var x = data.As("x", 0);
             var y = data.As("y", 0);
-            camera.Transform.WorldPosition = new Vector2(x, y);
+            camera.Transform.WorldPosition = new CVector2(x, y);
 
             var scene = container as CScene;
             scene.Add(camera);
