@@ -35,11 +35,10 @@ namespace GlyphEngine
         /// 
         /// </summary>
         public CImage(CTexture tex, CVector2 localposition, ConsoleColor color)
-            : base()
+            : base(localposition)
         {
             this.Color = color;
             this.Texture = tex;
-            this.Transform.LocalPosition = localposition;
         }
 
         /// <summary>

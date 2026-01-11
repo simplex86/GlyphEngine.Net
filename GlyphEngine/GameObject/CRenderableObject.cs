@@ -28,7 +28,7 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="layer"></param>
         internal CRenderableObject(ERenderLayer layer)
-            : this(0, 0, layer)
+            : this(layer, null)
         {
             
         }
@@ -37,10 +37,11 @@ namespace GlyphEngine
         /// 
         /// </summary>
         /// <param name="layer"></param>
-        private CRenderableObject(ulong layer)
-            : base(0, 0)
+        /// <param name="owner"></param>
+        internal CRenderableObject(ERenderLayer layer, IGameObjectOwner owner)
+            : this(0, 0, layer, owner)
         {
-            this.Layer = layer;
+
         }
 
         /// <summary>
@@ -51,9 +52,22 @@ namespace GlyphEngine
         /// <param name="layer"></param>
         /// <param name="scene"></param>
         internal CRenderableObject(int x, int y, ERenderLayer layer)
-            : base(x, y)
+            : this(x, y, layer, null)
         {
             this.Layer = (ulong)layer;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="layer"></param>
+        /// <param name="owner"></param>
+        internal CRenderableObject(int x, int y, ERenderLayer layer, IGameObjectOwner owner)
+            : base(x, y, owner)
+        {
+            Layer = (ulong)layer;
         }
 
         /// <summary>
@@ -153,9 +167,19 @@ namespace GlyphEngine
         /// 
         /// </summary>
         /// <returns></returns>
-        public override CRenderableObject Clone()
+        internal protected override CRenderableObject Clone()
         {
-            var clone = new CRenderableObject(Layer)
+            return Clone(null);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        internal protected override CRenderableObject Clone(IGameObjectOwner owner)
+        {
+            var clone = new CRenderableObject((ERenderLayer)Layer, owner)
             {
                 Name = Name,
                 Enabled = Enabled,

@@ -17,7 +17,7 @@ namespace GlyphEngine
     /// <summary>
     /// 子控件基类
     /// </summary>
-    public class CWidget : IWidget, IContainable<CWidget>
+    public class CWidget : IWidget, IContainable<CWidget>, IGameObjectOwner
     {
         /// <summary>
         /// 宽度
@@ -47,12 +47,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        internal CRenderableObject GameObject { get; private set; } = new CRenderableObject(ERenderLayer.UI);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private Dictionary<CGameObject, CWidget> widgets = new Dictionary<CGameObject, CWidget>();
+        internal CRenderableObject GameObject { get; private set; } = null;
 
         /// <summary>
         /// 颜色
@@ -78,9 +73,10 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        protected CWidget()
+        protected CWidget(CVector2 localposition)
         {
-
+            GameObject = new CRenderableObject(ERenderLayer.UI, this);
+            Transform.LocalPosition = localposition;
         }
 
         /// <summary>
@@ -90,7 +86,6 @@ namespace GlyphEngine
         public void Add(CWidget widget)
         {
             widget.SetParent(GameObject);
-            widgets.TryAdd(widget.GameObject, widget);
         }
 
         /// <summary>
@@ -100,12 +95,8 @@ namespace GlyphEngine
         /// <returns></returns>
         public CWidget GetChild(int index)
         {
-            var gameobject = GameObject.GetChild(index);
-            if (widgets.TryGetValue(gameobject, out var widget))
-            {
-                return widget;
-            }
-            return null;
+            var child = GameObject.GetChild(index);
+            return child.Owner as CWidget;
         }
 
         /// <summary>
@@ -125,12 +116,10 @@ namespace GlyphEngine
         /// <returns></returns>
         public T Get<T>(string name) where T : CWidget
         {
-            foreach (var widget in widgets.Values)
+            for (int i = 0; i<Count; i++)
             {
-                if (widget.Name == name)
-                {
-                    return widget as T;
-                }
+                var widget = GetChild(i);
+                if (widget.Name == name) return widget as T;
             }
 
             return null;
@@ -165,12 +154,6 @@ namespace GlyphEngine
         internal void Destroy()
         {
             OnDestroy();
-            // 销毁子节点
-            foreach (var widget in widgets.Values)
-            {
-                widget.Destroy();
-            }
-            widgets.Clear();
             // 销毁视图
             GameObject.Destroy();
             GameObject = null;

@@ -51,13 +51,27 @@ namespace GlyphEngine
         /// <returns></returns>
         public static CGameObject Load(string filepath, int x, int y, CGameObject parent)
         {
+            return Load(filepath, x, y, parent, null);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="parent"></param>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public static CGameObject Load(string filepath, int x, int y, CGameObject parent, IGameObjectOwner owner)
+        {
             if (!gcatch.TryGetValue(filepath, out var prototype))
             {
                 prototype = CGameObjectDeserializer.Deserialize(filepath);
                 gcatch.Add(filepath, prototype);
             }
 
-            var gameobject = prototype.Clone();
+            var gameobject = prototype.Clone(owner);
             gameobject.Transform.LocalPosition = new CVector2(x, y);
 
             if (parent != null)

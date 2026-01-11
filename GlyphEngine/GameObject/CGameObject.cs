@@ -6,7 +6,7 @@ namespace GlyphEngine
     /// <summary>
     /// 游戏对象
     /// </summary>
-    public partial class CGameObject : ITransformable, IContainable<CGameObject>, IClonable<CGameObject>
+    public partial class CGameObject : ITransformable, IContainable<CGameObject>
     {
         /// <summary>
         /// 名字
@@ -32,6 +32,10 @@ namespace GlyphEngine
         /// 
         /// </summary>
         public long InstanceId { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IGameObjectOwner Owner { get; } = null;
 
         /// <summary>
         /// 是否已被销毁
@@ -57,7 +61,32 @@ namespace GlyphEngine
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="owner"></param>
+        private CGameObject(IGameObjectOwner owner)
+            : this(0, 0, owner)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
         internal CGameObject(string name)
+            : this(name, 0, 0)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="owner"></param>
+        internal CGameObject(string name, IGameObjectOwner owner)
             : this(name, 0, 0)
         {
 
@@ -69,13 +98,21 @@ namespace GlyphEngine
         /// <param name="x"></param>
         /// <param name="y"></param>
         internal CGameObject(int x, int y)
-            : this(null, x, y)
+            : this(x, y, null)
         {
-            Transform = new CTransform(this)
-            {
-                LocalPosition = new CVector2(x, y)
-            };
-            InstanceId = Interlocked.Increment(ref sInstanceId);
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="owner"></param>
+        internal CGameObject(int x, int y, IGameObjectOwner owner)
+            : this(null, x, y, owner)
+        {
+
         }
 
         /// <summary>
@@ -85,6 +122,19 @@ namespace GlyphEngine
         /// <param name="x"></param>
         /// <param name="y"></param>
         internal CGameObject(string name, int x, int y)
+            : this(name, x, y, null)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="owner"></param>
+        internal CGameObject(string name, int x, int y, IGameObjectOwner owner)
         {
             Transform = new CTransform(this)
             {
@@ -93,8 +143,9 @@ namespace GlyphEngine
 
             InstanceId = Interlocked.Increment(ref sInstanceId);
 
-            Name = string.IsNullOrEmpty(name) ? $"gameobject_{InstanceId}" 
+            Name = string.IsNullOrEmpty(name) ? $"gameobject_{InstanceId}"
                                               : name;
+            Owner = owner;
         }
 
         /// <summary>
@@ -201,9 +252,19 @@ namespace GlyphEngine
         /// 克隆
         /// </summary>
         /// <returns></returns>
-        public virtual CGameObject Clone()
+        internal protected virtual CGameObject Clone()
         {
-            var clone = new CGameObject()
+            return Clone(null);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        internal protected virtual CGameObject Clone(IGameObjectOwner owner)
+        {
+            var clone = new CGameObject(owner)
             {
                 Name = Name,
                 Enabled = Enabled,

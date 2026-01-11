@@ -6,7 +6,7 @@ namespace GlyphEngine
     /// <summary>
     /// 
     /// </summary>
-    public abstract class CPanel : IView, IContainable<CWidget>
+    public abstract class CPanel : IView, IContainable<CWidget>, IGameObjectOwner
     {
         /// <summary>
         /// 宽度
@@ -27,35 +27,24 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        public CTransform Transform => Destroyed ? null : GameObject.Transform;
+        public CTransform Transform => CheckView() ? GameObject.Transform : null;
         /// <summary>
         /// 子节点数量
         /// </summary>
-        public int Count => Destroyed ? 0 : GameObject.Count;
+        public int Count => CheckView() ? GameObject.Count : 0;
         /// <summary>
-        /// 
+        /// 是否已被销毁
         /// </summary>
-        public bool Destroyed
-        {
-            get
-            {
-                if (!CheckView()) return true;
-                return destroyed;
-            }
-        }
+        public bool Destroyed => CheckView() ? destroyed : true;
 
         /// <summary>
         /// 视图
         /// </summary>
-        private CRenderableObject GameObject = new CRenderableObject(ERenderLayer.UI);
+        private CRenderableObject GameObject;
         /// <summary>
         /// 当前获得焦点的组件
         /// </summary>
-        private IInteractable focus { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        private Dictionary<CGameObject, CWidget> widgets = new Dictionary<CGameObject, CWidget>();
+        private IInteractable focus = null;
         /// <summary>
         /// 
         /// </summary>
@@ -67,8 +56,9 @@ namespace GlyphEngine
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="name"></param>
-        protected internal CPanel()
+        internal protected CPanel()
         {
+            GameObject = new CRenderableObject(ERenderLayer.UI, this);
             Apply(EBorderStyle.Borderless);
         }
 
@@ -94,7 +84,6 @@ namespace GlyphEngine
             if (CheckView())
             {
                 widget.SetParent(GameObject);
-                widgets.TryAdd(widget.GameObject, widget);
 
                 if (widget is IInteractable interaction &&
                     interaction.Interactabled)
@@ -113,11 +102,8 @@ namespace GlyphEngine
         {
             if (CheckView())
             {
-                var gameobject = GameObject.GetChild(index);
-                if (widgets.TryGetValue(gameobject, out var widget))
-                {
-                    return widget;
-                }
+                var child = GameObject.GetChild(index);
+                return child.Owner as CWidget;
             }
             return null;
         }
@@ -144,12 +130,10 @@ namespace GlyphEngine
         {
             if (CheckView())
             {
-                foreach (var widget in widgets.Values)
+                for (int i = 0; i < Count; i++)
                 {
-                    if (widget.Name == name)
-                    {
-                        return widget as T;
-                    }
+                    var widget = GetChild(i);
+                    if (widget.Name == name) return widget as T;
                 }
             }
 
@@ -179,12 +163,6 @@ namespace GlyphEngine
         internal void DestroyImmediately()
         {
             OnClose();
-            // 销毁子节点
-            foreach (var widget in widgets.Values)
-            {
-                widget.Destroy();
-            }
-            widgets.Clear();
             // 销毁视图
             GameObject.Destroy();
             GameObject = null;
