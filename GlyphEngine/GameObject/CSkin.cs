@@ -38,7 +38,7 @@ namespace GlyphEngine
         /// <param name="y"></param>
         /// <param name="symbol"></param>
         /// <param name="color"></param>
-        internal void Set(int x, int y, char c, ConsoleColor color)
+        internal void Set(int x, int y, char glyph, ConsoleColor color)
         {
             if (!Get(x, y, out var key, out var pixel))
             {
@@ -47,7 +47,7 @@ namespace GlyphEngine
                 grid.Add(key, list.Count - 1);
             }
 
-            pixel.Glyph = c;
+            pixel.Glyph = glyph;
             pixel.Color = color;
         }
 

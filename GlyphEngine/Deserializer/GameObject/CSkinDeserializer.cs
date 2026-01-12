@@ -42,10 +42,10 @@ namespace GlyphEngine
 
                 var x = p.As("x", 0);
                 var y = p.As("y", 0);
-                var c = p.As("c", CChar.Empty);
+                var glyph = p.As("glyph", CChar.Empty);
                 var color = CColorHelper.Get(p, "color");
 
-                skin.Set(x, y, c, color);
+                skin.Set(x, y, glyph, color);
             }
         }
     }
