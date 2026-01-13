@@ -19,7 +19,6 @@ namespace GlyphEngine
         /// 前一帧渲染缓存在缓存数组的索引
         /// </summary>
         private int preIndex = 0;
-
         /// <summary>
         /// 渲染缓存：需要被真正渲染的像素缓存区
         /// </summary>
@@ -28,7 +27,6 @@ namespace GlyphEngine
         /// 擦除缓存：需要被擦除的像素缓存区
         /// </summary>
         private NRenderBuffer erasurer = new NRenderBuffer();
-
         /// <summary>
         /// 当前帧的渲染缓存
         /// </summary>
@@ -81,7 +79,7 @@ namespace GlyphEngine
                     renderer.SetPixel(p.X, p.Y, p.Glyph, p.Color, p.BackgroundColor);
                     dirty = true;
                 }
-                else if (p.Glyph != q.Glyph || p.Color != q.Color)
+                else if (p.Glyph != q.Glyph || p.Color != q.Color || p.BackgroundColor != q.BackgroundColor)
                 {
                     renderer.SetPixel(p.X, p.Y, p.Glyph, p.Color, p.BackgroundColor);
                     dirty = true;
@@ -92,7 +90,7 @@ namespace GlyphEngine
             {
                 if (!current.GetPixel(p.X, p.Y, out var q))
                 {
-                    erasurer.SetPixel(p.X, p.Y, CChar.Space);
+                    erasurer.SetPixel(p.X, p.Y, CGlyph.Space);
                     dirty = true;
                 }
             }

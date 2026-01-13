@@ -16,7 +16,7 @@ namespace GlyphEngine
             {
                 for (int x = 0; x < view.Width; x++)
                 {
-                    pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, CChar.Space));
+                    pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, CGlyph.Space));
                 }
             }
         }

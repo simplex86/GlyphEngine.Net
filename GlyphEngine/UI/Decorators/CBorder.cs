@@ -37,14 +37,14 @@ namespace GlyphEngine
                 {
                     y = 0;
                     c = Get(view.Width, view.Height, x, y);
-                    if (c != CChar.Empty)
+                    if (c != CGlyph.Empty)
                     {
                         pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, c));
                     }
 
                     y = view.Height - 1;
                     c = Get(view.Width, view.Height, x, y);
-                    if (c != CChar.Empty)
+                    if (c != CGlyph.Empty)
                     {
                         pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, c));
                     }
@@ -57,14 +57,14 @@ namespace GlyphEngine
                 {
                     x = 0;
                     c = Get(view.Width, view.Height, x, y);
-                    if (c != CChar.Empty)
+                    if (c != CGlyph.Empty)
                     {
                         pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, c));
                     }
 
                     x = view.Width - 1;
                     c = Get(view.Width, view.Height, x, y);
-                    if (c != CChar.Empty)
+                    if (c != CGlyph.Empty)
                     {
                         pixels.Add(CPixelPool.Instance.Alloc(x - view.Width / 2, y - view.Height / 2, c));
                     }

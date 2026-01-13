@@ -50,7 +50,7 @@ namespace GlyphEngine
         /// <returns></returns>
         public static bool AsChar(this JsonData self, string key, out char value)
         {
-            value = CChar.Empty;
+            value = CGlyph.Empty;
 
             if (self.ContainsKey(key))
             {
@@ -62,11 +62,11 @@ namespace GlyphEngine
                 else if (node.IsString)
                 {
                     var str = (string)node;
-                    value = (str.Length > 0) ? str[0] : CChar.Empty;
+                    value = (str.Length > 0) ? str[0] : CGlyph.Empty;
                 }
                 else
                 {
-                    value = CChar.Empty;
+                    value = CGlyph.Empty;
                 }
                 return true;
             }

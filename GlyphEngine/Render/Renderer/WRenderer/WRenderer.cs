@@ -73,7 +73,7 @@ namespace GlyphEngine
         /// <param name="color"></param>
         public void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
         {
-            if (glyph == CChar.Empty)
+            if (glyph == CGlyph.Empty)
             {
                 backgroundColor = Console.BackgroundColor;
             }
@@ -119,7 +119,7 @@ namespace GlyphEngine
             for (int i = 0; i < buffer.Length; i++)
             {
                 buffer[i].Attributes = (short)((int)Console.ForegroundColor | ((int)Console.BackgroundColor << 4));
-                buffer[i].UnicodeChar = CChar.Space;
+                buffer[i].UnicodeChar = CGlyph.Space;
             }
 
             region.Left   = 0;

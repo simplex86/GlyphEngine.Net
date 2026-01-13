@@ -43,7 +43,7 @@
                 return '┃';
             }
 
-            return CChar.Empty;
+            return CGlyph.Empty;
         }
     }
 }

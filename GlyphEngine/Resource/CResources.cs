@@ -162,10 +162,10 @@ namespace GlyphEngine
                     {
                         for (int i = 0; i < tex.Width; i++)
                         {
-                            var c = (i < line.Length) ? line[i] : CChar.Space;
-                            if (tex.Transparent && c == CChar.Space)
+                            var c = (i < line.Length) ? line[i] : CGlyph.Space;
+                            if (tex.Transparent && c == CGlyph.Space)
                             {
-                                c = CChar.Empty;
+                                c = CGlyph.Empty;
                             }
                             tex.Glyphs.Add(c);
                         }

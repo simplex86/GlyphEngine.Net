@@ -64,7 +64,7 @@ namespace GlyphEngine
         /// 
         /// </summary>
         /// <param name="count"></param>
-        internal void Reset(int count)
+        internal void Recount(int count)
         {
             this.index = -1;
             this.count = count;
@@ -76,8 +76,8 @@ namespace GlyphEngine
     /// </summary>
     internal class NRenderBuffer : IEnumerable<CPixel>
     {
-        private List<CPixel> list;
-        private Dictionary<ulong, int> grid;
+        private List<CPixel> dense;
+        private Dictionary<ulong, int> sparse;
         private int count = 0;
         private NRenderBufferEnumerator enumerator = null;
 
@@ -86,10 +86,10 @@ namespace GlyphEngine
         /// </summary>
         internal NRenderBuffer()
         {
-            list = new List<CPixel>(CScreen.Width * CScreen.Height);
-            grid = new Dictionary<ulong, int>();
+            dense = new List<CPixel>(CScreen.Width * CScreen.Height);
+            sparse = new Dictionary<ulong, int>();
 
-            enumerator = new NRenderBufferEnumerator(list, count);
+            enumerator = new NRenderBufferEnumerator(dense, count);
         }
 
         /// <summary>
@@ -128,8 +128,7 @@ namespace GlyphEngine
             if (!GetPixel(x, y, out var key, out var pixel))
             {
                 pixel = CPixelPool.Instance.Alloc(x, y);
-                list.Add(pixel);
-                AddGrid(key, count);
+                AddPixel(key, pixel, count);
             }
 
             pixel.Glyph = glyph;
@@ -143,9 +142,9 @@ namespace GlyphEngine
         internal void Clear()
         {
             count = 0;
-            grid.Clear();
+            sparse.Clear();
 
-            enumerator?.Reset(count);
+            enumerator?.Recount(count);
         }
 
         /// <summary>
@@ -159,10 +158,10 @@ namespace GlyphEngine
         {
             pixel = null;
 
-            var key = GetGridKey(x, y);
-            if (grid.TryGetValue(key, out var index))
+            var key = CalculateSparseKey(x, y);
+            if (GetDenseIndex(key, out var index))
             {
-                pixel = list[index];
+                pixel = dense[index];
                 return true;
             }
 
@@ -175,10 +174,22 @@ namespace GlyphEngine
         internal void Dispose()
         {
             Clear();
-            CPixelPool.Instance.Release(list);
+            CPixelPool.Instance.Release(dense);
 
             enumerator?.Dispose();
             enumerator = null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="pixel"></param>
+        /// <param name="index"></param>
+        private void AddPixel(ulong key, CPixel pixel, int index)
+        {
+            dense.Add(pixel);
+            AddDenseIndex(key, index);
         }
 
         /// <summary>
@@ -193,20 +204,20 @@ namespace GlyphEngine
         {
             pixel = null;
 
-            key = GetGridKey(x, y);
-            if (grid.TryGetValue(key, out var index))
+            key = CalculateSparseKey(x, y);
+            if (GetDenseIndex(key, out var index))
             {
-                pixel = list[index];
+                pixel = dense[index];
                 return true;
             }
 
-            if (count < list.Count)
+            if (count < dense.Count)
             {
-                pixel = list[count];
+                pixel = dense[count];
                 pixel.X = x;
                 pixel.Y = y;
 
-                AddGrid(key, count);
+                AddDenseIndex(key, count);
                 return true;
             }
 
@@ -219,7 +230,7 @@ namespace GlyphEngine
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        private ulong GetGridKey(int x, int y)
+        private ulong CalculateSparseKey(int x, int y)
         {
             var key = (ulong)x;
             key = (key << 32) | (ulong)y;
@@ -232,12 +243,23 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="key"></param>
         /// <param name="index"></param>
-        private void AddGrid(ulong key, int index)
+        private void AddDenseIndex(ulong key, int index)
         {
-            grid.Add(key, index);
+            sparse.Add(key, index);
             count++;
 
-            enumerator?.Reset(count);
+            enumerator?.Recount(count);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        private bool GetDenseIndex(ulong key, out int index)
+        {
+            return sparse.TryGetValue(key, out index);
         }
     }
 }

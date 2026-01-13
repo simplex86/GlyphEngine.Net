@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    internal static class CChar
+    internal static class CGlyph
     {
         /// <summary>
         /// 

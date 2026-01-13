@@ -18,7 +18,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        public char Glyph { get; set; } = CChar.Empty;
+        public char Glyph { get; set; } = CGlyph.Empty;
         /// <summary>
         /// 颜色
         /// </summary>
@@ -43,7 +43,7 @@ namespace GlyphEngine
         {
             this.X = 0;
             this.Y = 0;
-            this.Glyph = CChar.Empty;
+            this.Glyph = CGlyph.Empty;
             this.Color = Console.ForegroundColor;
             this.BackgroundColor = Console.BackgroundColor;
         }
