@@ -18,6 +18,10 @@ namespace GlyphEngine
         /// texture缓存
         /// </summary>
         private static Dictionary<string, CTexture> tcatch = new Dictionary<string, CTexture>();
+        /// <summary>
+        /// 
+        /// </summary>
+        private static Dictionary<string, CAudioClip> acatch = new Dictionary<string, CAudioClip>();
 
         /// <summary>
         /// 加载gameobject
@@ -55,7 +59,7 @@ namespace GlyphEngine
         }
 
         /// <summary>
-        /// 
+        /// 加载gameobject
         /// </summary>
         /// <param name="filepath"></param>
         /// <param name="x"></param>
@@ -109,7 +113,7 @@ namespace GlyphEngine
         }
 
         /// <summary>
-        /// 
+        /// 加载UI
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
@@ -122,7 +126,7 @@ namespace GlyphEngine
         }
 
         /// <summary>
-        /// 
+        /// 卸载UI
         /// </summary>
         /// <param name="panel"></param>
         public static void UnloadUI(CPanel panel)
@@ -190,7 +194,15 @@ namespace GlyphEngine
         /// <returns></returns>
         public static CAudioSource LoadAudio(string filepath)
         {
-            return CAudioDeserializer.Deserialize(filepath);
+            if (!acatch.TryGetValue(filepath, out var clip))
+            {
+                clip = CAudioDeserializer.Deserialize(filepath);
+                if (string.IsNullOrEmpty(clip.Path)) return null;
+
+                acatch.Add(filepath, clip);
+            }
+
+            return new CAudioSource(clip);
         }
 
         /// <summary>

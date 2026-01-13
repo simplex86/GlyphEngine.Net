@@ -1,4 +1,5 @@
 ﻿using LitJson;
+using System;
 
 namespace GlyphEngine
 {
@@ -10,9 +11,14 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
+        private static CAudioClip INVALID_AUDIO_CLIP = new CAudioClip();
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        public static CAudioSource Deserialize(string filepath)
+        public static CAudioClip Deserialize(string filepath)
         {
             var data = CResources.LoadJson(filepath);
             return Deserialize(data);
@@ -23,7 +29,7 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private static CAudioSource Deserialize(JsonData data)
+        private static CAudioClip Deserialize(JsonData data)
         {
             var filepath = data.As("filepath", string.Empty);
             if (!string.IsNullOrEmpty(filepath))
@@ -33,10 +39,15 @@ namespace GlyphEngine
                 var volume = data.As("volume", 1.0f);
                 var loop = data.As("loop", false);
 
-                return new CAudioSource(filepath, volume, loop);
+                return new CAudioClip()
+                {
+                    Path = filepath,
+                    Volume = Math.Clamp(volume, 0.0f, 1.0f),
+                    Loop = loop
+                };
             }
 
-            return null;
+            return INVALID_AUDIO_CLIP;
         }
     }
 }

@@ -9,22 +9,20 @@ namespace GlyphEngine
     /// </summary>
     public sealed class CAudioSource
     {
+        private CAudioClip clip;
         private WaveOutEvent device = new WaveOutEvent();
-        private float baseVolume = 1.0f;
-        private float coefVolume = 1.0f;
+        private float volume = 1.0f;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="filepath"></param>
-        /// <param name="volume"></param>
-        /// <param name="loop"></param>
-        internal CAudioSource(string filepath, float volume, bool loop)
+        /// <param name="clip"></param>
+        internal CAudioSource(CAudioClip clip)
         {
-            baseVolume = Math.Clamp(volume, 0.0f, 1.0f);
+            this.clip = clip;
 
-            var reader = new AudioFileReader(filepath);
-            if (loop)
+            var reader = new AudioFileReader(clip.Path);
+            if (clip.Loop)
             {
                 var stream = new LoopStream(reader);
                 device.Init(stream);
@@ -34,8 +32,6 @@ namespace GlyphEngine
                 device.Init(reader);
             }
             device.PlaybackStopped += OnPlaybackStoppedHandler;
-
-            Loop = loop;
         }
 
         /// <summary>
@@ -45,19 +41,19 @@ namespace GlyphEngine
         {
             set
             {
-                coefVolume = Math.Clamp(value, 0.0f, 1.0f);
+                volume = Math.Clamp(value, 0.0f, 1.0f);
                 if (device != null)
                 {
-                    device.Volume = baseVolume * coefVolume;
+                    device.Volume = clip.Volume * volume;
                 }
             }
-            get { return coefVolume; }
+            get { return volume; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool Loop { get; }
+        public bool Loop => clip.Loop;
 
         /// <summary>
         /// 播放
