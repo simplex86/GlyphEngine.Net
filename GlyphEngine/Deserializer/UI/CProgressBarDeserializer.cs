@@ -5,7 +5,6 @@ namespace GlyphEngine
     /// <summary>
     /// 
     /// </summary>
-    [CWidgetDeserializer(EWidgetType.ProgressBar)]
     internal class CProgressBarDeserializer : IDeserializer<CWidget>
     {
         /// <summary>

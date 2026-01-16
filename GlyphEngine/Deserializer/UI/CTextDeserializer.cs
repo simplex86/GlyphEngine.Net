@@ -1,12 +1,10 @@
 ﻿using LitJson;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace GlyphEngine
 {
     /// <summary>
     /// 
     /// </summary>
-    [CWidgetDeserializer(EWidgetType.Text)]
     internal class CTextDeserializer : IDeserializer<CWidget>
     {
         /// <summary>

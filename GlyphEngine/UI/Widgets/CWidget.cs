@@ -1,35 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace GlyphEngine
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    internal enum EWidgetType
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        None = 0,
-        /// <summary>
-        /// 
-        /// </summary>
-        Text,
-        /// <summary>
-        /// 
-        /// </summary>
-        Image,
-        /// <summary>
-        /// 
-        /// </summary>
-        Button,
-        /// <summary>
-        /// 
-        /// </summary>
-        ProgressBar,
-    }
-
     /// <summary>
     /// 子控件接口
     /// </summary>

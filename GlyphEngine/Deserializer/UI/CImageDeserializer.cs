@@ -5,7 +5,6 @@ namespace GlyphEngine
     /// <summary>
     /// 
     /// </summary>
-    [CWidgetDeserializer(EWidgetType.Image)]
     internal class CImageDeserializer : IDeserializer<CWidget>
     {
         /// <summary>
