@@ -6,7 +6,6 @@ namespace GlyphEngine
     /// <summary>
     /// 
     /// </summary>
-    [CWidgetDeserializer(EWidgetType.Button)]
     internal class CButtonDeserializer : IDeserializer<CWidget>
     {
         /// <summary>
