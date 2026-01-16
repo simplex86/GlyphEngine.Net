@@ -12,16 +12,6 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        private static Dictionary<string, IDeserializer<CWidget>> deserializers = new()
-        {
-            { "text", new CTextDeserializer() },
-            { "button", new CButtonDeserializer() },
-            { "image", new CImageDeserializer() },
-        };
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
         public static CPanel Deserialize(string file, Type type)
@@ -52,7 +42,10 @@ namespace GlyphEngine
             panel.Name = name;
             panel.Transform.LocalPosition = new CVector2(x, y);
 
-            DeserializeComponents(data["components"], panel);
+            if (data.TryGetValue("widgets", out var wdata))
+            {
+                DeserializeWidgets(wdata, panel);
+            }
 
             return panel;
         }
@@ -62,15 +55,11 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="data"></param>
         /// <param name="view"></param>
-        private static void DeserializeComponents(JsonData data, IContainable<CWidget> view)
+        private static void DeserializeWidgets(JsonData data, IContainable<CWidget> view)
         {
             for (int i = 0; i < data.Count; i++)
             {
-                if (data[i].TryGetValue("type", out var type) &&
-                    deserializers.TryGetValue((string)type, out var deserializer))
-                {
-                    deserializer.Deserialize(data[i], view);
-                }
+                CWidgetDeserializer.Deserialize(data[i], view);
             }
         }
     }

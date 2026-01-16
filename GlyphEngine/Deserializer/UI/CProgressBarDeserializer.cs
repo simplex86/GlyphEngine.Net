@@ -1,13 +1,12 @@
 ﻿using LitJson;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace GlyphEngine
 {
     /// <summary>
     /// 
     /// </summary>
-    [CWidgetDeserializer(EWidgetType.Text)]
-    internal class CTextDeserializer : IDeserializer<CWidget>
+    [CWidgetDeserializer(EWidgetType.ProgressBar)]
+    internal class CProgressBarDeserializer : IDeserializer<CWidget>
     {
         /// <summary>
         /// 
@@ -19,10 +18,11 @@ namespace GlyphEngine
             var x = data.As("x", 0);
             var y = data.As("y", 0);
             var name = data.As("name", string.Empty);
-            var text = data.As("text", string.Empty);
+            var style = data.As("style", EProgressBarStyle.Horizontal);
+            var length = data.As("length", 10);
             var color = CColorHelper.Get(data, "color");
 
-            var widget = new CText(text, new CVector2(x, y))
+            var widget = new CProgressBar(length, new CVector2(x, y), style)
             {
                 Name = name,
                 Color = color,
@@ -40,11 +40,11 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="data"></param>
         /// <param name="text"></param>
-        private void DeserializeWidgets(JsonData data, CText text)
+        private void DeserializeWidgets(JsonData data, CProgressBar widget)
         {
             for (int i = 0; i < data.Count; i++)
             {
-                CWidgetDeserializer.Deserialize(data[i], text);
+                CWidgetDeserializer.Deserialize(data[i], widget);
             }
         }
     }

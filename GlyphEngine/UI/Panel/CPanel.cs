@@ -202,11 +202,14 @@ namespace GlyphEngine
         {
             switch (style)
             {
-                case EBorderStyle.ThinBorder:
-                    Apply(new CThinBorder(this));
+                case EBorderStyle.Thin:
+                    Apply(new CBorder(this));
                     break;
-                case EBorderStyle.ThickBorder:
+                case EBorderStyle.Thick:
                     Apply(new CThickBorder(this));
+                    break;
+                case EBorderStyle.Round:
+                    Apply(new CRoundBorder(this));
                     break;
                 default:
                     break;
