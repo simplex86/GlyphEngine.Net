@@ -5,7 +5,7 @@ namespace GlyphEngine
     /// <summary>
     /// 
     /// </summary>
-    internal abstract class CBorder : IDecorator
+    internal class CBorder : IDecorator
     {
         /// <summary>
         /// 
@@ -80,6 +80,30 @@ namespace GlyphEngine
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        protected abstract char Get(int w, int h, int x, int y);
+        protected virtual char Get(int w, int h, int x, int y)
+        {
+            {
+                if (y == 0)
+                {
+                    if (x == 0) return '┌';
+                    if (x == w - 1) return '┐';
+                    return '─';
+                }
+                if (y == h - 1)
+                {
+                    if (x == 0) return '└';
+                    if (x == w - 1) return '┘';
+                    return '─';
+                }
+
+                if (x == 0 ||
+                    x == w - 1)
+                {
+                    return '│';
+                }
+
+                return CGlyph.Empty;
+            }
+        }
     }
 }

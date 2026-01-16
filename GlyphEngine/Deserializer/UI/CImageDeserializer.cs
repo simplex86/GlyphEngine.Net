@@ -5,6 +5,7 @@ namespace GlyphEngine
     /// <summary>
     /// 
     /// </summary>
+    [CWidgetDeserializer(EWidgetType.Image)]
     internal class CImageDeserializer : IDeserializer<CWidget>
     {
         /// <summary>
@@ -25,8 +26,12 @@ namespace GlyphEngine
             {
                 Name = name,
             };
-
             container.Add(image);
+
+            if (data.TryGetValue("widgets", out var wdata))
+            {
+                DeserializeWidgets(wdata, image);
+            }
         }
 
         /// <summary>
@@ -42,6 +47,19 @@ namespace GlyphEngine
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="image"></param>
+        private void DeserializeWidgets(JsonData data, CImage image)
+        {
+            for (int i = 0; i < data.Count; i++)
+            {
+                CWidgetDeserializer.Deserialize(data[i], image);
+            }
         }
     }
 }

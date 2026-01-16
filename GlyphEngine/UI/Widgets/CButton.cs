@@ -26,13 +26,13 @@ namespace GlyphEngine
         public ConsoleColor UnfocusColor { get; set; } = ConsoleColor.White;
 
         /// <summary>
+        /// 
+        /// </summary>
+        private EBorderStyle style = EBorderStyle.Borderless;
+        /// <summary>
         /// 点击事件列表
         /// </summary>
         private List<Action> onClicked = new List<Action>();
-        /// <summary>
-        /// 文本子组件
-        /// </summary>
-        private CText text = null;
 
         /// <summary>
         /// 
@@ -42,19 +42,15 @@ namespace GlyphEngine
         /// <param name="unfocusColor"></param>
         /// <param name="focusColor"></param>
         /// <param name="style"></param>
-        internal CButton(string text, CVector2 localposition, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.ThinBorder)
+        internal CButton(CVector2 localposition, int width, int height, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.Thin)
             : base(localposition)
         {
+            this.Width = width;
+            this.Height = height;
             this.Interactabled = true;
             this.Keycode = keycode;
             this.UnfocusColor = unfocusColor;
             this.FocusColor = focusColor;
-
-            this.text = new CText(text, CVector2.Zero);
-            Add(this.text);
-
-            this.Width  = this.text.Width  + 4;
-            this.Height = this.text.Height + 2;
 
             Apply(style);
         }
@@ -83,7 +79,6 @@ namespace GlyphEngine
         public void OnFocus()
         {
             Color = FocusColor;
-            text.Color = Color;
         }
 
         /// <summary>
@@ -92,7 +87,6 @@ namespace GlyphEngine
         public void LoseFocus()
         {
             Color = UnfocusColor;
-            text.Color = Color;
         }
 
         /// <summary>
@@ -100,11 +94,12 @@ namespace GlyphEngine
         /// </summary>
         public void OnEnter()
         {
-            if (!Interactabled) return;
-
-            foreach (var action in onClicked)
+            if (Interactabled)
             {
-                action.Invoke();
+                foreach (var action in onClicked)
+                {
+                    action.Invoke();
+                }
             }
         }
 
@@ -125,15 +120,20 @@ namespace GlyphEngine
         {
             switch (style)
             {
-                case EBorderStyle.ThinBorder:
-                    Apply(new CThinBorder(this));
+                case EBorderStyle.Thin:
+                    Apply(new CBorder(this));
                     break;
-                case EBorderStyle.ThickBorder:
+                case EBorderStyle.Thick:
                     Apply(new CThickBorder(this));
+                    break;
+                case EBorderStyle.Round:
+                    Apply(new CRoundBorder(this));
                     break;
                 default:
                     break;
             }
+
+            this.style = style;
         }
     }
 }

@@ -4,6 +4,33 @@ using System.Collections.Generic;
 namespace GlyphEngine
 {
     /// <summary>
+    /// 
+    /// </summary>
+    internal enum EWidgetType
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// 
+        /// </summary>
+        Text,
+        /// <summary>
+        /// 
+        /// </summary>
+        Image,
+        /// <summary>
+        /// 
+        /// </summary>
+        Button,
+        /// <summary>
+        /// 
+        /// </summary>
+        ProgressBar,
+    }
+
+    /// <summary>
     /// 子控件接口
     /// </summary>
     public interface IWidget : IView
@@ -22,11 +49,11 @@ namespace GlyphEngine
         /// <summary>
         /// 宽度
         /// </summary>
-        public int Width { get; protected set; }
+        public int Width { get; internal set; }
         /// <summary>
         /// 高度
         /// </summary>
-        public int Height { get; protected set; }
+        public int Height { get; internal set; }
         /// <summary>
         /// 
         /// </summary>

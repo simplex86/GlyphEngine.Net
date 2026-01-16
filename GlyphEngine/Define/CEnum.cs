@@ -50,10 +50,14 @@
         /// <summary>
         /// 细边框
         /// </summary>
-        ThinBorder = 1,
+        Thin = 1,
         /// <summary>
         /// 厚边框
         /// </summary>
-        ThickBorder = 2,
+        Thick = 2,
+        /// <summary>
+        /// 圆角
+        /// </summary>
+        Round = 3,
     }
 }
