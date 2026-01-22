@@ -10,6 +10,10 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
+        public int Length => length;
+        /// <summary>
+        /// 进度
+        /// </summary>
         public float Amount
         {
             set
@@ -20,26 +24,42 @@ namespace GlyphEngine
             get { return amount; }
         }
 
-        private float length = 0.0f;
+        /// <summary>
+        /// 
+        /// </summary>
+        internal CRenderableObject Target => target;
+
+        private int length = 0;
         private float amount = 0.0f;
+        private EProgressBarDirection direction;
         private CRenderableObject target;
 
-        private static char[] glyphs = new char[] { 
-            ' ','▁','▂','▃','▄','▅','▆','▇','█',
-        };
+        private IProgressBarModifier modifier;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="amount"></param>
         /// <param name="localpostion"></param>
-        internal CVProgressBar(int length, CRenderableObject target)
+        internal CVProgressBar(int length, float amount, EProgressBarDirection direction, CRenderableObject target)
         {
             this.length = length;
             this.target = target;
-            this.amount = 0.0f;
+            this.amount = amount;
+            this.direction = direction;
 
+            if (direction == EProgressBarDirection.Up)
+                modifier = new CProgressBarUModifier();
+            else if (direction == EProgressBarDirection.Down)
+                modifier = new CProgressBarDModifier();
+
+            Fill();
             Modify();
+        }
+
+        private void Fill()
+        {
+            modifier.Fill(this);
         }
 
         /// <summary>
@@ -47,32 +67,7 @@ namespace GlyphEngine
         /// </summary>
         private void Modify()
         {
-            var value = amount * length;
-            var ipart = (int)value;
-            var fpart = value - ipart;
-
-            target.ClearPixels();
-
-            // 整数部分
-            for (int y=0; y<ipart; y++)
-            {
-                var pixel = CPixelPool.Instance.Alloc(0, y, glyphs[8]);
-                target.AddPixel(pixel);
-            }
-            // 小数部分
-            {
-                var index = (int)(fpart * glyphs.Length);
-                var pixel = CPixelPool.Instance.Alloc(0, ipart, glyphs[index]);
-                target.AddPixel(pixel);
-            }
-            // 剩余部分
-            {
-                for (int y=ipart+1; y<length; y++)
-                {
-                    var pixel = CPixelPool.Instance.Alloc(0, y, glyphs[0]);
-                    target.AddPixel(pixel);
-                }
-            }
+            modifier.Modify(this);
         }
     }
 }

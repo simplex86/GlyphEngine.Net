@@ -94,6 +94,16 @@ namespace GlyphEngine
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        internal CPixel GetPixel(int index)
+        {
+            return pixels[index];
+        }
+
+        /// <summary>
         /// 清空像素
         /// </summary>
         internal void ClearPixels()
