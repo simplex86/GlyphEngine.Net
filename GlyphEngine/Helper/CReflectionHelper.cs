@@ -315,35 +315,37 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="domain"></param>
         /// <returns></returns>
-        public static List<Assembly> GetReferanceAssemblies(this AppDomain domain)
+        private static HashSet<Assembly> GetReferanceAssemblies(this AppDomain domain)
         {
-            var list = new List<Assembly>();
+            var hashset = new HashSet<Assembly>();
 
             var assemblies = domain.GetAssemblies();
-            Array.ForEach(assemblies, assembly =>
+            foreach (var assembly in assemblies)
             {
-                GetReferanceAssemblies(assembly, list);
-            });
-            return list;
+                hashset.Add(assembly);
+                GetReferanceAssemblies(assembly, hashset);
+            }
+
+            return hashset;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="assembly"></param>
-        /// <param name="list"></param>
-        private static void GetReferanceAssemblies(Assembly assembly, List<Assembly> list)
+        /// <param name="hashset"></param>
+        private static void GetReferanceAssemblies(Assembly assembly, HashSet<Assembly> hashset)
         {
             var assemblyNames = assembly.GetReferencedAssemblies();
-            Array.ForEach(assemblyNames, assemblyName =>
+            foreach (var assemblyName in assemblyNames)
             {
                 var ass = Assembly.Load(assemblyName);
-                if (!list.Contains(ass))
+                if (!hashset.Contains(ass))
                 {
-                    list.Add(ass);
-                    GetReferanceAssemblies(ass, list);
+                    hashset.Add(ass);
+                    GetReferanceAssemblies(ass, hashset);
                 }
-            });
+            }
         }
     }
 }
