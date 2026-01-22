@@ -19,11 +19,14 @@ namespace GlyphEngine
             var name = data.As("name", string.Empty);
             var style = data.As("style", EProgressBarStyle.Horizontal);
             var length = data.As("length", 10);
+            var amount = data.As("amount", 0.0f);
             var color = CColorHelper.Get(data, "color");
+            var direction = data.As("direction", EProgressBarDirection.Left);
 
-            var widget = new CProgressBar(length, new CVector2(x, y), style)
+            var widget = new CProgressBar(length, new CVector2(x, y), amount, style, direction)
             {
                 Name = name,
+                Amount = amount,
                 Color = color,
             };
             container.Add(widget);

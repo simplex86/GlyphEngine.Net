@@ -11,6 +11,10 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
+        int Length { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         float Amount { get; set; }
     }
 }

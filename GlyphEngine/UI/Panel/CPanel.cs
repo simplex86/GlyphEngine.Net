@@ -258,6 +258,17 @@ namespace GlyphEngine
                         break;
                 }
             }
+
+            OnUpdate(dt);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt"></param>
+        protected virtual void OnUpdate(float dt)
+        {
+
         }
 
         /// <summary>

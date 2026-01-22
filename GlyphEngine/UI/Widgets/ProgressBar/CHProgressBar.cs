@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 namespace GlyphEngine
 {
@@ -11,6 +10,10 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
+        public int Length => length;
+        /// <summary>
+        /// 进度
+        /// </summary>
         public float Amount
         {
             set
@@ -21,34 +24,44 @@ namespace GlyphEngine
             get { return amount; }
         }
 
-        private float length = 0.0f;
-        private float amount = 0.0f;
-        private CRenderableObject target;
+        /// <summary>
+        /// 
+        /// </summary>
+        internal CRenderableObject Target => target;
 
-        private static char[] glyphs = new char[] { 
-            ' ', // 0
-            '▏',// 1
-            '▎',// 2
-            '▍',// 3
-            '▌',// 4
-            '▋',// 5
-            '▊',// 6
-            '▉',// 7
-            '█',// 8
-        };
+        private int length = 0;
+        private float amount = 0.0f;
+        private EProgressBarDirection direction;
+        private CRenderableObject target;
+        private IProgressBarModifier modifier;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="amount"></param>
         /// <param name="localpostion"></param>
-        internal CHProgressBar(int length, CRenderableObject target)
+        internal CHProgressBar(int length, float amount, EProgressBarDirection direction, CRenderableObject target)
         {
             this.length = length;
             this.target = target;
-            this.amount = 0.0f;
+            this.amount = amount;
+            this.direction = direction;
 
+            if (direction == EProgressBarDirection.Left)
+                modifier = new CProgressBarLModifier();
+            else if (direction == EProgressBarDirection.Right)
+                modifier = new CProgressBarRModifier();
+
+            Fill();
             Modify();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Fill()
+        {
+            modifier.Fill(this);
         }
 
         /// <summary>
@@ -56,32 +69,7 @@ namespace GlyphEngine
         /// </summary>
         private void Modify()
         {
-            var value = amount * length;
-            var ipart = (int)value;
-            var fpart = value - ipart;
-
-            target.ClearPixels();
-
-            // 整数部分
-            for (int x=0; x<ipart; x++)
-            {
-                var pixel = CPixelPool.Instance.Alloc(x, 0, glyphs[8]);
-                target.AddPixel(pixel);
-            }
-            // 小数部分
-            {
-                var index = (int)(fpart * glyphs.Length);
-                var pixel = CPixelPool.Instance.Alloc(ipart, 0, glyphs[index]);
-                target.AddPixel(pixel);
-            }
-            // 剩余部分
-            {
-                for (int x=ipart+1; x<length; x++)
-                {
-                    var pixel = CPixelPool.Instance.Alloc(x, 0, glyphs[0]);
-                    target.AddPixel(pixel);
-                }
-            }
+            modifier.Modify(this);
         }
     }
 }
