@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace GlyphEngine
@@ -12,20 +14,43 @@ namespace GlyphEngine
         /// 
         /// </summary>
         private IRenderer renderer;
+        /// <summary>
+        /// 
+        /// </summary>
+        private static Dictionary<OSPlatform, EPlatform> platforms = new Dictionary<OSPlatform, EPlatform>()
+        {
+            { OSPlatform.Windows,   EPlatform.Windows },
+            { OSPlatform.OSX,       EPlatform.Mac },
+            { OSPlatform.Linux,     EPlatform.Linux },
+        };
 
         /// <summary>
         /// 
         /// </summary>
         internal CRenderer()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            var platform = EPlatform.Unknown;
+            foreach (var kv in platforms)
             {
-                renderer = new NRenderer();
+                if (RuntimeInformation.IsOSPlatform(kv.Key))
+                {
+                    platform = kv.Value;
+                    break;
+                }
             }
-            else
+            // 查找自定义渲染器
+            var types = CReflectionHelper.FindAll<IRenderer, CRendererEntryAttribute>();
+            foreach (var type in types)
             {
-                renderer = new NRenderer();
+                if (platform == GetPlatform(type))
+                {
+                    renderer = Activator.CreateInstance(type) as IRenderer;
+                    return;
+                }
             }
+            // 如果没有自定义渲染器，则使用内置渲染器
+            renderer = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? new WRenderer()
+                                                                           : new NRenderer();
         }
 
         /// <summary>
@@ -47,6 +72,11 @@ namespace GlyphEngine
         public void Render()
         {
             renderer.Render();
+        }
+
+        private EPlatform GetPlatform(Type type)
+        {
+            return type.GetCustomAttribute<CRendererEntryAttribute>().Platform;
         }
     }
 }

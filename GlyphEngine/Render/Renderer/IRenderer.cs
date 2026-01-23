@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace GlyphEngine
 {
     /// <summary>
     /// 渲染器接口
     /// </summary>
-    internal interface IRenderer
+    public interface IRenderer
     {
         /// <summary>
         /// 往当前帧渲染缓存写入像素数据
@@ -21,5 +22,25 @@ namespace GlyphEngine
         /// 渲染
         /// </summary>
         void Render();
+    }
+
+    /// <summary>
+    /// 渲染器特性
+    /// </summary>
+    public class CRendererEntryAttribute : Attribute
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public EPlatform Platform { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="platform"></param>
+        public CRendererEntryAttribute(EPlatform platform)
+        {
+            Platform = platform;
+        }
     }
 }

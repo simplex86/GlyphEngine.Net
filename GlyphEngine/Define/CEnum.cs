@@ -56,4 +56,27 @@
         /// </summary>
         ThickBorder = 2,
     }
+
+    /// <summary>
+    /// 操作系统平台
+    /// </summary>
+    public enum EPlatform : byte
+    {
+        /// <summary>
+        /// 未知
+        /// </summary>
+        Unknown = 0,
+        /// <summary>
+        /// 
+        /// </summary>
+        Windows = 1,
+        /// <summary>
+        /// 
+        /// </summary>
+        Mac = 2,
+        /// <summary>
+        /// 
+        /// </summary>
+        Linux = 3,
+    }
 }
