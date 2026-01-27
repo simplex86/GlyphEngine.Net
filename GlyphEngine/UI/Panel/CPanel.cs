@@ -44,7 +44,7 @@ namespace GlyphEngine
         /// <summary>
         /// 当前获得焦点的组件
         /// </summary>
-        private IInteractable focus = null;
+        private IInteractable focused = null;
         /// <summary>
         /// 
         /// </summary>
@@ -189,9 +189,9 @@ namespace GlyphEngine
         /// <param name="component"></param>
         private void Focus(IInteractable interaction)
         {
-            focus?.LoseFocus();
-            focus = interaction;
-            focus?.OnFocus();
+            focused?.LoseFocus();
+            focused = interaction;
+            focused?.OnFocus();
         }
 
         /// <summary>
@@ -338,15 +338,15 @@ namespace GlyphEngine
         /// </summary>
         private void TryEnter(CKeyboardEvent evt)
         {
-            if (focus == null)
+            if (focused == null)
             {
                 return;
             }
 
             if (evt.type == EKeyboardEventType.Up &&
-                evt.keycode == (int)focus.Keycode)
+                evt.keycode == (int)focused.Keycode)
             {
-                focus.OnEnter();
+                focused.OnEnter();
             }
         }
     }
