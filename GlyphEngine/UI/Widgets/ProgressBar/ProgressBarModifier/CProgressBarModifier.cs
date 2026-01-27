@@ -1,11 +1,4 @@
-﻿using NAudio.CoreAudioApi.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GlyphEngine
+﻿namespace GlyphEngine
 {
     /// <summary>
     /// 
@@ -24,6 +17,10 @@ namespace GlyphEngine
             '█',// 8
         };
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="progressbar"></param>
         public void Fill(IProgressBar progressbar)
         {
             var target = (progressbar as CHProgressBar).Target;
@@ -36,6 +33,10 @@ namespace GlyphEngine
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="progressbar"></param>
         public void Modify(IProgressBar progressbar)
         {
             var value = progressbar.Amount * progressbar.Length;
@@ -72,9 +73,13 @@ namespace GlyphEngine
             ' ', // 0
             '▕',// 1
             '▐', // 2
-            '█',// 8
+            '█',// 3
         };
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="progressbar"></param>
         public void Fill(IProgressBar progressbar)
         {
             var target = (progressbar as CHProgressBar).Target;
@@ -87,6 +92,10 @@ namespace GlyphEngine
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="progressbar"></param>
         public void Modify(IProgressBar progressbar)
         {
             var value = progressbar.Amount * progressbar.Length;
@@ -123,6 +132,10 @@ namespace GlyphEngine
             ' ','▁','▂','▃','▄','▅','▆','▇','█',
         };
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="progressbar"></param>
         public void Fill(IProgressBar progressbar)
         {
             var target = (progressbar as CVProgressBar).Target;
@@ -135,6 +148,10 @@ namespace GlyphEngine
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="progressbar"></param>
         public void Modify(IProgressBar progressbar)
         {
             var value = progressbar.Amount * progressbar.Length;
@@ -171,6 +188,10 @@ namespace GlyphEngine
             ' ','▔','▀','█',
         };
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="progressbar"></param>
         public void Fill(IProgressBar progressbar)
         {
             var target = (progressbar as CVProgressBar).Target;
@@ -183,6 +204,10 @@ namespace GlyphEngine
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="progressbar"></param>
         public void Modify(IProgressBar progressbar)
         {
             var value = progressbar.Amount * progressbar.Length;
