@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GlyphEngine
 {
@@ -109,7 +110,8 @@ namespace GlyphEngine
                 CheckLayer(renderable))
             {
                 var wpos = M2W(gameobject);
-                var vpos = W2V(wpos);
+                var cpos = W2C(wpos);
+                var vpos = C2V(cpos);
                 // 绘制像素
                 renderable.Foreach(pixel =>
                 {
@@ -126,7 +128,8 @@ namespace GlyphEngine
             // 绘制子节点
             for (int i = 0; i < gameobject.Count; i++)
             {
-                Render(gameobject[i], renderer);
+                var child = gameobject[i];
+                if (child.Enabled) Render(gameobject[i], renderer);
             }
         }
 
@@ -146,9 +149,19 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="wpos"></param>
         /// <returns></returns>
-        private CVector2 W2V(CVector2 wpos)
+        private CVector2 W2C(CVector2 wpos)
         {
-            return wpos - Transform.WorldPosition + CScreen.Center;
+            return wpos - Transform.WorldPosition;
+        }
+
+        /// <summary>
+        /// 相机坐标转屏幕坐标
+        /// </summary>
+        /// <param name="cpos"></param>
+        /// <returns></returns>
+        private CVector2 C2V(CVector2 cpos)
+        {
+            return cpos + CScreen.Center;
         }
 
         /// <summary>
@@ -158,10 +171,10 @@ namespace GlyphEngine
         /// <returns></returns>
         private bool Cull(int x, int y)
         {
-            var x1 = (CScreen.Width - Width) / 2;
-            var x2 = x1 + Width;
-            var y1 = (CScreen.Height - Height) / 2;
-            var y2 = y1 + Height;
+            var x1 = Math.Max(0, (CScreen.Width - Width) / 2);
+            var x2 = Math.Min(CScreen.Width, x1 + Width);
+            var y1 = Math.Max(0, (CScreen.Height - Height) / 2);
+            var y2 = Math.Min(CScreen.Height, y1 + Height);
 
             if (x < x1 || x > x2 ||
                 y < y1 || y > y2)
