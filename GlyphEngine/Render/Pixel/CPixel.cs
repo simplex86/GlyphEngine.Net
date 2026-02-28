@@ -31,6 +31,11 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
+        public static CPixel Default { get; } = new CPixel();
+
+        /// <summary>
+        /// 
+        /// </summary>
         public CPixel()
         {
 
@@ -84,6 +89,17 @@ namespace GlyphEngine
             : this(x, y, glyph, color)
         {
             BackgroundColor = backgroundColor;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="glyph"></param>
+        /// <param name="color"></param>
+        public void Set(char glyph, ConsoleColor color)
+        {
+            this.Glyph = glyph;
+            this.Color = color;
         }
 
         /// <summary>

@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
+using static GlyphEngine.WindowsNativeAPI;
 
 namespace GlyphEngine
 {
@@ -42,37 +44,17 @@ namespace GlyphEngine
         /// <param name="color"></param>
         internal void Set(int x, int y, char glyph, ConsoleColor color)
         {
-            if (!Get(x, y, out var key, out var pixel))
-            {
-                pixel = new CPixel(x, y);
-                list.Add(pixel);
-                grid.Add(key, list.Count - 1);
-            }
-
-            pixel.Glyph = glyph;
-            pixel.Color = color;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="pixel"></param>
-        /// <returns></returns>
-        private bool Get(int x, int y, out ulong key, out CPixel pixel)
-        {
-            key = (ulong)x;
-            key = (key << 32) | (ulong)y;
-
+            var key = Key(x, y);
             if (grid.TryGetValue(key, out var index))
             {
-                pixel = list[index];
-                return true;
+                var span = CollectionsMarshal.AsSpan(list);
+                span[index].Set(glyph, color);
             }
-
-            pixel = default;
-            return false;
+            else
+            {
+                list.Add(new CPixel(x, y, glyph, color));
+                grid.Add(key, list.Count - 1);
+            }
         }
 
         /// <summary>
@@ -84,12 +66,27 @@ namespace GlyphEngine
             var pixels = renderable.Pixels;
             for (int i = 0; i < pixels.Length; i++)
             {
-                if (Get(pixels[i].X, pixels[i].Y, out var _, out var p))
+                var key = Key(pixels[i].X, pixels[i].Y);
+                if (grid.TryGetValue(key, out var index))
                 {
-                    pixels[i].Glyph = p.Glyph;
-                    pixels[i].Color = p.Color;
+                    var p = list[index];
+                    pixels[i].Set(p.Glyph, p.Color);
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private ulong Key(int x, int y)
+        {
+            var key = (ulong)x;
+            key = (key << 32) | (ulong)y;
+
+            return key;
         }
 
         /// <summary>

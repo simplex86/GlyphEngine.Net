@@ -139,8 +139,7 @@ namespace GlyphEngine
         internal void Set(int index, char glyph, ConsoleColor color)
         {
             var span = CollectionsMarshal.AsSpan(pixels);
-            span[index].Glyph = glyph;
-            span[index].Color = color;
+            span[index].Set(glyph, color);
         }
 
         /// <summary>
