@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 
 namespace GlyphEngine
 {
@@ -127,7 +128,7 @@ namespace GlyphEngine
         {
             if (!GetPixel(x, y, out var key, out var pixel))
             {
-                pixel = CPixelPool.Instance.Alloc(x, y);
+                pixel = new CPixel(x, y);
                 AddPixel(key, pixel, count);
             }
 
@@ -156,8 +157,6 @@ namespace GlyphEngine
         /// <returns></returns>
         internal bool GetPixel(int x, int y, out CPixel pixel)
         {
-            pixel = null;
-
             var key = CalculateSparseKey(x, y);
             if (GetDenseIndex(key, out var index))
             {
@@ -165,6 +164,7 @@ namespace GlyphEngine
                 return true;
             }
 
+            pixel = default;
             return false;
         }
 
@@ -174,7 +174,7 @@ namespace GlyphEngine
         internal void Dispose()
         {
             Clear();
-            CPixelPool.Instance.Release(dense);
+            dense.Clear();
 
             enumerator?.Dispose();
             enumerator = null;
@@ -202,8 +202,6 @@ namespace GlyphEngine
         /// <returns></returns>
         private bool GetPixel(int x, int y, out ulong key, out CPixel pixel)
         {
-            pixel = null;
-
             key = CalculateSparseKey(x, y);
             if (GetDenseIndex(key, out var index))
             {
@@ -221,6 +219,7 @@ namespace GlyphEngine
                 return true;
             }
 
+            pixel = default;
             return false;
         }
 

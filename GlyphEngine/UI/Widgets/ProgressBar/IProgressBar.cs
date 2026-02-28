@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace GlyphEngine
 {
     /// <summary>
@@ -16,5 +15,9 @@ namespace GlyphEngine
         /// 
         /// </summary>
         float Amount { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        ConsoleColor Color { get; set; }
     }
 }

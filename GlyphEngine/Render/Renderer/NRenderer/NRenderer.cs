@@ -79,7 +79,7 @@ namespace GlyphEngine
                     renderer.SetPixel(p.X, p.Y, p.Glyph, p.Color, p.BackgroundColor);
                     dirty = true;
                 }
-                else if (p.Glyph != q.Glyph || p.Color != q.Color || p.BackgroundColor != q.BackgroundColor)
+                else if (!p.Equals(q))
                 {
                     renderer.SetPixel(p.X, p.Y, p.Glyph, p.Color, p.BackgroundColor);
                     dirty = true;

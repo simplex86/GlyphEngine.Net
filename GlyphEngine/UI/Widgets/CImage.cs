@@ -69,10 +69,10 @@ namespace GlyphEngine
                 for (int w = 0; w < texture.Width; w++)
                 {
                     var i = h * texture.Width + w;
-                    var pixel = CPixelPool.Instance.Alloc(w - texture.Width / 2,
-                                                          h - texture.Height / 2,
-                                                          texture.Glyphs[i],
-                                                          Color);
+                    var pixel = new CPixel(w - texture.Width / 2,
+                                           h - texture.Height / 2,
+                                           texture.Glyphs[i],
+                                           Color);
                     GameObject.AddPixel(pixel);
                 }
             }

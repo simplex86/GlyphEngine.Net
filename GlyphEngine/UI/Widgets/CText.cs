@@ -46,10 +46,10 @@
             // 
             for (int i = 0; i < text.Length; i++)
             {
-                var pixel = CPixelPool.Instance.Alloc(i - text.Length / 2,
-                                                      0,
-                                                      text[i],
-                                                      Color);
+                var pixel = new CPixel(i - text.Length / 2,
+                                       0,
+                                       text[i],
+                                       Color);
                 GameObject.AddPixel(pixel);
             }
         }

@@ -58,7 +58,14 @@ namespace GlyphEngine
                 if (color != value)
                 {
                     color = value;
-                    GameObject.Foreach(p => p.Color = color);
+
+                    var pixels = GameObject.Pixels;
+                    for (int i = 0; i < pixels.Length; i++)
+                    {
+                        pixels[i].Color = color;
+                    }
+
+                    OnColorChanged(color);
                 }
             }
             get { return color; }
@@ -68,6 +75,14 @@ namespace GlyphEngine
         /// 
         /// </summary>
         private ConsoleColor color = ConsoleColor.White;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void OnColorChanged(ConsoleColor color)
+        {
+
+        }
 
         /// <summary>
         /// 
@@ -133,8 +148,9 @@ namespace GlyphEngine
         {
             foreach (var pixel in decorator.pixels)
             {
-                pixel.Color = color;
-                GameObject.AddPixel(pixel);
+                var clone = pixel.Clone();
+                clone.Color = color;
+                GameObject.AddPixel(clone);
             }
         }
 

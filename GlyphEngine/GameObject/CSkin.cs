@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NAudio.Mixer;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace GlyphEngine
 {
@@ -42,7 +44,7 @@ namespace GlyphEngine
         {
             if (!Get(x, y, out var key, out var pixel))
             {
-                pixel = CPixelPool.Instance.Alloc(x, y);
+                pixel = new CPixel(x, y);
                 list.Add(pixel);
                 grid.Add(key, list.Count - 1);
             }
@@ -60,8 +62,6 @@ namespace GlyphEngine
         /// <returns></returns>
         private bool Get(int x, int y, out ulong key, out CPixel pixel)
         {
-            pixel = null;
-
             key = (ulong)x;
             key = (key << 32) | (ulong)y;
 
@@ -70,7 +70,8 @@ namespace GlyphEngine
                 pixel = list[index];
                 return true;
             }
-            
+
+            pixel = default;
             return false;
         }
 
@@ -80,14 +81,15 @@ namespace GlyphEngine
         /// <param name="gameObject"></param>
         internal void Apply(IRenderable renderable)
         {
-            renderable.Foreach(pixel =>
+            var pixels = renderable.Pixels;
+            for (int i = 0; i < pixels.Length; i++)
             {
-                if (Get(pixel.X, pixel.Y, out var _, out var p))
+                if (Get(pixels[i].X, pixels[i].Y, out var _, out var p))
                 {
-                    pixel.Glyph = p.Glyph;
-                    pixel.Color = p.Color;
+                    pixels[i].Glyph = p.Glyph;
+                    pixels[i].Color = p.Color;
                 }
-            });
+            }
         }
 
         /// <summary>
@@ -95,7 +97,7 @@ namespace GlyphEngine
         /// </summary>
         internal void Destroy()
         {
-            CPixelPool.Instance.Release(list);
+            list.Clear();
             grid.Clear();
         }
 

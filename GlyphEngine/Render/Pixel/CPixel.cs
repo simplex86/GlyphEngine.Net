@@ -5,7 +5,7 @@ namespace GlyphEngine
     /// <summary>
     /// 像素
     /// </summary>
-    public class CPixel
+    public struct CPixel
     {
         /// <summary>
         /// 
@@ -31,21 +31,59 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        internal CPixel()
+        public CPixel()
         {
 
         }
 
         /// <summary>
-        /// 重置
+        /// 
         /// </summary>
-        public void Reset()
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public CPixel(int x, int y)
         {
-            this.X = 0;
-            this.Y = 0;
-            this.Glyph = CGlyph.Empty;
-            this.Color = Console.ForegroundColor;
-            this.BackgroundColor = Console.BackgroundColor;
+            X = x;
+            Y = y;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="glyph"></param>
+        public CPixel(int x, int y, char glyph)
+            : this(x, y)
+        {
+            Glyph = glyph;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="glyph"></param>
+        /// <param name="color"></param>
+        public CPixel(int x, int y, char glyph, ConsoleColor color)
+            : this(x, y, glyph)
+        {
+            Color = color;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="glyph"></param>
+        /// <param name="color"></param>
+        /// <param name="backgroundColor"></param>
+        public CPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
+            : this(x, y, glyph, color)
+        {
+            BackgroundColor = backgroundColor;
         }
 
         /// <summary>
@@ -54,8 +92,25 @@ namespace GlyphEngine
         /// <returns></returns>
         internal CPixel Clone()
         {
-            var clone = CPixelPool.Instance.Alloc(X, Y, Glyph, Color);
+            var clone = new CPixel(X, Y, Glyph, Color);
             return clone;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        internal bool Equals(CPixel other)
+        {
+            if (Glyph == other.Glyph &&
+                Color == other.Color &&
+                BackgroundColor == other.BackgroundColor)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

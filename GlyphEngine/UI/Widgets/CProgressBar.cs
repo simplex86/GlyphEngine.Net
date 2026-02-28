@@ -1,4 +1,6 @@
-﻿namespace GlyphEngine
+﻿using System;
+
+namespace GlyphEngine
 {
     /// <summary>
     /// 进度条类型
@@ -64,12 +66,21 @@
         {
             if (style == EProgressBarStyle.Horizontal)
             {
-                bar = new CHProgressBar(length, amount, direction, GameObject);
+                bar = new CHProgressBar(length, amount, direction, Color, GameObject);
             }
             else // if (style == EProgressBarStyle.Vertical)
             {
-                 bar = new CVProgressBar(length, amount, direction, GameObject);
+                 bar = new CVProgressBar(length, amount, direction, Color, GameObject);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="color"></param>
+        protected override void OnColorChanged(ConsoleColor color)
+        {
+            bar.Color = color;
         }
     }
 }

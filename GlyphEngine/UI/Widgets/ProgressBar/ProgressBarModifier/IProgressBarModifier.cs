@@ -1,10 +1,17 @@
-﻿namespace GlyphEngine
+﻿using System;
+
+namespace GlyphEngine
 {
     /// <summary>
     /// 
     /// </summary>
     internal interface IProgressBarModifier
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        ConsoleColor Color { get; set; }
+
         /// <summary>
         /// 
         /// </summary>

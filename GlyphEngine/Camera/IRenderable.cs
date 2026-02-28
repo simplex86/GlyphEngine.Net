@@ -12,6 +12,10 @@ namespace GlyphEngine
         /// </summary>
         ulong Layer { get; }
         /// <summary>
+        /// 
+        /// </summary>
+        Span<CPixel> Pixels { get; }
+        /// <summary>
         /// 可见性
         /// </summary>
         bool Enabled { get; }

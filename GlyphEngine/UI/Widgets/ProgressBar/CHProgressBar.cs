@@ -8,7 +8,7 @@ namespace GlyphEngine
     internal class CHProgressBar : IProgressBar
     {
         /// <summary>
-        /// 
+        /// 长度
         /// </summary>
         public int Length => length;
         /// <summary>
@@ -23,6 +23,18 @@ namespace GlyphEngine
             }
             get { return amount; }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public ConsoleColor Color
+        {
+            set { modifier.Color = value; }
+            get { return modifier.Color; }
+        }
+        /// <summary>
+        /// 方向
+        /// </summary>
+        public EProgressBarDirection Direction => direction;
 
         /// <summary>
         /// 
@@ -40,17 +52,17 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="amount"></param>
         /// <param name="localpostion"></param>
-        internal CHProgressBar(int length, float amount, EProgressBarDirection direction, CRenderableObject target)
+        internal CHProgressBar(int length, float amount, EProgressBarDirection direction, ConsoleColor color, CRenderableObject target)
         {
             this.length = length;
-            this.target = target;
             this.amount = amount;
             this.direction = direction;
+            this.target = target;
 
             if (direction == EProgressBarDirection.Left)
-                modifier = new CProgressBarLModifier();
+                modifier = new CProgressBarLModifier(color);
             else if (direction == EProgressBarDirection.Right)
-                modifier = new CProgressBarRModifier();
+                modifier = new CProgressBarRModifier(color);
 
             Fill();
             Modify();

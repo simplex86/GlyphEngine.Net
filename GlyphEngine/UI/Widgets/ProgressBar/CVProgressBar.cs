@@ -23,6 +23,18 @@ namespace GlyphEngine
             }
             get { return amount; }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public ConsoleColor Color
+        {
+            set { modifier.Color = value; }
+            get { return modifier.Color; }
+        }
+        /// <summary>
+        /// 方向
+        /// </summary>
+        public EProgressBarDirection Direction => direction;
 
         /// <summary>
         /// 
@@ -41,17 +53,17 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="amount"></param>
         /// <param name="localpostion"></param>
-        internal CVProgressBar(int length, float amount, EProgressBarDirection direction, CRenderableObject target)
+        internal CVProgressBar(int length, float amount, EProgressBarDirection direction, ConsoleColor color, CRenderableObject target)
         {
             this.length = length;
-            this.target = target;
             this.amount = amount;
             this.direction = direction;
+            this.target = target;
 
             if (direction == EProgressBarDirection.Up)
-                modifier = new CProgressBarUModifier();
+                modifier = new CProgressBarUModifier(color);
             else if (direction == EProgressBarDirection.Down)
-                modifier = new CProgressBarDModifier();
+                modifier = new CProgressBarDModifier(color);
 
             Fill();
             Modify();

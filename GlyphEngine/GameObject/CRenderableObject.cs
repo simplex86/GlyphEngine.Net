@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace GlyphEngine
 {
@@ -13,6 +14,10 @@ namespace GlyphEngine
         /// 渲染层级
         /// </summary>
         public ulong Layer { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Span<CPixel> Pixels => CollectionsMarshal.AsSpan(pixels);
 
         /// <summary>
         /// 像素列表
@@ -104,11 +109,46 @@ namespace GlyphEngine
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="glyph"></param>
+        internal void SetGlyph(int index, char glyph)
+        {
+            var span = CollectionsMarshal.AsSpan(pixels);
+            span[index].Glyph = glyph;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="color"></param>
+        internal void SetColor(int index, ConsoleColor color)
+        {
+            var span = CollectionsMarshal.AsSpan(pixels);
+            span[index].Color = color;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="glyph"></param>
+        /// <param name="color"></param>
+        internal void Set(int index, char glyph, ConsoleColor color)
+        {
+            var span = CollectionsMarshal.AsSpan(pixels);
+            span[index].Glyph = glyph;
+            span[index].Color = color;
+        }
+
+        /// <summary>
         /// 清空像素
         /// </summary>
         internal void ClearPixels()
         {
-            CPixelPool.Instance.Release(pixels);
+            pixels.Clear();
         }
 
         /// <summary>
@@ -163,8 +203,9 @@ namespace GlyphEngine
         /// </summary>
         protected override void OnDestroy()
         {
-            CPixelPool.Instance.Release(pixels);
-            while(skins.Keys.Count > 0)
+            pixels.Clear();
+
+            while (skins.Keys.Count > 0)
             {
                 var key = skins.Keys.First<string>();
                 skins.Remove(key);
@@ -198,7 +239,7 @@ namespace GlyphEngine
 
             foreach (var pixel in pixels)
             {
-                var clonepixel = CPixelPool.Instance.Alloc(pixel.X, pixel.Y, pixel.Glyph, pixel.Color);
+                var clonepixel = pixel.Clone();
                 clone.pixels.Add(clonepixel);
             }
 

@@ -19,7 +19,7 @@ namespace GlyphEngine
             var glyph = data.As("glyph", CGlyph.Empty);
             var color = CColorHelper.Get(data, "color");
 
-            var pixel = CPixelPool.Instance.Alloc(x, y, glyph, color);
+            var pixel = new CPixel(x, y, glyph, color);
 
             var renderable = container as CRenderableObject;
             renderable.AddPixel(pixel);

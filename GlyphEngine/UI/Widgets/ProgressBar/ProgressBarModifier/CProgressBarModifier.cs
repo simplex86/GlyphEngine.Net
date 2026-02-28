@@ -1,10 +1,20 @@
-﻿namespace GlyphEngine
+﻿using System;
+
+namespace GlyphEngine
 {
     /// <summary>
     /// 
     /// </summary>
     internal class CProgressBarLModifier : IProgressBarModifier
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public ConsoleColor Color { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static char[] glyphs = new char[] {
             ' ', // 0
             '▏',// 1
@@ -20,6 +30,15 @@
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="color"></param>
+        public CProgressBarLModifier(ConsoleColor color)
+        {
+            this.Color = color;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="progressbar"></param>
         public void Fill(IProgressBar progressbar)
         {
@@ -28,7 +47,7 @@
             var o = -progressbar.Length / 2;
             for (int x = 0; x < progressbar.Length; x++)
             {
-                var pixel = CPixelPool.Instance.Alloc(x + o, 0, glyphs[0]);
+                var pixel = new CPixel(x + o, 0, glyphs[0], Color);
                 target.AddPixel(pixel);
             }
         }
@@ -48,17 +67,17 @@
             // 整数部分
             for (int i = 0; i < ipart; i++)
             {
-                target.GetPixel(i).Glyph = glyphs[8];
+                target.Set(i, glyphs[8], Color);
             }
             if (ipart < progressbar.Length)
             {
                 // 小数部分
                 var index = (int)(fpart * glyphs.Length);
-                target.GetPixel(ipart).Glyph = glyphs[index];
+                target.Set(ipart, glyphs[index], Color);
                 // 剩余部分
                 for (int i = ipart + 1; i < progressbar.Length; i++)
                 {
-                    target.GetPixel(i).Glyph = glyphs[0];
+                    target.Set(i, glyphs[0], Color);
                 }
             }
         }
@@ -69,12 +88,29 @@
     /// </summary>
     internal class CProgressBarRModifier : IProgressBarModifier
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public ConsoleColor Color { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static char[] glyphs = new char[] {
             ' ', // 0
             '▕',// 1
             '▐', // 2
             '█',// 3
         };
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="color"></param>
+        public CProgressBarRModifier(ConsoleColor color)
+        {
+            this.Color = color;
+        }
 
         /// <summary>
         /// 
@@ -87,7 +123,7 @@
             var o = -progressbar.Length / 2;
             for (int x = 0; x < progressbar.Length; x++)
             {
-                var pixel = CPixelPool.Instance.Alloc(x + o, 0, glyphs[0]);
+                var pixel = new CPixel(x + o, 0, glyphs[0], Color);
                 target.AddPixel(pixel);
             }
         }
@@ -107,17 +143,17 @@
             // 整数部分
             for (int i = 0; i < ipart; i++)
             {
-                target.GetPixel(progressbar.Length - i - 1).Glyph = glyphs[3];
+                target.Set(progressbar.Length - i - 1, glyphs[3], Color);
             }
             if (ipart < progressbar.Length)
             {
                 // 小数部分
                 var index = (int)(fpart * glyphs.Length);
-                target.GetPixel(progressbar.Length - ipart - 1).Glyph = glyphs[index];
+                target.Set(progressbar.Length - ipart - 1, glyphs[index], Color);
                 // 剩余部分
                 for (int i = ipart + 1; i < progressbar.Length; i++)
                 {
-                    target.GetPixel(progressbar.Length - i - 1).Glyph = glyphs[0];
+                    target.Set(progressbar.Length - i - 1, glyphs[0], Color);
                 }
             }
         }
@@ -128,9 +164,26 @@
     /// </summary>
     internal class CProgressBarUModifier : IProgressBarModifier
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public ConsoleColor Color { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static char[] glyphs = new char[] {
             ' ','▁','▂','▃','▄','▅','▆','▇','█',
         };
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="color"></param>
+        public CProgressBarUModifier(ConsoleColor color)
+        {
+            this.Color = color;
+        }
 
         /// <summary>
         /// 
@@ -143,7 +196,7 @@
             var o = progressbar.Length / 2;
             for (int y = 0; y < progressbar.Length; y++)
             {
-                var pixel = CPixelPool.Instance.Alloc(0, o - y, glyphs[0]);
+                var pixel = new CPixel(0, o - y, glyphs[0], Color);
                 target.AddPixel(pixel);
             }
         }
@@ -163,17 +216,17 @@
             // 整数部分
             for (int i = 0; i < ipart; i++)
             {
-                target.GetPixel(i).Glyph = glyphs[8];
+                target.Set(i, glyphs[8], Color);
             }
             if (ipart < progressbar.Length)
             {
                 // 小数部分
                 var index = (int)(fpart * glyphs.Length);
-                target.GetPixel(ipart).Glyph = glyphs[index];
+                target.Set(ipart, glyphs[index], Color);
                 // 剩余部分
                 for (int i = ipart + 1; i < progressbar.Length; i++)
                 {
-                    target.GetPixel(i).Glyph = glyphs[0];
+                    target.Set(i, glyphs[0], Color);
                 }
             }
         }
@@ -184,9 +237,25 @@
     /// </summary>
     internal class CProgressBarDModifier : IProgressBarModifier
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public ConsoleColor Color { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static char[] glyphs = new char[] {
             ' ','▔','▀','█',
         };
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="color"></param>
+        public CProgressBarDModifier(ConsoleColor color)
+        {
+            this.Color = color;
+        }
 
         /// <summary>
         /// 
@@ -199,7 +268,7 @@
             var o = progressbar.Length / 2;
             for (int y = 0; y < progressbar.Length; y++)
             {
-                var pixel = CPixelPool.Instance.Alloc(0, o - y, glyphs[0]);
+                var pixel = new CPixel(0, o - y, glyphs[0], Color);
                 target.AddPixel(pixel);
             }
         }
@@ -219,17 +288,17 @@
             // 整数部分
             for (int i = 0; i < ipart; i++)
             {
-                target.GetPixel(progressbar.Length - i - 1).Glyph = glyphs[3];
+                target.Set(progressbar.Length - i - 1, glyphs[3], Color);
             }
             if (ipart < progressbar.Length)
             {
                 // 小数部分
                 var index = (int)(fpart * glyphs.Length);
-                target.GetPixel(progressbar.Length - ipart - 1).Glyph = glyphs[index];
+                target.Set(progressbar.Length - ipart - 1, glyphs[index], Color);
                 // 剩余部分
                 for (int i = ipart + 1; i < progressbar.Length; i++)
                 {
-                    target.GetPixel(progressbar.Length - i - 1).Glyph = glyphs[0];
+                    target.Set(progressbar.Length - i - 1, glyphs[0], Color);
                 }
             }
         }
