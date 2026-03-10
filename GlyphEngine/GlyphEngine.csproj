@@ -9,16 +9,15 @@
 
   <ItemGroup>
     <Compile Remove="Event\**" />
+    <Compile Remove="GameObject\Primitives\**" />
     <EmbeddedResource Remove="Event\**" />
+    <EmbeddedResource Remove="GameObject\Primitives\**" />
     <None Remove="Event\**" />
+    <None Remove="GameObject\Primitives\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Render\Pixel\CPixelPool.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="GameObject\Primitives\" />
   </ItemGroup>
 
 </Project>

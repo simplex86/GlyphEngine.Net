@@ -105,6 +105,19 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="glyph"></param>
+        /// <param name="color"></param>
+        /// <param name="backgroundColor"></param>
+        public void Set(char glyph, ConsoleColor color, ConsoleColor backgroundColor)
+        {
+            this.Glyph = glyph;
+            this.Color = color;
+            this.BackgroundColor = backgroundColor;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         internal CPixel Clone()
         {

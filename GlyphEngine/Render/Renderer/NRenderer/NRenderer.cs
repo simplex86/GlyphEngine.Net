@@ -10,7 +10,7 @@ namespace GlyphEngine
         /// <summary>
         /// 渲染缓存数组
         /// </summary>
-        private NRenderBuffer[] buffers = { new NRenderBuffer(), new NRenderBuffer() };
+        private NRendererBuffer[] buffers = { new NRendererBuffer(), new NRendererBuffer() };
         /// <summary>
         /// 当前帧渲染缓存在缓存数组的索引
         /// </summary>
@@ -22,19 +22,15 @@ namespace GlyphEngine
         /// <summary>
         /// 渲染缓存：需要被真正渲染的像素缓存区
         /// </summary>
-        private NRenderBuffer renderer = new NRenderBuffer();
-        /// <summary>
-        /// 擦除缓存：需要被擦除的像素缓存区
-        /// </summary>
-        private NRenderBuffer erasurer = new NRenderBuffer();
+        private NRendererBuffer renderer = new NRendererBuffer();
         /// <summary>
         /// 当前帧的渲染缓存
         /// </summary>
-        private NRenderBuffer current => buffers[curIndex];
+        private NRendererBuffer current => buffers[curIndex];
         /// <summary>
         /// 前一帧的渲染缓存
         /// </summary>
-        private NRenderBuffer previous => buffers[preIndex];
+        private NRendererBuffer previous => buffers[preIndex];
 
         /// <summary>
         /// 往当前帧渲染缓存写入像素数据
@@ -55,9 +51,8 @@ namespace GlyphEngine
         public void Render()
         {
             var dirty = Diff();
-            if (dirty) // 有变化时重绘
+            if (dirty)// 有变化时重绘
             {
-                Erase();
                 Draw();
             }
             Swap();
@@ -70,16 +65,10 @@ namespace GlyphEngine
         {
             var dirty = false;
 
-            renderer.Clear();
             // 被渲染的像素
             foreach (var p in current)
             {
-                if (!previous.GetPixel(p.X, p.Y, out var q))
-                {
-                    renderer.SetPixel(p.X, p.Y, p.Glyph, p.Color, p.BackgroundColor);
-                    dirty = true;
-                }
-                else if (!p.Equals(q))
+                if (!previous.GetPixel(p.X, p.Y, out var q) || !p.Equals(q))
                 {
                     renderer.SetPixel(p.X, p.Y, p.Glyph, p.Color, p.BackgroundColor);
                     dirty = true;
@@ -90,24 +79,12 @@ namespace GlyphEngine
             {
                 if (!current.GetPixel(p.X, p.Y, out var q))
                 {
-                    erasurer.SetPixel(p.X, p.Y, CGlyph.Space);
+                    renderer.SetPixel(p.X, p.Y, CGlyph.Space);
                     dirty = true;
                 }
             }
 
             return dirty;
-        }
-
-        /// <summary>
-        /// 擦除
-        /// </summary>
-        private void Erase()
-        {
-            foreach (var pixel in erasurer)
-            {
-                DrawPixel(pixel);
-            }
-            erasurer.Clear();
         }
 
         /// <summary>
