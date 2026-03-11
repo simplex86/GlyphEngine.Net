@@ -22,11 +22,11 @@ namespace GlyphEngine
         /// <summary>
         /// 颜色
         /// </summary>
-        public ConsoleColor Color { get; set; } = Console.ForegroundColor;
+        public ConsoleColor Color { get; set; } = CScreen.ForegroundColor;
         /// <summary>
         /// 背景颜色
         /// </summary>
-        public ConsoleColor BackgroundColor { get; set; } = Console.BackgroundColor;
+        public ConsoleColor BackgroundColor { get; set; } = CScreen.BackgroundColor;
 
         /// <summary>
         /// 

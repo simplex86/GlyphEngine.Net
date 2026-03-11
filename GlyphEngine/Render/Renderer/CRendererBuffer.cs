@@ -109,7 +109,7 @@ namespace GlyphEngine
         /// <param name="glyph"></param>
         internal void SetPixel(int x, int y, char glyph)
         {
-            SetPixel(x, y, glyph, Console.ForegroundColor, Console.BackgroundColor);
+            SetPixel(x, y, glyph, CScreen.ForegroundColor, CScreen.BackgroundColor);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace GlyphEngine
             var key = Key(x, y);
             if (sparse.TryGetValue(key, out var index))
             {
-                pixel = dense[index];
+                pixel = CollectionsMarshal.AsSpan(dense)[index];
                 return true;
             }
 

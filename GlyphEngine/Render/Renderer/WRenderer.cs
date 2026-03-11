@@ -148,8 +148,8 @@ namespace GlyphEngine
             if (dirty)// 有变化时重绘
             {
                 Draw();
+                Swap();
             }
-            Swap();
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace GlyphEngine
             {
                 if (!current.GetPixel(p.X, p.Y, out var q))
                 {
-                    WriteBuffer(p.X, p.Y, CGlyph.Space, Console.ForegroundColor, Console.BackgroundColor);
+                    WriteBuffer(p.X, p.Y, CGlyph.Space, CScreen.ForegroundColor, CScreen.BackgroundColor);
                     dirty = true;
                 }
             }

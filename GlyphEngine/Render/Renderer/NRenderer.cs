@@ -54,8 +54,8 @@ namespace GlyphEngine
             if (dirty)// 有变化时重绘
             {
                 Draw();
+                Swap();
             }
-            Swap();
         }
 
         /// <summary>
@@ -116,12 +116,12 @@ namespace GlyphEngine
         /// <param name="pixel"></param>
         private void DrawPixel(CPixel pixel)
         {
-            var context = SetConsoleColor(pixel);
+            SetConsoleColor(pixel);
             {
                 Console.SetCursorPosition(pixel.X, pixel.Y);
                 Console.Write(pixel.Glyph);
             }
-            ResetConsoleColor(context);
+            ResetConsoleColor();
         }
 
         /// <summary>
@@ -129,25 +129,20 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="pixel"></param>
         /// <returns></returns>
-        private static (ConsoleColor foregroundColor, ConsoleColor backgroundColor) SetConsoleColor(CPixel pixel)
+        private static void SetConsoleColor(CPixel pixel)
         {
-            var foregroundColor = Console.ForegroundColor;
-            var backgroundColor = Console.BackgroundColor;
-
             Console.ForegroundColor = pixel.Color;
             Console.BackgroundColor = pixel.BackgroundColor;
-
-            return (foregroundColor, backgroundColor);
         }
 
         /// <summary>
         /// 还原控制台颜色
         /// </summary>
         /// <param name="colors"></param>
-        private static void ResetConsoleColor(ValueTuple<ConsoleColor, ConsoleColor> colors)
+        private static void ResetConsoleColor()
         {
-            Console.ForegroundColor = colors.Item1;
-            Console.BackgroundColor = colors.Item2;
+            Console.ForegroundColor = CScreen.ForegroundColor;
+            Console.BackgroundColor = CScreen.BackgroundColor;
         }
     }
 }

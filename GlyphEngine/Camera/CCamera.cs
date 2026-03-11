@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GlyphEngine
 {
@@ -28,11 +29,27 @@ namespace GlyphEngine
         /// <summary>
         /// 宽度
         /// </summary>
-        public int Width { get; internal set; } = CScreen.Width;
+        public int Width
+        {
+            internal set
+            {
+                width = value;
+                CalculateRect();
+            }
+            get {  return width; }
+        }
         /// <summary>
         /// 高度
         /// </summary>
-        public int Height { get; internal set; } = CScreen.Height;
+        public int Height
+        {
+            internal set
+            {
+                height = value;
+                CalculateRect();
+            }
+            get { return height; }
+        }
         /// <summary>
         /// 可见性
         /// </summary>
@@ -42,6 +59,14 @@ namespace GlyphEngine
         /// 是否已被销毁
         /// </summary>
         internal bool Destroyed { get; private set; } = false;
+
+        private int width = CScreen.Width;
+        private int height = CScreen.Height;
+
+        private int minx = 0;
+        private int miny = 0;
+        private int maxx = 0;
+        private int maxy = 0;
 
         /// <summary>
         /// 
@@ -61,6 +86,8 @@ namespace GlyphEngine
         {
             this.Name = name;
             this.Order = order;
+
+            CalculateRect();
         }
 
         /// <summary>
@@ -171,18 +198,24 @@ namespace GlyphEngine
         /// <returns></returns>
         private bool Cull(int x, int y)
         {
-            var x1 = Math.Max(0, (CScreen.Width - Width) / 2);
-            var x2 = Math.Min(CScreen.Width, x1 + Width);
-            var y1 = Math.Max(0, (CScreen.Height - Height) / 2);
-            var y2 = Math.Min(CScreen.Height, y1 + Height);
-
-            if (x < x1 || x > x2 ||
-                y < y1 || y > y2)
+            if (x < minx || x > maxx ||
+                y < miny || y > maxy)
             {
                 return false;
             }
             
             return true;
+        }
+
+        /// <summary>
+        /// 计算相机范围
+        /// </summary>
+        private void CalculateRect()
+        {
+            minx = Math.Max(0, (CScreen.Width  - Width)  / 2);
+            miny = Math.Max(0, (CScreen.Height - Height) / 2);
+            maxx = Math.Min(CScreen.Width,  minx + Width);
+            maxy = Math.Min(CScreen.Height, miny + Height);
         }
     }
 }
