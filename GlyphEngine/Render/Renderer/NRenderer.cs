@@ -10,7 +10,7 @@ namespace GlyphEngine
         /// <summary>
         /// 渲染缓存数组
         /// </summary>
-        private NRendererBuffer[] buffers = { new NRendererBuffer(), new NRendererBuffer() };
+        private CRendererBuffer[] buffers = { new CRendererBuffer(), new CRendererBuffer() };
         /// <summary>
         /// 当前帧渲染缓存在缓存数组的索引
         /// </summary>
@@ -22,15 +22,15 @@ namespace GlyphEngine
         /// <summary>
         /// 渲染缓存：需要被真正渲染的像素缓存区
         /// </summary>
-        private NRendererBuffer renderer = new NRendererBuffer();
+        private CRendererBuffer renderer = new CRendererBuffer();
         /// <summary>
         /// 当前帧的渲染缓存
         /// </summary>
-        private NRendererBuffer current => buffers[curIndex];
+        private CRendererBuffer current => buffers[curIndex];
         /// <summary>
         /// 前一帧的渲染缓存
         /// </summary>
-        private NRendererBuffer previous => buffers[preIndex];
+        private CRendererBuffer previous => buffers[preIndex];
 
         /// <summary>
         /// 往当前帧渲染缓存写入像素数据

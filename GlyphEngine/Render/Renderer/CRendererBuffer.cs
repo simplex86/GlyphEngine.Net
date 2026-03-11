@@ -8,15 +8,15 @@ namespace GlyphEngine
     /// <summary>
     /// NRenderBuffer的迭代器
     /// </summary>
-    internal class NRendererBufferEnumerator : IEnumerator<CPixel>
+    internal class CRendererBufferEnumerator : IEnumerator<CPixel>
     {
-        private List<CPixel> list = null;
+        private List<CPixel> buffer = null;
         private int index = -1;
 
         /// <summary>
         /// 
         /// </summary>
-        public CPixel Current => list[index];
+        public CPixel Current => buffer[index];
 
         /// <summary>
         /// 
@@ -28,9 +28,9 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="list"></param>
         /// <param name="count"></param>
-        public NRendererBufferEnumerator(List<CPixel> list, int count)
+        public CRendererBufferEnumerator(List<CPixel> list)
         {
-            this.list = list;
+            this.buffer = list;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace GlyphEngine
         public bool MoveNext()
         {
             index++;
-            return index < list.Count;
+            return index < buffer.Count;
         }
 
         /// <summary>
@@ -63,21 +63,30 @@ namespace GlyphEngine
     /// <summary>
     /// 渲染缓冲
     /// </summary>
-    internal class NRendererBuffer : IEnumerable<CPixel>
+    internal class CRendererBuffer : IEnumerable<CPixel>
     {
         private List<CPixel> dense;
-        private Dictionary<ulong, int> sparse;
-        private NRendererBufferEnumerator enumerator = null;
+        private Dictionary<ulong, int> sparse = new Dictionary<ulong, int>();
+        private CRendererBufferEnumerator enumerator = null;
 
         /// <summary>
         /// 
         /// </summary>
-        internal NRendererBuffer()
+        internal CRendererBuffer()
+            : this(CScreen.Width, CScreen.Height)
         {
-            dense = new List<CPixel>(CScreen.Width * CScreen.Height);
-            sparse = new Dictionary<ulong, int>();
 
-            enumerator = new NRendererBufferEnumerator(dense, 0);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        internal CRendererBuffer(int width, int height)
+        {
+            dense = new List<CPixel>(width * height);
+            enumerator = new CRendererBufferEnumerator(dense);
         }
 
         /// <summary>
