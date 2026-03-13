@@ -16,16 +16,16 @@ namespace GlyphEngine
         /// </summary>
         public int Count => GameObjects.Count;
         /// <summary>
-        /// 
+        /// 是否已经被销毁
         /// </summary>
         public bool Destroyed { get; private set; } = false;
 
         /// <summary>
-        /// 
+        /// 场景内的相机列表
         /// </summary>
         internal List<CCamera> Cameras { get; } = new List<CCamera>();
         /// <summary>
-        /// 
+        /// 场景内的对象列表
         /// </summary>
         internal List<CGameObject> GameObjects { get; } = new List<CGameObject>();
 
@@ -38,12 +38,26 @@ namespace GlyphEngine
         }
 
         /// <summary>
-        /// 
+        /// 添加相机
         /// </summary>
         /// <param name="camera"></param>
         internal void Add(CCamera camera)
         {
             Cameras.Add(camera);
+        }
+
+        /// <summary>
+        /// 根据指定名字获取相机
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public CCamera GetCamera(string name)
+        {
+            foreach (var camera in Cameras)
+            {
+                if (camera.Name == name) return camera;
+            }
+            return null;
         }
 
         /// <summary>
@@ -71,7 +85,21 @@ namespace GlyphEngine
         }
 
         /// <summary>
-        /// 
+        /// 根据指定名字获取对象
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public CGameObject GetChild(string name)
+        {
+            foreach (var gameobject in GameObjects)
+            {
+                if (gameobject.Name == name) return gameobject;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 根据指定索引获取对象
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
@@ -85,7 +113,7 @@ namespace GlyphEngine
         }
 
         /// <summary>
-        /// 
+        /// 更新
         /// </summary>
         internal void Update()
         {

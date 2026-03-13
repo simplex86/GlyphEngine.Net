@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace GlyphEngine
 {
@@ -10,7 +9,7 @@ namespace GlyphEngine
     public class CCamera : ITransformable
     {
         /// <summary>
-        /// 
+        /// 名字
         /// </summary>
         public string Name { get; set; } = "camera";
         /// <summary>
@@ -21,19 +20,19 @@ namespace GlyphEngine
         /// 渲染顺序
         /// 值越小越先被渲染
         /// </summary>
-        public uint Order { get; } = 0;
+        internal uint Order { get; } = 0;
         /// <summary>
         /// 渲染遮罩
         /// </summary>
-        public ulong Mask { get; set; } = (ulong)ERenderMask.Everything;
+        internal ulong Mask { get; set; } = (ulong)ERenderMask.Everything;
         /// <summary>
         /// 宽度
         /// </summary>
-        public int Width
+        internal int Width
         {
-            internal set
+            set
             {
-                width = value;
+                width = Math.Min(value, CScreen.Width);
                 CalculateRect();
             }
             get {  return width; }
@@ -41,11 +40,11 @@ namespace GlyphEngine
         /// <summary>
         /// 高度
         /// </summary>
-        public int Height
+        internal int Height
         {
-            internal set
+            set
             {
-                height = value;
+                height = Math.Min(value, CScreen.Height);
                 CalculateRect();
             }
             get { return height; }
@@ -60,7 +59,7 @@ namespace GlyphEngine
         /// </summary>
         internal bool Destroyed { get; private set; } = false;
 
-        private int width = CScreen.Width;
+        private int width  = CScreen.Width;
         private int height = CScreen.Height;
 
         private int minx = 0;
@@ -198,8 +197,10 @@ namespace GlyphEngine
         /// <returns></returns>
         private bool Cull(int x, int y)
         {
-            if (x < minx || x > maxx ||
-                y < miny || y > maxy)
+            var wpos = Transform.WorldPosition;
+
+            if (x < minx + wpos.X || x > maxx + wpos.X ||
+                y < miny + wpos.Y || y > maxy + wpos.Y)
             {
                 return false;
             }
