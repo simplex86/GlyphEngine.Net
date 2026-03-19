@@ -10,11 +10,11 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        internal int X { get; set; }
+        public int X { get; internal set; }
         /// <summary>
         /// 
         /// </summary>
-        internal int Y { get; set; }
+        public int Y { get; internal set; }
         /// <summary>
         /// 
         /// </summary>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Mixer;
+using System;
 
 namespace GlyphEngine
 {
@@ -116,33 +117,8 @@ namespace GlyphEngine
         /// <param name="pixel"></param>
         private void DrawPixel(CPixel pixel)
         {
-            SetConsoleColor(pixel);
-            {
-                Console.SetCursorPosition(pixel.X, pixel.Y);
-                Console.Write(pixel.Glyph);
-            }
-            ResetConsoleColor();
-        }
-
-        /// <summary>
-        /// 设置控制台颜色
-        /// </summary>
-        /// <param name="pixel"></param>
-        /// <returns></returns>
-        private static void SetConsoleColor(CPixel pixel)
-        {
-            Console.ForegroundColor = pixel.Color;
-            Console.BackgroundColor = pixel.BackgroundColor;
-        }
-
-        /// <summary>
-        /// 还原控制台颜色
-        /// </summary>
-        /// <param name="colors"></param>
-        private static void ResetConsoleColor()
-        {
-            Console.ForegroundColor = CScreen.ForegroundColor;
-            Console.BackgroundColor = CScreen.BackgroundColor;
+            CConsoleHelper.SetCursorPosition(pixel.X, pixel.Y);
+            CConsoleHelper.WriteANSI(pixel.Glyph, pixel.Color, pixel.BackgroundColor);
         }
     }
 }

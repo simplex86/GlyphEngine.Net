@@ -14,30 +14,13 @@ namespace GlyphEngine
         /// 
         /// </summary>
         private IRenderer renderer;
-        /// <summary>
-        /// 
-        /// </summary>
-        private static Dictionary<OSPlatform, EPlatform> platforms = new Dictionary<OSPlatform, EPlatform>()
-        {
-            { OSPlatform.Windows,   EPlatform.Windows },
-            { OSPlatform.OSX,       EPlatform.Mac },
-            { OSPlatform.Linux,     EPlatform.Linux },
-        };
 
         /// <summary>
         /// 
         /// </summary>
         internal CRenderer()
         {
-            var platform = EPlatform.Unknown;
-            foreach (var kv in platforms)
-            {
-                if (RuntimeInformation.IsOSPlatform(kv.Key))
-                {
-                    platform = kv.Value;
-                    break;
-                }
-            }
+            var platform = CPlatformHelper.GetPlatform();
             // 查找自定义渲染器
             var types = CReflectionHelper.FindAll<IRenderer, CRendererEntryAttribute>();
             foreach (var type in types)
@@ -49,8 +32,8 @@ namespace GlyphEngine
                 }
             }
             // 如果没有自定义渲染器，则使用内置渲染器
-            renderer = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? new WRenderer()
-                                                                           : new NRenderer();
+            renderer = (platform == EPlatform.Windows) ? new WRenderer()
+                                                       : new NRenderer();
         }
 
         /// <summary>

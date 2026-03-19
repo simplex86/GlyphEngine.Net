@@ -41,7 +41,7 @@ namespace GlyphEngine
         /// <summary>
         /// 字符缓存
         /// </summary>
-        private WindowsNativeAPI.CharInfo[] buffer;
+        private CWindowsNativeAPI.CharInfo[] buffer;
         /// <summary>
         /// 控制台句柄
         /// </summary>
@@ -49,7 +49,7 @@ namespace GlyphEngine
         /// <summary>
         /// 写入区
         /// </summary>
-        private WindowsNativeAPI.SmallRect region = new WindowsNativeAPI.SmallRect() { 
+        private CWindowsNativeAPI.SmallRect region = new CWindowsNativeAPI.SmallRect() { 
             Left   = 0, 
             Top    = 0, 
             Right  = (short)CScreen.Width, 
@@ -76,7 +76,7 @@ namespace GlyphEngine
         /// <summary>
         /// 写入缓存的位置
         /// </summary>
-        private WindowsNativeAPI.Coord coord = new WindowsNativeAPI.Coord()
+        private CWindowsNativeAPI.Coord coord = new CWindowsNativeAPI.Coord()
         {
             X = 0,
             Y = 0
@@ -85,7 +85,7 @@ namespace GlyphEngine
         /// <summary>
         /// 写入缓存的大小
         /// </summary>
-        private readonly static WindowsNativeAPI.Coord BUFFER_SIZE = new WindowsNativeAPI.Coord() 
+        private readonly static CWindowsNativeAPI.Coord BUFFER_SIZE = new CWindowsNativeAPI.Coord() 
         { 
             X = (short)CScreen.Width, 
             Y = (short)CScreen.Height 
@@ -108,7 +108,7 @@ namespace GlyphEngine
             this.width = width;
             this.height = height;
 
-            handle = WindowsNativeAPI.CreateFile("CONOUT$", 
+            handle = CWindowsNativeAPI.CreateFile("CONOUT$", 
                                                  (uint)EFileAccessMode.Write, 
                                                  (uint)EFileShareMode.Write, 
                                                  IntPtr.Zero, 
@@ -118,7 +118,7 @@ namespace GlyphEngine
 
             if (!handle.IsInvalid)
             {
-                buffer = new WindowsNativeAPI.CharInfo[width * height];
+                buffer = new CWindowsNativeAPI.CharInfo[width * height];
             }
         }
 
@@ -189,7 +189,7 @@ namespace GlyphEngine
             try
             {
                 PrevProcess();
-                WindowsNativeAPI.WriteConsoleOutputW(handle, buffer, BUFFER_SIZE, coord, ref region);
+                CWindowsNativeAPI.WriteConsoleOutputW(handle, buffer, BUFFER_SIZE, coord, ref region);
                 PostProcess();
             }
             catch (Exception ex)
