@@ -1,4 +1,4 @@
-﻿namespace GlyphEngine.Net
+﻿namespace GlyphEngine
 {
     /// <summary>
     /// 辅助测试的接口

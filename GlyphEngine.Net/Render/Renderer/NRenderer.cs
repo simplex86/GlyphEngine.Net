@@ -1,5 +1,4 @@
-﻿using GlyphEngine.Net;
-using System;
+﻿using System;
 using System.Text;
 
 namespace GlyphEngine

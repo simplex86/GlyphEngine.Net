@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using GlyphEngine.Net;
 using Microsoft.Win32.SafeHandles;
 
 namespace GlyphEngine
