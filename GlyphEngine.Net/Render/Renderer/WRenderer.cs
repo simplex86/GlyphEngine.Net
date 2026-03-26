@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using GlyphEngine.Net;
 using Microsoft.Win32.SafeHandles;
 
 namespace GlyphEngine
@@ -7,7 +8,7 @@ namespace GlyphEngine
     /// <summary>
     /// Windows系统专用渲染器
     /// </summary>
-    internal class WRenderer : IRenderer
+    internal class WRenderer : IRenderer, IFakable
     {
         /// <summary>
         /// 
@@ -189,7 +190,10 @@ namespace GlyphEngine
             try
             {
                 PrevProcess();
-                CWindowsNativeAPI.WriteConsoleOutputW(handle, buffer, BUFFER_SIZE, coord, ref region);
+                if (!Faked)
+                {
+                    CWindowsNativeAPI.WriteConsoleOutputW(handle, buffer, BUFFER_SIZE, coord, ref region);
+                }
                 PostProcess();
             }
             catch (Exception ex)
@@ -259,6 +263,20 @@ namespace GlyphEngine
             miny = short.MaxValue;
             maxx = short.MinValue;
             maxy = short.MinValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool Faked { get; private set; } = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="faked"></param>
+        public void Fake(bool faked)
+        {
+            Faked = faked;
         }
     }
 }

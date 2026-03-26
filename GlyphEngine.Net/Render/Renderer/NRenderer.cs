@@ -1,6 +1,5 @@
-﻿using NAudio.Mixer;
+﻿using GlyphEngine.Net;
 using System;
-using System.IO;
 using System.Text;
 
 namespace GlyphEngine
@@ -8,7 +7,7 @@ namespace GlyphEngine
     /// <summary>
     /// 通用渲染器
     /// </summary>
-    internal class NRenderer : IRenderer
+    internal class NRenderer : IRenderer, IFakable
     {
         /// <summary>
         /// 渲染缓存数组
@@ -136,8 +135,22 @@ namespace GlyphEngine
         private void PrintPixels()
         {
             var text = builder.ToString();
-            Console.Write(text);
+            if (!Faked) Console.Write(text);
             builder.Clear();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool Faked { get; private set; } = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="faked"></param>
+        public void Fake(bool faked)
+        {
+            Faked = faked;
         }
     }
 }
