@@ -1,5 +1,7 @@
 ﻿using NAudio.Mixer;
 using System;
+using System.IO;
+using System.Text;
 
 namespace GlyphEngine
 {
@@ -32,6 +34,10 @@ namespace GlyphEngine
         /// 前一帧的渲染缓存
         /// </summary>
         private CRendererBuffer previous => buffers[preIndex];
+        /// <summary>
+        /// 
+        /// </summary>
+        private StringBuilder builder = new StringBuilder();
 
         /// <summary>
         /// 往当前帧渲染缓存写入像素数据
@@ -93,10 +99,9 @@ namespace GlyphEngine
         /// </summary>
         private void Draw()
         {
-            foreach (var pixel in renderer)
-            {
-                DrawPixel(pixel);
-            }
+            WritePixels();
+            PrintPixels();
+
             renderer.Clear();
         }
 
@@ -112,13 +117,27 @@ namespace GlyphEngine
         }
 
         /// <summary>
+        /// 写入像素
+        /// 使用 ANSI 转义，减少 Console API 的调用次数
+        /// </summary>
+        private void WritePixels()
+        {
+            foreach (var pixel in renderer)
+            {
+                builder.Append("\x1b[").Append(pixel.Y).Append(';').Append(pixel.X).Append('H')
+                       .Append("\u001b[38;5;").Append((byte)pixel.Color).Append(";48;5;").Append((byte)pixel.BackgroundColor).Append('m')
+                       .Append(pixel.Glyph).Append("\u001b[0m");
+            }
+        }
+
+        /// <summary>
         /// 绘制像素
         /// </summary>
-        /// <param name="pixel"></param>
-        private void DrawPixel(CPixel pixel)
+        private void PrintPixels()
         {
-            CConsoleHelper.SetCursorPosition(pixel.X, pixel.Y);
-            CConsoleHelper.WriteANSI(pixel.Glyph, pixel.Color, pixel.BackgroundColor);
+            var text = builder.ToString();
+            Console.Write(text);
+            builder.Clear();
         }
     }
 }
