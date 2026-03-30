@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Mixer;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -65,8 +66,10 @@ namespace GlyphEngine
     /// </summary>
     internal class CRendererBuffer : IEnumerable<CPixel>
     {
+        private int width;
+        private int height;
+        private int[] sparse;
         private List<CPixel> dense;
-        private Dictionary<ulong, int> sparse = new Dictionary<ulong, int>();
         private CRendererBufferEnumerator enumerator = null;
 
         /// <summary>
@@ -85,6 +88,15 @@ namespace GlyphEngine
         /// <param name="height"></param>
         internal CRendererBuffer(int width, int height)
         {
+            this.width = width;
+            this.height = height;
+
+            sparse = new int[width * height];
+            for (int i = 0; i < sparse.Length; i++)
+            {
+                sparse[i] = -1;
+            }
+
             dense = new List<CPixel>(width * height);
             enumerator = new CRendererBufferEnumerator(dense);
         }
@@ -122,8 +134,7 @@ namespace GlyphEngine
         /// <param name="backgroundColor"></param>
         internal void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
         {
-            var key = Key(x, y);
-            if (sparse.TryGetValue(key, out var index))
+            if (TryGetDenseIndex(x, y, out var key, out var index))
             {
                 var span = CollectionsMarshal.AsSpan(dense);
                 span[index].Glyph = glyph;
@@ -142,8 +153,11 @@ namespace GlyphEngine
         /// </summary>
         internal void Clear()
         {
+            for (int i = 0; i < sparse.Length; i++)
+            {
+                sparse[i] = -1;
+            }
             dense.Clear();
-            sparse.Clear();
         }
 
         /// <summary>
@@ -155,8 +169,7 @@ namespace GlyphEngine
         /// <returns></returns>
         internal bool GetPixel(int x, int y, out CPixel pixel)
         {
-            var key = Key(x, y);
-            if (sparse.TryGetValue(key, out var index))
+            if (TryGetDenseIndex(x, y, out var _, out var index))
             {
                 pixel = CollectionsMarshal.AsSpan(dense)[index];
                 return true;
@@ -164,6 +177,14 @@ namespace GlyphEngine
 
             pixel = default;
             return false;
+        }
+
+        private bool TryGetDenseIndex(int x, int y, out int key, out int index)
+        {
+            key = y * width + x;
+            index = sparse[key];
+
+            return index >= 0;
         }
 
         /// <summary>
@@ -175,20 +196,6 @@ namespace GlyphEngine
 
             enumerator?.Dispose();
             enumerator = null;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        private ulong Key(int x, int y)
-        {
-            var key = (ulong)x;
-            key = (key << 32) | (ulong)y;
-
-            return key;
         }
     }
 }

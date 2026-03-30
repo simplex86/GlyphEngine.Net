@@ -18,20 +18,20 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        public char Glyph { get; set; } = CGlyph.Empty;
+        public char Glyph = CGlyph.Empty;
         /// <summary>
         /// 颜色
         /// </summary>
-        public ConsoleColor Color { get; set; } = CScreen.ForegroundColor;
+        public ConsoleColor Color = CScreen.ForegroundColor;
         /// <summary>
         /// 背景颜色
         /// </summary>
-        public ConsoleColor BackgroundColor { get; set; } = CScreen.BackgroundColor;
+        public ConsoleColor BackgroundColor = CScreen.BackgroundColor;
 
         /// <summary>
         /// 
         /// </summary>
-        public static CPixel Default { get; } = new CPixel();
+        public readonly static CPixel Default = new CPixel();
 
         /// <summary>
         /// 
