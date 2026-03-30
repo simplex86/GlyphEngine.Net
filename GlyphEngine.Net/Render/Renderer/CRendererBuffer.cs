@@ -1,5 +1,4 @@
-﻿using NAudio.Mixer;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -9,7 +8,7 @@ namespace GlyphEngine
     /// <summary>
     /// NRenderBuffer的迭代器
     /// </summary>
-    internal class CRendererBufferEnumerator : IEnumerator<CPixel>
+    internal class CRendererBufferEnumerator : IEnumerator<CPixel>, IDisposable
     {
         private List<CPixel> buffer = null;
         private int index = -1;
@@ -64,12 +63,27 @@ namespace GlyphEngine
     /// <summary>
     /// 渲染缓冲
     /// </summary>
-    internal class CRendererBuffer : IEnumerable<CPixel>
+    internal class CRendererBuffer : IEnumerable<CPixel>, IDisposable
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private int width;
+        /// <summary>
+        /// 
+        /// </summary>
         private int height;
+        /// <summary>
+        /// 稀疏数组
+        /// </summary>
         private int[] sparse;
+        /// <summary>
+        /// 紧密数组
+        /// </summary>
         private List<CPixel> dense;
+        /// <summary>
+        /// 迭代器
+        /// </summary>
         private CRendererBufferEnumerator enumerator = null;
 
         /// <summary>
@@ -92,10 +106,7 @@ namespace GlyphEngine
             this.height = height;
 
             sparse = new int[width * height];
-            for (int i = 0; i < sparse.Length; i++)
-            {
-                sparse[i] = -1;
-            }
+            sparse.AsSpan().Fill(-1);
 
             dense = new List<CPixel>(width * height);
             enumerator = new CRendererBufferEnumerator(dense);
@@ -134,7 +145,7 @@ namespace GlyphEngine
         /// <param name="backgroundColor"></param>
         internal void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
         {
-            if (TryGetDenseIndex(x, y, out var key, out var index))
+            if (TryGetIndex(x, y, out var key, out var index))
             {
                 var span = CollectionsMarshal.AsSpan(dense);
                 span[index].Glyph = glyph;
@@ -153,11 +164,8 @@ namespace GlyphEngine
         /// </summary>
         internal void Clear()
         {
-            for (int i = 0; i < sparse.Length; i++)
-            {
-                sparse[i] = -1;
-            }
             dense.Clear();
+            sparse.AsSpan().Fill(-1);
         }
 
         /// <summary>
@@ -169,7 +177,7 @@ namespace GlyphEngine
         /// <returns></returns>
         internal bool GetPixel(int x, int y, out CPixel pixel)
         {
-            if (TryGetDenseIndex(x, y, out var _, out var index))
+            if (TryGetIndex(x, y, out var _, out var index))
             {
                 pixel = CollectionsMarshal.AsSpan(dense)[index];
                 return true;
@@ -179,7 +187,15 @@ namespace GlyphEngine
             return false;
         }
 
-        private bool TryGetDenseIndex(int x, int y, out int key, out int index)
+        /// <summary>
+        /// 获取xy坐标对应的索引值
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="key">稀疏数组的索引值</param>
+        /// <param name="index">紧密数组的索引值</param>
+        /// <returns></returns>
+        private bool TryGetIndex(int x, int y, out int key, out int index)
         {
             key = y * width + x;
             index = sparse[key];
@@ -190,7 +206,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        internal void Dispose()
+        public void Dispose()
         {
             Clear();
 
