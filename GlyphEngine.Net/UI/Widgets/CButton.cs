@@ -19,11 +19,11 @@ namespace GlyphEngine
         /// <summary>
         /// 获得焦点时的颜色
         /// </summary>
-        public ConsoleColor FocusColor { get; set; } = ConsoleColor.Red;
+        public CColor FocusColor { get; set; } = CColor.Red;
         /// <summary>
         /// 失去焦点时的颜色
         /// </summary>
-        public ConsoleColor UnfocusColor { get; set; } = ConsoleColor.White;
+        public CColor UnfocusColor { get; set; } = CColor.White;
 
         /// <summary>
         /// 
@@ -42,7 +42,7 @@ namespace GlyphEngine
         /// <param name="unfocusColor"></param>
         /// <param name="focusColor"></param>
         /// <param name="style"></param>
-        internal CButton(CVector2 localposition, int width, int height, ConsoleKey keycode, ConsoleColor unfocusColor, ConsoleColor focusColor, EBorderStyle style = EBorderStyle.Thin)
+        internal CButton(CVector2 localposition, int width, int height, ConsoleKey keycode, CColor unfocusColor, CColor focusColor, EBorderStyle style = EBorderStyle.Thin)
             : base(localposition)
         {
             this.Width = width;

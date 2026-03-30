@@ -10,7 +10,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        ConsoleColor Color { get; set; }
+        CColor Color { get; set; }
 
         /// <summary>
         /// 

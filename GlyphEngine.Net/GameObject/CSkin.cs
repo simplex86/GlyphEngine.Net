@@ -39,7 +39,7 @@ namespace GlyphEngine
         /// <param name="y"></param>
         /// <param name="symbol"></param>
         /// <param name="color"></param>
-        internal void Set(int x, int y, char glyph, ConsoleColor color)
+        internal void Set(int x, int y, char glyph, CColor color)
         {
             var key = Key(x, y);
             if (grid.TryGetValue(key, out var index))
@@ -105,8 +105,8 @@ namespace GlyphEngine
 
             foreach (var pixel in list)
             {
-                var clonepixel = pixel.Clone();
-                clone.list.Add(clonepixel);
+                //var clonepixel = pixel.Clone();
+                clone.list.Add(pixel);
             }
             foreach (var kv in grid)
             {

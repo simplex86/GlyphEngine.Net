@@ -10,7 +10,7 @@ namespace GlyphEngine
         /// <summary>
         /// 颜色
         /// </summary>
-        ConsoleColor Color { get; set; }
+        CColor Color { get; set; }
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ namespace GlyphEngine
         /// <summary>
         /// 颜色
         /// </summary>
-        public ConsoleColor Color
+        public CColor Color
         {
             set
             {
@@ -74,12 +74,12 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        private ConsoleColor color = ConsoleColor.White;
+        private CColor color = CColor.White;
 
         /// <summary>
         /// 
         /// </summary>
-        protected virtual void OnColorChanged(ConsoleColor color)
+        protected virtual void OnColorChanged(CColor color)
         {
 
         }
@@ -148,7 +148,7 @@ namespace GlyphEngine
         {
             foreach (var pixel in decorator.pixels)
             {
-                var clone = pixel.Clone();
+                var clone = pixel;//.Clone();
                 clone.Color = color;
                 GameObject.AddPixel(clone);
             }

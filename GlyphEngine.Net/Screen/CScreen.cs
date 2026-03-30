@@ -23,10 +23,10 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        internal static ConsoleColor ForegroundColor { get; } = Console.ForegroundColor;
+        internal static CColor ForegroundColor { get; } = CColorHelper.GetColor(Console.ForegroundColor);
         /// <summary>
         /// 
         /// </summary>
-        internal static ConsoleColor BackgroundColor { get; } = Console.BackgroundColor;
+        internal static CColor BackgroundColor { get; } = CColorHelper.GetColor(Console.BackgroundColor);
     }
 }

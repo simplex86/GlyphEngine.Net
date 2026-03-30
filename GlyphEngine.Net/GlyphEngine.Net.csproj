@@ -16,8 +16,4 @@
     <None Remove="GameObject\Primitives\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Render\Pixel\CPixelPool.cs" />
-  </ItemGroup>
-
 </Project>

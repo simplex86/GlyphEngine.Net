@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GlyphEngine
+﻿namespace GlyphEngine
 {
     /// <summary>
     /// 
@@ -18,6 +16,6 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        ConsoleColor Color { get; set; }
+        CColor Color { get; set; }
     }
 }

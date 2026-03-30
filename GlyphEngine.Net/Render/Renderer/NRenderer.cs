@@ -45,7 +45,7 @@ namespace GlyphEngine
         /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <param name="backgroundColor"></param>
-        public void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
+        public void SetPixel(int x, int y, char glyph, CColor color, CColor backgroundColor)
         {
             current.SetPixel(x, y, glyph, color, backgroundColor);
         }
@@ -122,9 +122,13 @@ namespace GlyphEngine
         {
             foreach (var pixel in renderer)
             {
-                builder.Append("\x1b[").Append(pixel.Y).Append(';').Append(pixel.X).Append('H')
-                       .Append("\u001b[38;5;").Append((byte)pixel.Color).Append(";48;5;").Append((byte)pixel.BackgroundColor).Append('m')
-                       .Append(pixel.Glyph).Append("\u001b[0m");
+                var c = pixel.Color;
+                var b = pixel.BackgroundColor;
+
+                builder.Append("\x1b[").Append(pixel.Y).Append(';').Append(pixel.X).Append('H') // 位置
+                       .Append("\u001b[38;2;").Append(c.R).Append(';').Append(c.G).Append(';').Append(c.B) // 文本颜色
+                       .Append(";48;2;").Append(b.R).Append(';').Append(b.G).Append(';').Append(b.B).Append('m') // 背景颜色
+                       .Append(pixel.Glyph).Append("\u001b[0m"); // 字符
             }
         }
 

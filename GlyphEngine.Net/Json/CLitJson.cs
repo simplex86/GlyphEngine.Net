@@ -1,6 +1,7 @@
-﻿using System;
+﻿using LitJson;
+using System;
 using System.Linq;
-using LitJson;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GlyphEngine
 {
@@ -113,7 +114,7 @@ namespace GlyphEngine
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static int As(this JsonData self, string key, byte defaultValue)
+        public static byte As(this JsonData self, string key, byte defaultValue)
         {
             return self.AsByte(key, out var value) ? value : defaultValue;
         }
@@ -400,16 +401,19 @@ namespace GlyphEngine
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool AsConsoleColor(this JsonData self, string key, out ConsoleColor value)
+        public static bool AsColor(this JsonData self, string key, out CColor value)
         {
-            value = ConsoleColor.White;
-
             if (self.TryGetValue(key, out var v))
             {
-                value = (ConsoleColor)(int)v;
+                var r = v.As("r", (byte)0);
+                var g = v.As("g", (byte)0);
+                var b = v.As("b", (byte)0);
+                value = new CColor(r, g, b);
+
                 return true;
             }
 
+            value = CColor.White;
             return false;
         }
 
@@ -420,9 +424,9 @@ namespace GlyphEngine
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static ConsoleColor As(this JsonData self, string key, ConsoleColor defaultValue)
+        public static CColor As(this JsonData self, string key, CColor defaultValue)
         {
-            return self.AsConsoleColor(key, out var value) ? value : defaultValue;
+            return self.AsColor(key, out var value) ? value : defaultValue;
         }
 
         /// <summary>

@@ -43,7 +43,7 @@ namespace GlyphEngine
                 var x = p.As("x", 0);
                 var y = p.As("y", 0);
                 var glyph = p.As("glyph", CGlyph.Empty);
-                var color = CColorHelper.Get(p, "color");
+                var color = p.As("color", CScreen.ForegroundColor);
 
                 skin.Set(x, y, glyph, color);
             }

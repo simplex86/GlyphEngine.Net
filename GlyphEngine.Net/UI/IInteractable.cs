@@ -20,12 +20,12 @@ namespace GlyphEngine
         /// <summary>
         /// 获得焦点时的颜色
         /// </summary>
-        ConsoleColor FocusColor { get; set; }
+        CColor FocusColor { get; set; }
 
         /// <summary>
         /// 失去焦点时的颜色
         /// </summary>
-        ConsoleColor UnfocusColor { get; set; }
+        CColor UnfocusColor { get; set; }
 
         /// <summary>
         /// 获得焦点

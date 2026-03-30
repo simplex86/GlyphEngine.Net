@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using LitJson;
 
 namespace GlyphEngine
 {
@@ -12,55 +11,79 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        private static Dictionary<string, ConsoleColor> dict = new()
+        private static Dictionary<ConsoleColor, CColor> dict = new()
         {
-            { "black", ConsoleColor.Black },
-            { "darkblue", ConsoleColor.DarkBlue },
-            { "darkgreen", ConsoleColor.DarkGreen },
-            { "darkcyan", ConsoleColor.DarkCyan },
-            { "darkred", ConsoleColor.DarkRed },
-            { "darkmagenta", ConsoleColor.DarkMagenta },
-            { "darkyellow", ConsoleColor.DarkYellow },
-            { "gray", ConsoleColor.Gray },
-            { "darkgray", ConsoleColor.DarkGray },
-            { "blue", ConsoleColor.Blue },
-            { "green", ConsoleColor.Green },
-            { "cyan", ConsoleColor.Cyan },
-            { "red", ConsoleColor.Red },
-            { "magenta", ConsoleColor.Magenta },
-            { "yellow", ConsoleColor.Yellow },
-            { "white", ConsoleColor.White },
+            { ConsoleColor.Black,       CColor.Black },
+            { ConsoleColor.DarkBlue,    CColor.DarkBlue },
+            { ConsoleColor.DarkGreen,   CColor.DarkGreen },
+            { ConsoleColor.DarkCyan,    CColor.DarkCyan },
+            { ConsoleColor.DarkRed,     CColor.DarkRed },
+            { ConsoleColor.DarkMagenta, CColor.DarkMagenta },
+            { ConsoleColor.DarkYellow,  CColor.DarkYellow },
+            { ConsoleColor.Gray,        CColor.Gray },
+            { ConsoleColor.DarkGray,    CColor.DarkGray },
+            { ConsoleColor.Blue,        CColor.Blue },
+            { ConsoleColor.Green,       CColor.Green },
+            { ConsoleColor.Cyan,        CColor.Cyan },
+            { ConsoleColor.Red,         CColor.Red },
+            { ConsoleColor.Magenta,     CColor.Magenta },
+            { ConsoleColor.Yellow,      CColor.Yellow },
+            { ConsoleColor.White,       CColor.White },
         };
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="color"></param>
         /// <returns></returns>
-        public static ConsoleColor Get(string name)
+        public static ConsoleColor GetClosestConsoleColor(CColor color)
         {
-            if (dict.TryGetValue(name, out var color))
+            return GetClosestConsoleColor(color.R, color.G, color.B);
+        }
+
+        /// <summary>
+        /// RGB
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="g"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static ConsoleColor GetClosestConsoleColor(byte r, byte g, byte b)
+        {
+            var z = ConsoleColor.Black;
+            double u = r, v = g, w = b, d = double.MaxValue;
+
+            foreach (var kv in dict)
             {
-                return color;
+                var k = kv.Key;
+                var c = kv.Value;
+
+                var t = Math.Pow(c.R - u, 2.0) + Math.Pow(c.G - v, 2.0) + Math.Pow(c.B - w, 2.0);
+                if (t == 0.0) return k;
+
+                if (t < d)
+                {
+                    d = t;
+                    z = k;
+                }
             }
 
-            return ConsoleColor.White;
+            return z;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="key"></param>
+        /// <param name="consoleColor"></param>
         /// <returns></returns>
-        public static ConsoleColor Get(JsonData data, string key)
+        public static CColor GetColor(ConsoleColor consoleColor)
         {
-            if (data.AsString(key, out var name))
+            if (dict.TryGetValue(consoleColor, out var color))
             {
-                return Get(name);
+                return color;
             }
 
-            return ConsoleColor.White;
+            return CColor.Black;
         }
     }
 }

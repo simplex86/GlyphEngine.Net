@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GlyphEngine
+﻿namespace GlyphEngine
 {
     /// <summary>
     /// 像素
@@ -22,24 +20,16 @@ namespace GlyphEngine
         /// <summary>
         /// 颜色
         /// </summary>
-        public ConsoleColor Color = CScreen.ForegroundColor;
+        public CColor Color = CScreen.ForegroundColor;
         /// <summary>
         /// 背景颜色
         /// </summary>
-        public ConsoleColor BackgroundColor = CScreen.BackgroundColor;
+        public CColor BackgroundColor = CScreen.BackgroundColor;
 
         /// <summary>
         /// 
         /// </summary>
         public readonly static CPixel Default = new CPixel();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public CPixel()
-        {
-
-        }
 
         /// <summary>
         /// 
@@ -71,7 +61,7 @@ namespace GlyphEngine
         /// <param name="y"></param>
         /// <param name="glyph"></param>
         /// <param name="color"></param>
-        public CPixel(int x, int y, char glyph, ConsoleColor color)
+        public CPixel(int x, int y, char glyph, CColor color)
             : this(x, y, glyph)
         {
             Color = color;
@@ -85,7 +75,7 @@ namespace GlyphEngine
         /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <param name="backgroundColor"></param>
-        public CPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
+        public CPixel(int x, int y, char glyph, CColor color, CColor backgroundColor)
             : this(x, y, glyph, color)
         {
             BackgroundColor = backgroundColor;
@@ -96,7 +86,7 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="glyph"></param>
         /// <param name="color"></param>
-        public void Set(char glyph, ConsoleColor color)
+        public void Set(char glyph, CColor color)
         {
             this.Glyph = glyph;
             this.Color = color;
@@ -108,21 +98,11 @@ namespace GlyphEngine
         /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <param name="backgroundColor"></param>
-        public void Set(char glyph, ConsoleColor color, ConsoleColor backgroundColor)
+        public void Set(char glyph, CColor color, CColor backgroundColor)
         {
             this.Glyph = glyph;
             this.Color = color;
             this.BackgroundColor = backgroundColor;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        internal CPixel Clone()
-        {
-            var clone = new CPixel(X, Y, Glyph, Color);
-            return clone;
         }
 
         /// <summary>

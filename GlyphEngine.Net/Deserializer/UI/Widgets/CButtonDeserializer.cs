@@ -22,16 +22,16 @@ namespace GlyphEngine
             var name = data.As("name", string.Empty);
             var text = data.As("text", string.Empty);
             var keycode = CKeycodeHelper.Get(data, "keycode");
-            var unfocusColor = CColorHelper.Get(data, "unfocusColor");
-            var focusColor = CColorHelper.Get(data, "focusColor");
+            var unfocusColor = data.As("unfocusColor", CScreen.ForegroundColor);
+            var focusColor = data.As("focusColor", CColor.White);
             var border = data.As("border", EBorderStyle.Thin);
             var interactable = data.As("interactable", false);
             var focus = data.As("focus", false);
 
             if (!interactable)
             {
-                focusColor = ConsoleColor.Gray;
-                unfocusColor = ConsoleColor.Gray;
+                focusColor = CColor.Gray;
+                unfocusColor = CColor.Gray;
                 focus = false;
             }
 

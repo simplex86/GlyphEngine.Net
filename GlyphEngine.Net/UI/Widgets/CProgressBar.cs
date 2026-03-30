@@ -78,7 +78,7 @@ namespace GlyphEngine
         /// 
         /// </summary>
         /// <param name="color"></param>
-        protected override void OnColorChanged(ConsoleColor color)
+        protected override void OnColorChanged(CColor color)
         {
             bar.Color = color;
         }

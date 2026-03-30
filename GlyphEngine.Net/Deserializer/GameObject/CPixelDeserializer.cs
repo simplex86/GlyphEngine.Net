@@ -17,7 +17,7 @@ namespace GlyphEngine
             var x = data.As("x", 0);
             var y = data.As("y", 0);
             var glyph = data.As("glyph", CGlyph.Empty);
-            var color = CColorHelper.Get(data, "color");
+            var color = data.As("color", CScreen.BackgroundColor);
 
             var pixel = new CPixel(x, y, glyph, color);
 

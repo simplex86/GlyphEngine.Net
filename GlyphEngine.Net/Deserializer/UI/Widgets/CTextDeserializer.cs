@@ -18,7 +18,7 @@ namespace GlyphEngine
             var y = data.As("y", 0);
             var name = data.As("name", string.Empty);
             var text = data.As("text", string.Empty);
-            var color = CColorHelper.Get(data, "color");
+            var color = data.As("color", CColor.White);
 
             var widget = new CText(text, new CVector2(x, y))
             {

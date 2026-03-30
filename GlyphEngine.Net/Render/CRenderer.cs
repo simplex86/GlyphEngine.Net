@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace GlyphEngine
 {
@@ -32,7 +30,7 @@ namespace GlyphEngine
                 }
             }
             // 如果没有自定义渲染器，则使用内置渲染器
-            renderer = (platform == EPlatform.Windows) ? new WRenderer()
+            renderer = (platform == EPlatform.Windows) ? new NRenderer()
                                                        : new NRenderer();
         }
 
@@ -44,7 +42,7 @@ namespace GlyphEngine
         /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <param name="backgroundColor"></param>
-        public void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
+        public void SetPixel(int x, int y, char glyph, CColor color, CColor backgroundColor)
         {
             renderer.SetPixel(x, y, glyph, color, backgroundColor);
         }

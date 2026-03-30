@@ -10,7 +10,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        public ConsoleColor Color { get; set; }
+        public CColor Color { get; set; }
 
         /// <summary>
         /// 
@@ -31,7 +31,7 @@ namespace GlyphEngine
         /// 
         /// </summary>
         /// <param name="color"></param>
-        public CProgressBarLModifier(ConsoleColor color)
+        public CProgressBarLModifier(CColor color)
         {
             this.Color = color;
         }
@@ -91,7 +91,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        public ConsoleColor Color { get; set; }
+        public CColor Color { get; set; }
 
         /// <summary>
         /// 
@@ -107,7 +107,7 @@ namespace GlyphEngine
         /// 
         /// </summary>
         /// <param name="color"></param>
-        public CProgressBarRModifier(ConsoleColor color)
+        public CProgressBarRModifier(CColor color)
         {
             this.Color = color;
         }
@@ -167,7 +167,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        public ConsoleColor Color { get; set; }
+        public CColor Color { get; set; }
 
         /// <summary>
         /// 
@@ -180,7 +180,7 @@ namespace GlyphEngine
         /// 
         /// </summary>
         /// <param name="color"></param>
-        public CProgressBarUModifier(ConsoleColor color)
+        public CProgressBarUModifier(CColor color)
         {
             this.Color = color;
         }
@@ -240,7 +240,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        public ConsoleColor Color { get; set; }
+        public CColor Color { get; set; }
 
         /// <summary>
         /// 
@@ -252,7 +252,7 @@ namespace GlyphEngine
         /// 
         /// </summary>
         /// <param name="color"></param>
-        public CProgressBarDModifier(ConsoleColor color)
+        public CProgressBarDModifier(CColor color)
         {
             this.Color = color;
         }

@@ -26,7 +26,7 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        public ConsoleColor Color
+        public CColor Color
         {
             set { modifier.Color = value; }
             get { return modifier.Color; }
@@ -53,7 +53,7 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="amount"></param>
         /// <param name="localpostion"></param>
-        internal CVProgressBar(int length, float amount, EProgressBarDirection direction, ConsoleColor color, CRenderableObject target)
+        internal CVProgressBar(int length, float amount, EProgressBarDirection direction, CColor color, CRenderableObject target)
         {
             this.length = length;
             this.amount = amount;

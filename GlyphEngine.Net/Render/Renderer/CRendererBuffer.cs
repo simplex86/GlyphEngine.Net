@@ -143,7 +143,7 @@ namespace GlyphEngine
         /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <param name="backgroundColor"></param>
-        internal void SetPixel(int x, int y, char glyph, ConsoleColor color, ConsoleColor backgroundColor)
+        internal void SetPixel(int x, int y, char glyph, CColor color, CColor backgroundColor)
         {
             if (TryGetIndex(x, y, out var key, out var index))
             {

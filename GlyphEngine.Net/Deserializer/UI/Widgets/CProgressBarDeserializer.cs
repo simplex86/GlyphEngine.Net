@@ -20,7 +20,7 @@ namespace GlyphEngine
             var style = data.As("style", EProgressBarStyle.Horizontal);
             var length = data.As("length", 10);
             var amount = data.As("amount", 0.0f);
-            var color = CColorHelper.Get(data, "color");
+            var color = data.As("color", CColor.White);
             var direction = data.As("direction", EProgressBarDirection.Left);
 
             var widget = new CProgressBar(length, new CVector2(x, y), amount, style, direction)
