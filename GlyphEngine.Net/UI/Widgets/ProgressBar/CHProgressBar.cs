@@ -52,7 +52,7 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="amount"></param>
         /// <param name="localpostion"></param>
-        internal CHProgressBar(int length, float amount, EProgressBarDirection direction, CColor color, CRenderableObject target)
+        internal CHProgressBar(int length, float amount, EProgressBarDirection direction, in CColor color, CRenderableObject target)
         {
             this.length = length;
             this.amount = amount;

@@ -129,14 +129,9 @@ namespace GlyphEngine
         /// <param name="y"></param>
         /// <param name="glyph"></param>
         /// <param name="color"></param>
-        public void SetPixel(int x, int y, char glyph, CColor color, CColor backgroundColor)
+        public void SetPixel(int x, int y, char glyph, in CColor color, in CColor backgroundColor)
         {
-            if (glyph == CGlyph.Empty)
-            {
-                backgroundColor = CScreen.BackgroundColor;
-            }
-
-            current.SetPixel(x, y, glyph, color, backgroundColor);
+            current.SetPixel(x, y, glyph, color, (glyph == CGlyph.Empty) ? CScreen.BackgroundColor : backgroundColor);
         }
 
         /// <summary>
@@ -220,7 +215,7 @@ namespace GlyphEngine
         /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <param name="backgroundColor"></param>
-        private void WriteBuffer(int x, int y, char glyph, CColor color, CColor backgroundColor)
+        private void WriteBuffer(int x, int y, char glyph, in CColor color, in CColor backgroundColor)
         {
             var index = y * width + x;
 

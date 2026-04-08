@@ -16,7 +16,7 @@ namespace GlyphEngine
         /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <param name="backgroundColor"></param>
-        void SetPixel(int x, int y, char glyph, CColor color, CColor backgroundColor);
+        void SetPixel(int x, int y, char glyph, in CColor color, in CColor backgroundColor);
 
         /// <summary>
         /// 渲染

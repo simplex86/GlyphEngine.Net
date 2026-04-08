@@ -124,7 +124,7 @@ namespace GlyphEngine
         /// </summary>
         /// <param name="index"></param>
         /// <param name="color"></param>
-        internal void SetColor(int index, CColor color)
+        internal void SetColor(int index, in CColor color)
         {
             var span = CollectionsMarshal.AsSpan(pixels);
             span[index].Color = color;
@@ -136,7 +136,7 @@ namespace GlyphEngine
         /// <param name="index"></param>
         /// <param name="glyph"></param>
         /// <param name="color"></param>
-        internal void Set(int index, char glyph, CColor color)
+        internal void Set(int index, char glyph, in CColor color)
         {
             var span = CollectionsMarshal.AsSpan(pixels);
             span[index].Set(glyph, color);

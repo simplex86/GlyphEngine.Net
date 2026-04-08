@@ -39,7 +39,7 @@ namespace GlyphEngine
         /// <param name="y"></param>
         /// <param name="symbol"></param>
         /// <param name="color"></param>
-        internal void Set(int x, int y, char glyph, CColor color)
+        internal void Set(int x, int y, char glyph, in CColor color)
         {
             var key = Key(x, y);
             if (grid.TryGetValue(key, out var index))

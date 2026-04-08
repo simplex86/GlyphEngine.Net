@@ -42,7 +42,7 @@ namespace GlyphEngine
         /// <param name="unfocusColor"></param>
         /// <param name="focusColor"></param>
         /// <param name="style"></param>
-        internal CButton(CVector2 localposition, int width, int height, ConsoleKey keycode, CColor unfocusColor, CColor focusColor, EBorderStyle style = EBorderStyle.Thin)
+        internal CButton(CVector2 localposition, int width, int height, ConsoleKey keycode, in CColor unfocusColor, in CColor focusColor, EBorderStyle style = EBorderStyle.Thin)
             : base(localposition)
         {
             this.Width = width;

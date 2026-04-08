@@ -424,7 +424,7 @@ namespace GlyphEngine
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static CColor As(this JsonData self, string key, CColor defaultValue)
+        public static CColor As(this JsonData self, string key, in CColor defaultValue)
         {
             return self.AsColor(key, out var value) ? value : defaultValue;
         }

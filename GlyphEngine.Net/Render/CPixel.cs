@@ -61,7 +61,7 @@
         /// <param name="y"></param>
         /// <param name="glyph"></param>
         /// <param name="color"></param>
-        public CPixel(int x, int y, char glyph, CColor color)
+        public CPixel(int x, int y, char glyph, in CColor color)
             : this(x, y, glyph)
         {
             Color = color;
@@ -75,7 +75,7 @@
         /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <param name="backgroundColor"></param>
-        public CPixel(int x, int y, char glyph, CColor color, CColor backgroundColor)
+        public CPixel(int x, int y, char glyph, in CColor color, in CColor backgroundColor)
             : this(x, y, glyph, color)
         {
             BackgroundColor = backgroundColor;
@@ -86,7 +86,7 @@
         /// </summary>
         /// <param name="glyph"></param>
         /// <param name="color"></param>
-        public void Set(char glyph, CColor color)
+        public void Set(char glyph, in CColor color)
         {
             this.Glyph = glyph;
             this.Color = color;
@@ -98,7 +98,7 @@
         /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <param name="backgroundColor"></param>
-        public void Set(char glyph, CColor color, CColor backgroundColor)
+        public void Set(char glyph, in CColor color, in CColor backgroundColor)
         {
             this.Glyph = glyph;
             this.Color = color;

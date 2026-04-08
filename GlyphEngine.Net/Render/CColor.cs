@@ -102,7 +102,7 @@
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static bool operator==(CColor a, CColor b)
+        public static bool operator==(CColor a, in CColor b)
         {
             return a.Equals(b);
         }
@@ -113,7 +113,7 @@
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static bool operator !=(CColor a, CColor b)
+        public static bool operator !=(in CColor a, in CColor b)
         {
             return !a.Equals(b);
         }
@@ -123,7 +123,7 @@
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public bool Equals(CColor other)
+        public bool Equals(in CColor other)
         {
             return R == other.R &&
                    G == other.G && 
@@ -135,9 +135,9 @@
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
-            return Equals((CColor)other);
+            return (other == null) ? false : Equals((CColor)other);
         }
 
         /// <summary>

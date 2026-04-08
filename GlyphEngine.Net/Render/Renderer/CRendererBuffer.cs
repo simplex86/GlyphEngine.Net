@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace GlyphEngine
 {
@@ -10,7 +9,13 @@ namespace GlyphEngine
     /// </summary>
     internal class CRendererBufferEnumerator : IEnumerator<CPixel>, IDisposable
     {
-        private List<CPixel> buffer = null;
+        /// <summary>
+        /// 
+        /// </summary>
+        private CPixel[] buffer;
+        /// <summary>
+        /// 
+        /// </summary>
         private int index = -1;
 
         /// <summary>
@@ -26,11 +31,15 @@ namespace GlyphEngine
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="list"></param>
-        /// <param name="count"></param>
-        public CRendererBufferEnumerator(List<CPixel> list)
+        public int Count { get; set; } = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        public CRendererBufferEnumerator(CPixel[] buffer)
         {
-            this.buffer = list;
+            this.buffer = buffer;
         }
 
         /// <summary>
@@ -40,7 +49,7 @@ namespace GlyphEngine
         public bool MoveNext()
         {
             index++;
-            return index < buffer.Count;
+            return index < Count;
         }
 
         /// <summary>
@@ -80,7 +89,7 @@ namespace GlyphEngine
         /// <summary>
         /// 紧密数组
         /// </summary>
-        private List<CPixel> dense;
+        private CPixel[] dense;
         /// <summary>
         /// 迭代器
         /// </summary>
@@ -108,7 +117,9 @@ namespace GlyphEngine
             sparse = new int[width * height];
             sparse.AsSpan().Fill(-1);
 
-            dense = new List<CPixel>(width * height);
+            dense = new CPixel[width * height];
+            dense.AsSpan().Fill(CPixel.Default);
+
             enumerator = new CRendererBufferEnumerator(dense);
         }
 
@@ -143,20 +154,22 @@ namespace GlyphEngine
         /// <param name="glyph"></param>
         /// <param name="color"></param>
         /// <param name="backgroundColor"></param>
-        internal void SetPixel(int x, int y, char glyph, CColor color, CColor backgroundColor)
+        internal void SetPixel(int x, int y, char glyph, in CColor color, in CColor backgroundColor)
         {
-            if (TryGetIndex(x, y, out var key, out var index))
+            if (!TryGetIndex(x, y, out var key, out var index))
             {
-                var span = CollectionsMarshal.AsSpan(dense);
-                span[index].Glyph = glyph;
-                span[index].Color = color;
-                span[index].BackgroundColor = backgroundColor;
+                index = enumerator.Count;
+
+                dense[index].X = x;
+                dense[index].Y = y;
+
+                sparse[key] = enumerator.Count;
+                enumerator.Count++;
             }
-            else
-            {
-                dense.Add(new CPixel(x, y, glyph, color, backgroundColor));
-                sparse[key] = dense.Count - 1;
-            }
+
+            dense[index].Glyph = glyph;
+            dense[index].Color = color;
+            dense[index].BackgroundColor = backgroundColor;
         }
 
         /// <summary>
@@ -164,7 +177,7 @@ namespace GlyphEngine
         /// </summary>
         internal void Clear()
         {
-            dense.Clear();
+            enumerator.Count = 0;
             sparse.AsSpan().Fill(-1);
         }
 
@@ -179,11 +192,11 @@ namespace GlyphEngine
         {
             if (TryGetIndex(x, y, out var _, out var index))
             {
-                pixel = CollectionsMarshal.AsSpan(dense)[index];
+                pixel = dense[index];
                 return true;
             }
 
-            pixel = default;
+            pixel = CPixel.Default;
             return false;
         }
 
@@ -208,8 +221,6 @@ namespace GlyphEngine
         /// </summary>
         public void Dispose()
         {
-            Clear();
-
             enumerator?.Dispose();
             enumerator = null;
         }
